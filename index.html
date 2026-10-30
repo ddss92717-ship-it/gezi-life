@@ -3,491 +3,684 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>人生财务与风险评估表_FY2026.xlsx</title>
-    <link rel="stylesheet" href="./css/main.css">
+    <title>人生财务与风险评估表_FY2026.xlsx - Microsoft Excel</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Canvas Confetti 烟花库 -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        .excel-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(68px, 1fr));
+            gap: 2px;
+        }
+        .excel-cell {
+            aspect-ratio: 1.2;
+            user-select: none;
+            transition: all 0.2s ease;
+        }
+        .excel-cell.lit {
+            animation: pulse-lit 0.4s ease-out;
+        }
+        @keyframes pulse-lit {
+            0% { transform: scale(1); filter: brightness(1); }
+            50% { transform: scale(1.15); filter: brightness(1.5); z-index: 10; }
+            100% { transform: scale(1); filter: brightness(1); }
+        }
+        /* 隐藏滚动条但保留功能 */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
 </head>
-<body>
-<div class="excel-wrap">
-    <!-- Excel顶部菜单栏 -->
-    <div class="excel-ribbon">
-        <span class="ribbon-tab active">开始</span>
-        <span class="ribbon-tab">插入</span>
-        <span class="ribbon-tab">公式(formulas)</span>
-        <span class="ribbon-tab">数据(Data)</span>
-        <span class="ribbon-tab">审阅</span>
-        <span class="ribbon-tab">视图</span>
-        <div class="ribbon-right">
-            <span>一键伪装/快速保存 [Esc]</span>
-            <button id="resetGameBtn">重置模型</button>
+<body class="bg-slate-100 text-slate-800 font-sans h-screen flex flex-col overflow-hidden select-none">
+
+    <!-- 顶部 Excel 伪装标题栏与工具栏 -->
+    <header class="bg-[#107c41] text-white text-xs flex flex-col shrink-0">
+        <div class="flex items-center justify-between px-3 py-1.5 border-b border-emerald-700">
+            <div class="flex items-center space-x-2">
+                <i data-lucide="file-spreadsheet" class="w-4 h-4"></i>
+                <span class="font-semibold tracking-wide">人生财务与风险评估表_FY2026.xlsx - Excel</span>
+                <span class="bg-emerald-800 text-emerald-200 text-[10px] px-1.5 py-0.5 rounded">自动保存 已开启</span>
+            </div>
+            <div class="flex items-center space-x-3">
+                <button onclick="toggleBossKey()" class="bg-emerald-700 hover:bg-emerald-600 text-white px-2.5 py-1 rounded flex items-center space-x-1 transition text-[11px]">
+                    <i data-lucide="eye-off" class="w-3.5 h-3.5"></i>
+                    <span>摸鱼伪装 (Esc)</span>
+                </button>
+                <button onclick="location.reload()" class="hover:bg-emerald-700 p-1 rounded"><i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i></button>
+            </div>
         </div>
-    </div>
-    <div class="excel-formula-bar">
-        <span>fx</span>
-        <input type="text" value="=SUM(C3:C90)" readonly>
+        <!-- Ribbon 快捷功能区 -->
+        <div class="bg-slate-50 text-slate-700 px-4 py-1 flex items-center space-x-6 border-b border-slate-300 text-[11px]">
+            <span class="font-semibold text-[#107c41] border-b-2 border-[#107c41] pb-0.5 cursor-pointer">开始</span>
+            <span class="hover:text-slate-900 cursor-pointer">插入</span>
+            <span class="hover:text-slate-900 cursor-pointer">公式 (Formulas)</span>
+            <span class="hover:text-slate-900 cursor-pointer">数据 (Data)</span>
+            <span class="hover:text-slate-900 cursor-pointer">审阅</span>
+            <span class="hover:text-slate-900 cursor-pointer">视图</span>
+            <div class="h-3 w-px bg-slate-300 mx-1"></div>
+            <div class="flex items-center space-x-1 text-slate-500">
+                <i data-lucide="calculator" class="w-3.5 h-3.5"></i>
+                <span>按回车或空格键推进人生年龄</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- 公式栏 -->
+    <div class="bg-white border-b border-slate-200 px-3 py-1 flex items-center space-x-2 text-xs text-slate-600 shrink-0">
+        <span class="font-mono bg-slate-100 px-2 py-0.5 rounded border text-slate-500 font-semibold" id="cell-address">C12</span>
+        <span class="italic font-serif text-slate-400">fx</span>
+        <div class="h-4 w-px bg-slate-200"></div>
+        <span class="font-mono text-slate-700" id="formula-bar-text">=SUM(C3:C90) /* 人生总积累算子 */</span>
     </div>
 
-    <div class="game-container">
-        <!-- 左侧属性监控面板 -->
-        <aside class="sidebar-panel">
-            <h4>📋 人生核心参数监控表</h4>
-            <div class="stat-item">
-                <label>CURRENT_AGE (当前年龄)</label>
-                <div id="curAge">0 岁</div>
+    <!-- 主界面：侧边栏 + 网格矩阵 -->
+    <div class="flex-1 flex overflow-hidden">
+        
+        <!-- 左侧 8 维数据与属性监控面板 -->
+        <aside class="w-72 bg-slate-50 border-r border-slate-300 p-3 flex flex-col justify-between overflow-y-auto shrink-0 text-xs">
+            <div>
+                <div class="text-[10px] font-mono text-slate-400 tracking-wider mb-2">MONITORING_PANEL</div>
+                <h2 class="font-bold text-slate-700 text-sm mb-3 flex items-center justify-between">
+                    <span>核心参数监控面板</span>
+                    <span id="current-age-badge" class="bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full text-[11px]">0 岁</span>
+                </h2>
+
+                <!-- 属性列表 -->
+                <div class="space-y-2.5">
+                    <div class="bg-white p-2 rounded border border-slate-200 shadow-sm">
+                        <div class="flex justify-between text-slate-500 mb-1">
+                            <span>流动资金 (CASH)</span>
+                            <span font-mono font-bold text-emerald-600 id="val-cash">￥0</span>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-2 rounded border border-slate-200 shadow-sm">
+                        <div class="flex justify-between text-slate-500 mb-1">
+                            <span>健康度 (HP)</span>
+                            <span font-mono font-bold id="val-hp">100/100</span>
+                        </div>
+                        <div class="w-full bg-slate-100 rounded-full h-1.5 overflow-hidden">
+                            <div id="bar-hp" class="bg-rose-500 h-1.5 rounded-full transition-all duration-300" style="width: 100%"></div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-2 rounded border border-slate-200 shadow-sm">
+                        <div class="flex justify-between text-slate-500 mb-1">
+                            <span>快乐值 (SAN)</span>
+                            <span font-mono font-bold id="val-san">100%</span>
+                        </div>
+                        <div class="w-full bg-slate-100 rounded-full h-1.5 overflow-hidden">
+                            <div id="bar-san" class="bg-amber-400 h-1.5 rounded-full transition-all duration-300" style="width: 100%"></div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-2 rounded border border-slate-200 shadow-sm">
+                        <div class="flex justify-between text-slate-500 mb-1">
+                            <span>社会声望 (PTS)</span>
+                            <span font-mono font-bold text-indigo-600 id="val-pts">100 PTS</span>
+                        </div>
+                    </div>
+
+                    <!-- 次要隐藏/辅助数值 -->
+                    <div class="grid grid-cols-2 gap-1.5 text-[10px] text-slate-500 pt-1 border-t border-slate-200">
+                        <div>智力 (INT): <span id="val-int" class="font-bold text-slate-700">50</span></div>
+                        <div>外貌 (PHY): <span id="val-phy" class="font-bold text-slate-700">50</span></div>
+                        <div>家庭 (FAM): <span id="val-fam" class="font-bold text-slate-700">60</span></div>
+                        <div>合规 (MOR): <span id="val-mor" class="font-bold text-slate-700">80</span></div>
+                    </div>
+                </div>
+
+                <!-- 玩家出身信息卡片 -->
+                <div class="mt-4 bg-emerald-50/60 border border-emerald-200 rounded p-2.5 text-[11px] text-slate-600">
+                    <div class="font-bold text-emerald-800 mb-1 flex items-center space-x-1">
+                        <i data-lucide="user-check" class="w-3.5 h-3.5"></i>
+                        <span>当前人生物质背景</span>
+                    </div>
+                    <p id="info-birth">出生地: 加载中...</p>
+                    <p id="info-bg">家庭: 加载中...</p>
+                    <p id="info-traits" class="text-emerald-700 font-medium mt-1">天赋: 无</p>
+                </div>
             </div>
-            <div class="stat-item">
-                <label>本年度剩余天数</label>
-                <div id="dayLeft">365</div>
-            </div>
-            <div class="stat-item">
-                <label>CASH_BALANCE (流动资金 ¥)</label>
-                <div id="cash">¥0</div>
-            </div>
-            <div class="stat-item">
-                <label>HEALTH_INDEX 系统稳定性(HP)</label>
-                <div class="bar-wrap"><div id="hpBar" class="bar hp"></div></div>
-                <span id="hpText">100/100</span>
-            </div>
-            <div class="stat-item">
-                <label>SATISFACTION 员工满意度(SAN)</label>
-                <div class="bar-wrap"><div id="sanBar" class="bar san"></div></div>
-                <span id="sanText">100%</span>
-            </div>
-            <div class="stat-item">
-                <label>REPUTATION_PTS 行业信用评级(PTS)</label>
-                <div id="ptsText">100 PTS</div>
-            </div>
-            <div class="stat-item">
-                <label>FAM 关联方风险指数(FAM)</label>
-                <div id="famText">100</div>
-            </div>
-            <div class="stat-item">
-                <label>INT 算法执行效率(INT)</label>
-                <div id="intText">50</div>
-            </div>
-            <div class="tip-box">
-                <p>操作指南：</p>
-                <p>1.点击格子 / 右下角骰子推进人生</p>
-                <p>2.触发事件根据提示做出抉择</p>
-                <p>3.HP归零 或年龄≥80 触发人生审计报告</p>
-                <p>按【Esc】一键切换审计伪装页面摸鱼</p>
-            </div>
-            <div class="save-btn-group">
-                <button id="exportSave">导出存档</button>
-                <button id="importSave">导入存档</button>
-                <input type="file" id="importFile" accept=".json" hidden>
+
+            <div class="text-[10px] text-slate-400 space-y-1">
+                <p>💡 操作提示:</p>
+                <p>1. 手动点击格子或摇右下角🎲命运骰子推进时间。</p>
+                <p>2. 遇到重大变故请谨慎抉择，HP归零生命将终止。</p>
             </div>
         </aside>
 
-        <!-- 主日历网格区域 -->
-        <main class="grid-main">
-            <div id="calendarGrid" class="calendar-grid"></div>
-            <div class="dice-area">
-                <button id="diceBtn">🎲命运骰子(1~6)</button>
+        <!-- 右侧：365天日历网格主面板 -->
+        <main class="flex-1 bg-white flex flex-col overflow-hidden relative">
+            
+            <!-- 顶部轻量日常消息 Toast 提示框（非重要事件浮窗） -->
+            <div id="toast-container" class="absolute top-3 right-6 z-20 pointer-events-none space-y-2"></div>
+
+            <!-- 网格状态栏 -->
+            <div class="bg-slate-50 border-b border-slate-200 px-4 py-2 flex justify-between items-center text-xs shrink-0">
+                <div class="flex items-center space-x-4">
+                    <span class="font-semibold text-slate-700">年度日历矩阵 (<span id="birth-year-display">2026</span>年)</span>
+                    <span class="text-slate-400">|</span>
+                    <span class="text-slate-500">当年剩余天数：<strong id="days-remaining" class="text-emerald-600 font-mono text-sm">365</strong> 天</span>
+                </div>
+                <div class="text-slate-400 text-[11px]">可上下/左右滑动浏览完整 365 天</div>
+            </div>
+
+            <!-- 365天自适应/可滚动网格容器 -->
+            <div class="flex-1 p-3 overflow-auto no-scrollbar bg-slate-50/50" id="grid-scroll-container">
+                <div id="grid-matrix" class="excel-grid">
+                    <!-- 动态生成 365/366 个单元格 -->
+                </div>
+            </div>
+
+            <!-- 右下角悬浮：命运骰子 -->
+            <div class="absolute bottom-5 right-6 z-10 flex items-center space-x-2">
+                <button id="btn-dice" onclick="rollDice()" class="bg-[#107c41] hover:bg-emerald-700 text-white px-4 py-2.5 rounded-full shadow-lg flex items-center space-x-2 transition transform active:scale-95 font-semibold text-xs border border-emerald-500">
+                    <i data-lucide="dices" class="w-4 h-4"></i>
+                    <span>命运骰子 🎲</span>
+                </button>
             </div>
         </main>
     </div>
-</div>
 
-<!-- 弹窗容器 -->
-<div id="modalMask" class="modal-mask hidden">
-    <div class="modal-box" id="modalBox"></div>
-</div>
+    <!-- ===== 各种弹窗组件 ===== -->
 
-<!-- 情绪全屏Canvas层（流星雨/烟花） -->
-<canvas id="effectCanvas" class="effect-canvas hidden"></canvas>
-
-<script type="module">
-// 使用 type="module" 全部js内联模块导入，解决加载时序BUG
-import Utils from "./js/utils.js";
-import {showMeteorShower,showFireworks,closeEffect} from "./js/canvas-effects.js";
-import {getCandidateEvents,checkOptionCondition} from "./js/event-engine.js";
-
-window.Utils = Utils;
-
-//DOM元素
-const modalMask=document.getElementById("modalMask");
-const modalBox=document.getElementById("modalBox");
-const calendarGrid=document.getElementById("calendarGrid");
-
-//游戏全局状态
-let gameState={
-    age:0,
-    birthYear:2010,
-    dayLeft:365,
-    dayProcessed:Set(), //已经处理过的自然日期数字 1~366
-    cash:0,
-    hp:100,
-    san:100,
-    pts:100,
-    fam:100,
-    int:50,
-    birthInfo:null,
-    crisisCount:0,
-    meteorCount:0
-}
-
-//随机烟花颜色池
-const fireColorList=["#ffdd00","#ff6040","#42ccff","#88ff44","#ff77dd","#aa88ff"];
-
-//渲染属性面板UI
-function renderStatUI(){
-    document.getElementById("curAge").innerText=gameState.age+" 岁";
-    document.getElementById("dayLeft").innerText=gameState.dayLeft;
-    document.getElementById("cash").innerText="¥"+Math.round(gameState.cash).toLocaleString();
-    document.getElementById("hpText").innerText=`${Math.round(gameState.hp)}/100`;
-    document.getElementById("hpBar").style.width=gameState.hp+"%";
-    document.getElementById("sanText").innerText=Math.round(gameState.san)+"%";
-    document.getElementById("sanBar").style.width=gameState.san+"%";
-    document.getElementById("ptsText").innerText=Math.round(gameState.pts)+" PTS";
-    document.getElementById("famText").innerText=Math.round(gameState.fam);
-    document.getElementById("intText").innerText=Math.round(gameState.int);
-}
-
-//弹窗工具
-function openModal(html){
-    modalBox.innerHTML=html;
-    modalMask.classList.remove("hidden");
-}
-function closeModal(){
-    modalMask.classList.add("hidden");
-}
-
-//【1】投胎开局弹窗
-function showReincarnateModal(){
-    const BIRTH_WEIGHT={
-        area:[
-            {name:"一线城市",weight:8,cashBonus:120000,ptsBonus:15},
-            {name:"新一线/二线城市",weight:22,cashBonus:40000,ptsBonus:8},
-            {name:"三四线小县城",weight:45,cashBonus:12000,ptsBonus:0},
-            {name:"乡镇农村",weight:25,cashBonus:0,ptsBonus:-8}
-        ],
-        family:[
-            {name:"富裕家庭",weight:5,cash:500000},
-            {name:"小康家庭",weight:35,cash:120000},
-            {name:"普通工薪家庭",weight:45,cash:20000},
-            {name:"困难家庭",weight:15,cash:-15000}
-        ]
-    }
-    const areaItem=Utils.weightedRandom(BIRTH_WEIGHT.area);
-    const familyItem=Utils.weightedRandom(BIRTH_WEIGHT.family);
-    const birthY=2010;
-    gameState.birthYear=birthY;
-    gameState.cash=familyItem.cash+areaItem.cashBonus;
-    gameState.pts=Utils.clamp(gameState.pts+areaItem.ptsBonus,0,200);
-    gameState.birthInfo={
-        birthYear:birthY,
-        area:areaItem.name,
-        family:familyItem.name
-    }
-    const html=`
-    <h3>📜格子人生：中国式生存法则【初始背景设定】</h3>
-    <p>即将开启0岁新生儿到80岁的模拟人生。</p>
-    <div style="background:#f4f7fa;padding:10px;border-radius:4px;margin:10px 0;">
-        <p>出生年份：${gameState.birthYear}</p>
-        <p>出生地：${gameState.birthInfo.area}</p>
-        <p>家庭阶层：${gameState.birthInfo.family}</p>
-        <p>初始流动资金：¥${Math.round(gameState.cash).toLocaleString()}</p>
+    <!-- 1. 开局投胎/游戏说明弹窗 -->
+    <div id="modal-start" class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-lg shadow-2xl max-w-md w-full border border-slate-300 overflow-hidden">
+            <div class="bg-[#107c41] text-white px-4 py-3 flex justify-between items-center">
+                <h3 class="font-bold flex items-center space-x-2">
+                    <i data-lucide="sparkles" class="w-4 h-4"></i>
+                    <span>《格子人生：中国式生存法则》- 开启人生</span>
+                </h3>
+            </div>
+            <div class="p-5 text-xs text-slate-600 space-y-3">
+                <p class="font-semibold text-slate-800 text-sm">欢迎来到模拟人生游戏！</p>
+                <p>你即将开启一段从 <strong>0 岁新生儿</strong> 到 <strong>80 岁终局</strong> 的中国式人生历程。</p>
+                <ul class="list-disc list-inside space-y-1 bg-slate-50 p-2.5 rounded border border-slate-200">
+                    <li>每一岁拥有当年实际天数（365/366天）的网格。</li>
+                    <li>通过<strong>手动点击格子</strong>或<strong>命运骰子 🎲</strong> 推进时间。</li>
+                    <li>遇到重要转折点（如升学、大厂裁员、买房、大病）需做出艰难抉择。</li>
+                    <li>随时按键盘 <strong>Esc</strong> 键可一键切换为资产负债表进行合规摸鱼！</li>
+                </ul>
+            </div>
+            <div class="bg-slate-50 px-4 py-3 border-t flex justify-end">
+                <button onclick="startLifeGame()" class="bg-[#107c41] hover:bg-emerald-700 text-white font-bold px-5 py-2 rounded text-xs transition">
+                    确认投胎，开启人生 ►
+                </button>
+            </div>
+        </div>
     </div>
-    <p>机制说明：点击格子推进一天，命运骰子一次跳1‑6天；随机触发现实事件。</p>
-    <p>⚠️按Esc一键切换财务审计伪装页面摸鱼。</p>
-    <div class="modal-footer">
-        <button id="reRollBtn">🔄重新投胎</button>
-        <button id="startGameBtn">✅确认投胎，开启人生</button>
+
+    <!-- 2. 重大事件抉择强弹窗 -->
+    <div id="modal-event" class="fixed inset-0 bg-black/60 z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-lg shadow-2xl max-w-lg w-full border border-slate-300 overflow-hidden transform transition-all">
+            <div class="bg-slate-800 text-white px-4 py-2.5 flex justify-between items-center">
+                <span class="text-xs font-mono text-emerald-400" id="event-stage-tag">【阶段三：职场搏杀期】</span>
+                <span class="text-xs text-slate-300" id="event-age-tag">28 岁</span>
+            </div>
+            <div class="p-5">
+                <h3 class="font-bold text-slate-800 text-base mb-2" id="event-title">事件标题</h3>
+                <p class="text-xs text-slate-600 leading-relaxed mb-4 bg-slate-50 p-3 rounded border border-slate-200" id="event-desc">
+                    事件详细描述内容...
+                </p>
+
+                <!-- 选项列表 -->
+                <div class="space-y-2" id="event-options">
+                    <!-- 动态插入选项 -->
+                </div>
+            </div>
+        </div>
     </div>
-    `;
-    openModal(html);
-    document.getElementById("reRollBtn").onclick=()=>showReincarnateModal();
-    document.getElementById("startGameBtn").onclick=()=>{
-        closeModal();
-        initYearGrid();
-        renderStatUI();
-    }
-}
 
-//初始化当年日历网格：格子本身对应自然日期1~totalDay，修复日期BUG
-function initYearGrid(){
-    const currentRealYear = gameState.birthYear + gameState.age;
-    const totalDay=Utils.getYearDayCount(currentRealYear);
-    gameState.dayLeft=totalDay;
-    gameState.dayProcessed = new Set();
-    calendarGrid.innerHTML="";
+    <!-- 3. 治愈系 Canvas 流星雨全屏彩蛋 -->
+    <div id="heal-canvas-container" class="fixed inset-0 bg-slate-950 z-50 hidden flex flex-col items-center justify-center text-white cursor-pointer" onclick="closeHealCanvas()">
+        <canvas id="star-canvas" class="absolute inset-0 w-full h-full"></canvas>
+        <div class="relative z-10 text-center px-6 max-w-lg space-y-4 pointer-events-none">
+            <div class="text-emerald-400 text-xs font-mono tracking-widest uppercase">── 系统情绪捕获与治愈 ──</div>
+            <p class="text-lg font-serif italic" id="heal-quote">“生活有时比 Excel 的公式还要复杂。停下来，夜空一直都在。”</p>
+            <p class="text-xs text-slate-400 pt-6">点击任意位置返回人生...</p>
+        </div>
+    </div>
 
-    // 加大格子尺寸，适配文字
-    const wrapW=calendarGrid.clientWidth;
-    const wrapH=calendarGrid.clientHeight;
-    const cellSize=46; //格子放大
-    const col=Math.max(3,Math.floor(wrapW/(cellSize+4)));
-    calendarGrid.style.gridTemplateColumns=`repeat(${col},1fr)`;
+    <!-- 4. 老板键 Boss Key 纯静态伪装界面 -->
+    <div id="boss-key-overlay" class="fixed inset-0 bg-white z-[100] hidden flex-col overflow-auto text-slate-700 font-sans text-xs">
+        <div class="bg-slate-100 p-2 border-b text-[11px] font-mono text-slate-500 flex justify-between">
+            <span>2026集团财务预算与审计流水汇总表.xlsx [只读]</span>
+            <span>按 Esc 退出伪装</span>
+        </div>
+        <div class="p-6">
+            <h1 class="text-lg font-bold text-slate-800 mb-4">2026年度集团合并资产负债与审计明细</h1>
+            <table class="w-full border-collapse border border-slate-300 text-left text-xs">
+                <thead>
+                    <tr class="bg-slate-100">
+                        <th class="border border-slate-300 p-2">科目代码</th>
+                        <th class="border border-slate-300 p-2">项目名称</th>
+                        <th class="border border-slate-300 p-2">期初余额 (￥)</th>
+                        <th class="border border-slate-300 p-2">本期发生额 (￥)</th>
+                        <th class="border border-slate-300 p-2">期末结余 (￥)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td class="border border-slate-300 p-2 font-mono">1001</td><td class="border border-slate-300 p-2">库存现金与流转资金</td><td class="border border-slate-300 p-2 font-mono">1,250,000.00</td><td class="border border-slate-300 p-2 font-mono">-120,400.00</td><td class="border border-slate-300 p-2 font-mono">1,129,600.00</td></tr>
+                    <tr><td class="border border-slate-300 p-2 font-mono">1002</td><td class="border border-slate-300 p-2">银行存款及风险储备金</td><td class="border border-slate-300 p-2 font-mono">5,800,000.00</td><td class="border border-slate-300 p-2 font-mono">+350,000.00</td><td class="border border-slate-300 p-2 font-mono">6,150,000.00</td></tr>
+                    <tr><td class="border border-slate-300 p-2 font-mono">2001</td><td class="border border-slate-300 p-2">长期应付款 (房贷与融资)</td><td class="border border-slate-300 p-2 font-mono">3,200,000.00</td><td class="border border-slate-300 p-2 font-mono">-50,000.00</td><td class="border border-slate-300 p-2 font-mono">3,150,000.00</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 
-    //事件格子：降低概率为7%，减少高频重复触发
-    let eventIndexSet=new Set();
-    const eventNum=Math.round(totalDay*0.07);
-    while(eventIndexSet.size<eventNum){
-        const r=Utils.randInt(1,totalDay);
-        eventIndexSet.add(r);
-    }
+    <!-- 5. 终局《一生资产与命运审计报告》弹窗 -->
+    <div id="modal-report" class="fixed inset-0 bg-black/70 z-[60] hidden flex items-center justify-center p-4 overflow-y-auto">
+        <div class="bg-white rounded-lg shadow-2xl max-w-xl w-full border border-slate-300 overflow-hidden font-mono text-xs">
+            <div class="bg-[#107c41] text-white p-4 text-center">
+                <h2 class="text-base font-bold">2026 终极人生档案与资产清算审计报告</h2>
+                <p class="text-[11px] opacity-80 mt-1">—— 终局评定与回顾 ——</p>
+            </div>
+            <div class="p-6 space-y-4 text-slate-700">
+                <div class="bg-slate-50 p-3 rounded border border-slate-200">
+                    <p>【受审人】：<span id="rep-name" class="font-bold">张伟</span></p>
+                    <p>【终局年龄】：<span id="rep-age" class="font-bold text-rose-600">80 岁</span></p>
+                    <p>【最终人生评级】：<span id="rep-rank" class="font-bold text-emerald-600">A+ (平凡而伟大的一生)</span></p>
+                </div>
+                <div class="space-y-1">
+                    <p>• 累计度过天数：<span id="rep-days">29,200</span> 天</p>
+                    <p>• 最终积累总资产：<span id="rep-cash" class="font-bold text-emerald-600">￥ 0</span></p>
+                    <p>• 经历重大抉择：<span id="rep-events">0</span> 次</p>
+                </div>
+                <div class="border-t pt-3">
+                    <p class="font-bold text-slate-800 mb-1">【系统终极评价】：</p>
+                    <p id="rep-summary" class="leading-relaxed text-slate-600 italic">
+                        你这一生，在中考分流时上了普高，大学学了计算机；28 岁掏空钱包买了房，35 岁经历过降薪，但也咬牙挺了过来。你打赢了属于你的生活之仗。
+                    </p>
+                </div>
+            </div>
+            <div class="bg-slate-50 p-4 border-t flex justify-center">
+                <button onclick="location.reload()" class="bg-[#107c41] hover:bg-emerald-700 text-white font-bold px-6 py-2 rounded text-xs transition">
+                    重新投胎 (开启新人生)
+                </button>
+            </div>
+        </div>
+    </div>
 
-    for(let d=1;d<=totalDay;d++){
-        const cell=document.createElement("div");
-        cell.className="day-cell";
-        cell.dataset.day=d; //代表本年度第d天（自然日历）
-        cell.dataset.isEvent=eventIndexSet.has(d)?"1":"0";
-        cell.innerText="";
-        cell.onclick=()=>handleCellClick(cell);
-        calendarGrid.appendChild(cell);
-    }
-}
+    <!-- 游戏核心逻辑 JS 代码 -->
+    <script>
+        // 初始化 Lucide 图标
+        lucide.createIcons();
 
-//点击单个格子
-async function handleCellClick(cellEl){
-    const dayNum=Number(cellEl.dataset.day);
-    if(gameState.dayProcessed.has(dayNum)) return;
+        // ===== 1. 游戏全局数据状态 (Player State) =====
+        let player = {
+            age: 0,
+            birthYear: 2026,
+            daysTotal: 365,
+            daysRemaining: 365,
+            
+            // 核心 8 维属性
+            cash: 0,
+            hp: 100,
+            san: 100,
+            pts: 100,
+            int: 50,
+            phy: 50,
+            fam: 60,
+            mor: 80,
 
-    //随机闪光颜色
-    const randColor = fireColorList[Utils.randInt(0,fireColorList.length-1)];
-    cellEl.style.setProperty("--fire-color",randColor);
-    cellEl.classList.add("fire");
-    await sleep(320);
-    cellEl.classList.remove("fire");
+            // 出身设置
+            location: '',
+            background: '',
+            traits: [],
+            
+            // 统计
+            gridClickedCount: 0,
+            eventTriggeredCount: 0,
+            currentGridIndex: 0
+        };
 
-    //标记该自然日期已过完
-    gameState.dayProcessed.add(dayNum);
-    gameState.dayLeft--;
+        let isBossKeyActive = false;
 
-    //转换自然日 → 月日，修复日期BUG
-    const currentRealYear = gameState.birthYear + gameState.age;
-    const isLeap=Utils.isLeapYear(currentRealYear);
-    const md=Utils.dayOfYearToMD(dayNum,isLeap);
-    cellEl.innerHTML = `<div>${md.month}月${md.day}日</div><div class="festival-text"></div>`;
-    cellEl.classList.add("clicked");
+        // 二十四节气与传统节日表 (月-日)
+        const solarTerms = {
+            "1-1": "元旦", "2-4": "立春", "2-14": "情人节", "3-5": "惊蛰", 
+            "4-5": "清明", "5-1": "劳动节", "5-21": "小满", "6-21": "夏至", 
+            "7-7": "七夕", "8-7": "立秋", "9-23": "秋分", "10-1": "国庆节", 
+            "11-7": "立冬", "12-21": "冬至"
+        };
 
-    //事件格
-    if(cellEl.dataset.isEvent==="1"){
-        await triggerRandomEvent();
-    }
+        // ===== 2. 游戏初始化与投胎逻辑 =====
+        function startLifeGame() {
+            document.getElementById('modal-start').classList.add('hidden');
+            
+            // 随机生成出生年份 (2026 - 2040)
+            player.birthYear = 2026 + Math.floor(Math.random() * 15);
+            player.daysTotal = isLeapYear(player.birthYear) ? 366 : 365;
+            player.daysRemaining = player.daysTotal;
 
-    checkYearChange();
-    checkGameOver();
-    renderStatUI();
-    saveGameLocal();
-}
+            // 随机出身地
+            const locs = ['北京 (一线城市)', '上海 (一线城市)', '杭州 (新一线)', '成都 (二线城市)', '某三线县城', '偏远乡村'];
+            player.location = locs[Math.floor(Math.random() * locs.length)];
 
-//骰子逻辑
-document.getElementById("diceBtn").onclick=async ()=>{
-    let diceVal=Utils.randInt(1,6);
-    const unClickCells=Array.from(calendarGrid.querySelectorAll(".day-cell:not(.clicked)"));
-    if(unClickCells.length===0) return;
-    let processList=[];
-    for(let i=0;i<diceVal;i++){
-        if(unClickCells.length===0) break;
-        const idx=Utils.randInt(0,unClickCells.length-1);
-        const pick=unClickCells.splice(idx,1)[0];
-        processList.push(pick);
-    }
-    for(let el of processList){
-        await handleCellClick(el);
-        await sleep(200);
-    }
-}
+            // 随机家庭背景
+            const bgs = [
+                { name: '富贵家庭', cash: 200000, pts: 120 },
+                { name: '小康家庭', cash: 30000, pts: 100 },
+                { name: '工薪家庭', cash: 5000, pts: 90 },
+                { name: '困难家庭 (解锁逆风翻盘)', cash: -10000, pts: 80 }
+            ];
+            const bg = bgs[Math.floor(Math.random() * bgs.length)];
+            player.background = bg.name;
+            player.cash = bg.cash;
+            player.pts = bg.pts;
 
-function sleep(ms){
-    return new Promise(res=>setTimeout(res,ms));
-}
+            // 随机天赋
+            const traitsList = ['【小镇做题家】(智力+20)', '【社交牛逼症】(声望+30)', '【身体倍儿棒】(健康+10)'];
+            player.traits = [traitsList[Math.floor(Math.random() * traitsList.length)]];
 
-//触发随机事件
-async function triggerRandomEvent(){
-    const candidates=getCandidateEvents(gameState.age);
-    if(candidates.length===0) return;
-    const evt=candidates[Utils.randInt(0,candidates.length-1)];
-    gameState.crisisCount++;
-    let usableOpts=evt.options.filter(opt=>checkOptionCondition(opt.condition,gameState));
-    if(usableOpts.length===0) return;
+            updateUI();
+            renderGridMatrix();
+        }
 
-    return new Promise(resolve=>{
-        let optHtml=usableOpts.map((opt,idx)=>`
-            <button class="option-btn" data-idx="${idx}">${opt.text}</button>
-        `).join("");
-        openModal(`
-            <h3>📌${evt.title}</h3>
-            <p>${evt.desc}</p>
-            <div>${optHtml}</div>
-        `);
-        const btns=modalBox.querySelectorAll(".option-btn");
-        btns.forEach(btn=>{
-            btn.onclick=async ()=>{
-                const selIdx=Number(btn.dataset.idx);
-                const selOpt=usableOpts[selIdx];
-                applyEffect(selOpt.effect);
-                closeModal();
+        function isLeapYear(year) {
+            return (year % 4 === 0 && year % 100 !== 0) || (year % 400 === 0);
+        }
 
-                if(selOpt.moodTag==="sad"){
-                    gameState.meteorCount++;
-                    openModal(`
-                        <p>系统检测数据剧烈波动，你的心里很沉重。</p>
-                        <p>要不要去看一场流星雨舒缓心情？</p>
-                        <div class="modal-footer">
-                            <button id="meteorYes">好的，看一看流星</button>
-                            <button id="meteorNo">不需要，继续前行</button>
-                        </div>
-                    `);
-                    document.getElementById("meteorYes").onclick=()=>{
-                        closeModal();
-                        showMeteorShower();
-                        gameState.san=Utils.clamp(gameState.san+15,0,100);
-                        setTimeout(()=>closeEffect(),3500);
-                        resolve();
+        // ===== 3. 渲染 365/366 天网格 =====
+        function renderGridMatrix() {
+            const matrix = document.getElementById('grid-matrix');
+            matrix.innerHTML = '';
+            document.getElementById('days-remaining').innerText = player.daysRemaining;
+            document.getElementById('birth-year-display').innerText = player.birthYear + player.age;
+
+            for (let i = 1; i <= player.daysTotal; i++) {
+                const cell = document.createElement('div');
+                cell.className = 'excel-cell border border-slate-200 bg-white hover:border-emerald-500 flex flex-col items-center justify-center text-[10px] text-slate-400 cursor-pointer rounded-sm shadow-xs transition';
+                cell.dataset.index = i;
+                cell.onclick = () => clickCell(i, cell);
+                matrix.appendChild(cell);
+            }
+        }
+
+        // ===== 4. 点击单个格子 / 命运骰子逻辑 =====
+        function clickCell(index, cellElem) {
+            if (cellElem.classList.contains('bg-slate-200')) return; // 已消去
+
+            player.daysRemaining--;
+            player.gridClickedCount++;
+            document.getElementById('days-remaining').innerText = player.daysRemaining;
+
+            // 转化为真实公历月日 (1月1日 - 12月31日)
+            const dateStr = dayToDateStr(index, player.daysTotal);
+            const term = solarTerms[dateStr.monthDay];
+
+            // 动画与变灰
+            cellElem.classList.add('bg-slate-200', 'text-slate-500', 'lit');
+            cellElem.classList.remove('bg-white');
+
+            if (term) {
+                cellElem.innerHTML = `<span class="text-[9px] font-bold text-emerald-700">${term}</span>`;
+                showToast(`🎉 迎来节气/节日: ${term}`);
+                confetti({ particleCount: 15, spread: 40, origin: { y: 0.8 } });
+            } else {
+                cellElem.innerText = dateStr.display;
+            }
+
+            // 10% 概率触发重要抉择事件，20% 概率触发日常轻量 Toast 琐事
+            const rand = Math.random();
+            if (rand < 0.10) {
+                triggerMajorEvent();
+            } else if (rand < 0.30) {
+                triggerMinorEvent();
+            }
+
+            // 检查跨岁或死亡
+            checkAgeOrEnd();
+        }
+
+        // 命运骰子 🎲 批量/跳跃点击
+        function rollDice() {
+            const btn = document.getElementById('btn-dice');
+            btn.disabled = true;
+            const steps = Math.floor(Math.random() * 6) + 1;
+            showToast(`🎲 命运骰子摇出了 ${steps} 步！`);
+
+            let count = 0;
+            const interval = setInterval(() => {
+                // 寻找未点亮的格子
+                const unlitCells = document.querySelectorAll('.excel-cell:not(.bg-slate-200)');
+                if (unlitCells.length > 0 && count < steps) {
+                    const targetCell = unlitCells[Math.floor(Math.random() * unlitCells.length)];
+                    const idx = parseInt(targetCell.dataset.index);
+                    clickCell(idx, targetCell);
+                    count++;
+                } else {
+                    clearInterval(interval);
+                    btn.disabled = false;
+                }
+            }, 300); // 慢速流光跳跃
+        }
+
+        function dayToDateStr(dayIndex, totalDays) {
+            let month = Math.ceil(dayIndex / 31);
+            let day = dayIndex % 31 || 31;
+            return { display: `${month}月${day}日`, monthDay: `${month}-${day}` };
+        }
+
+        // ===== 5. 事件库与弹窗分流系统 =====
+        
+        // 日常轻量琐事（不强弹窗打断）
+        function triggerMinorEvent() {
+            const minorEvents = [
+                { text: '今天早上上课/上班迟到被批评了', san: -2 },
+                { text: '在路边捡到了 10 块钱现金', cash: 10, san: +2 },
+                { text: '深夜熬夜刷手机，感觉头昏脑涨', hp: -3 },
+                { text: '和朋友聚餐吃了一顿热气腾腾的火锅', san: +5, cash: -150 }
+            ];
+            const ev = minorEvents[Math.floor(Math.random() * minorEvents.length)];
+            if (ev.san) player.san = Math.min(100, Math.max(0, player.san + ev.san));
+            if (ev.hp) player.hp = Math.min(100, Math.max(0, player.hp + ev.hp));
+            if (ev.cash) player.cash += ev.cash;
+
+            showToast(`【日常】${ev.text}`);
+            updateUI();
+        }
+
+        // 重大现实抉择事件库
+        function triggerMajorEvent() {
+            player.eventTriggeredCount++;
+            const modal = document.getElementById('modal-event');
+            const title = document.getElementById('event-title');
+            const desc = document.getElementById('event-desc');
+            const optionsBox = document.getElementById('event-options');
+            optionsBox.innerHTML = '';
+
+            let ev = getEventByAge(player.age);
+
+            document.getElementById('event-stage-tag').innerText = `【${ev.stage}】`;
+            document.getElementById('event-age-tag').innerText = `${player.age} 岁`;
+            title.innerText = ev.title;
+            desc.innerText = ev.desc;
+
+            ev.options.forEach((opt) => {
+                const b = document.createElement('button');
+                b.className = 'w-full text-left p-2.5 rounded border border-slate-200 hover:border-emerald-500 hover:bg-emerald-50 text-xs transition flex justify-between items-center';
+                b.innerHTML = `<span>${opt.text}</span><span class="text-[10px] text-slate-400 font-mono">${opt.effectText}</span>`;
+                b.onclick = () => {
+                    opt.apply();
+                    modal.classList.add('hidden');
+                    updateUI();
+
+                    // 若为悲伤/负面事件，触发治愈系流星雨
+                    if (opt.isSad) {
+                        triggerHealCanvas(opt.sadQuote);
                     }
-                    document.getElementById("meteorNo").onclick=()=>{
-                        closeModal();
-                        resolve();
-                    }
-                }else if(selOpt.moodTag==="happy"){
-                    showFireworks();
-                    setTimeout(()=>closeEffect(),2400);
-                    resolve();
-                }else{
-                    resolve();
+                };
+                optionsBox.appendChild(b);
+            });
+
+            modal.classList.remove('hidden');
+        }
+
+        // 年龄阶段重大事件列表
+        function getEventByAge(age) {
+            if (age <= 6) {
+                return {
+                    stage: '阶段一：童年启蒙期',
+                    title: '天价早教班抉择',
+                    desc: '父母讨论是否报每年 3 万元的精英早教班，这会显著消耗家庭积蓄。',
+                    options: [
+                        { text: '咬牙报早教班', effectText: '现金 -3万, 智力+10', apply: () => { player.cash -= 30000; player.int += 10; } },
+                        { text: '享受无忧快乐童年', effectText: '快乐 +10', apply: () => { player.san += 10; } }
+                    ]
+                };
+            } else if (age <= 17) {
+                return {
+                    stage: '阶段二：中考分流与高考',
+                    title: '中考普职分流风暴',
+                    desc: '中考面临分流压力，成绩处于普高录取线边缘。',
+                    options: [
+                        { text: '花高价读民办私立高中', effectText: '现金 -5万, 声望+10', apply: () => { player.cash -= 50000; player.pts += 10; } },
+                        { text: '选择职业技术学校', effectText: '提前接触社会, 快乐-10', isSad: true, sadQuote: '即便命运分流，只要向前，人生终有出口。', apply: () => { player.san -= 10; } }
+                    ]
+                };
+            } else if (age <= 35) {
+                return {
+                    stage: '阶段三：职场与成家立业',
+                    title: '互联网大厂 996 抉择',
+                    desc: '部门主管暗示全员无偿加班，加班可获得更高晋升机会，但会损害健康。',
+                    options: [
+                        { text: '内卷到底，选择加班', effectText: '薪资+20%, 健康-15', isSad: true, sadQuote: '深夜打卡离开大楼，繁星正温柔拥抱每一个拼搏的人。', apply: () => { player.cash += 20000; player.hp -= 15; } },
+                        { text: '准时下班，拒绝内卷', effectText: '健康+5, 声望-10', apply: () => { player.hp += 5; player.pts -= 10; } }
+                    ]
+                };
+            } else {
+                return {
+                    stage: '阶段四：中年危机与家庭重担',
+                    title: '35岁裁员黑天鹅与房贷',
+                    desc: '遭遇公司优化，面临裁员。房贷与家庭开销考验着现金流。',
+                    options: [
+                        { text: '拿 N+1 赔偿降薪跳槽', effectText: '现金+5万, 快乐-15', isSad: true, sadQuote: '挫折只是生命中的插曲，休整一下，明天太阳照常升起。', apply: () => { player.cash += 50000; player.san -= 15; } },
+                        { text: '尝试创业/开副业', effectText: '风险极高, 现金-10万', apply: () => { player.cash -= 100000; } }
+                    ]
+                };
+            }
+        }
+
+        // ===== 6. 治愈系 Canvas 流星雨全屏特效 =====
+        function triggerHealCanvas(quote) {
+            const container = document.getElementById('heal-canvas-container');
+            if (quote) document.getElementById('heal-quote').innerText = `“${quote}”`;
+            container.classList.remove('hidden');
+
+            const canvas = document.getElementById('star-canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+
+            // 绘制星星与流星
+            let stars = Array.from({ length: 150 }, () => ({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                r: Math.random() * 1.5
+            }));
+
+            function draw() {
+                ctx.fillStyle = 'rgba(10, 15, 30, 0.3)';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                ctx.fillStyle = '#ffffff';
+                stars.forEach(s => {
+                    ctx.beginPath();
+                    ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+                    ctx.fill();
+                });
+                if (Math.random() < 0.1) {
+                    ctx.strokeStyle = '#38bdf8';
+                    ctx.lineWidth = 2;
+                    ctx.beginPath();
+                    let sx = Math.random() * canvas.width;
+                    ctx.moveTo(sx, 0);
+                    ctx.lineTo(sx - 200, 200);
+                    ctx.stroke();
+                }
+                if (!container.classList.contains('hidden')) requestAnimationFrame(draw);
+            }
+            draw();
+        }
+
+        function closeHealCanvas() {
+            document.getElementById('heal-canvas-container').classList.add('hidden');
+            player.san = Math.min(100, player.san + 15); // 治愈恢复快乐值
+            updateUI();
+        }
+
+        // ===== 7. 老板键 Boss Key 逻辑 =====
+        function toggleBossKey() {
+            isBossKeyActive = !isBossKeyActive;
+            const overlay = document.getElementById('boss-key-overlay');
+            if (isBossKeyActive) overlay.classList.remove('hidden');
+            else overlay.classList.add('hidden');
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') toggleBossKey();
+        });
+
+        // ===== 8. UI 更新与终局判定 =====
+        function updateUI() {
+            document.getElementById('val-cash').innerText = `￥ ${player.cash.toLocaleString()}`;
+            document.getElementById('val-hp').innerText = `${Math.max(0, player.hp)}/100`;
+            document.getElementById('bar-hp').style.width = `${Math.max(0, player.hp)}%`;
+
+            document.getElementById('val-san').innerText = `${Math.max(0, player.san)}%`;
+            document.getElementById('bar-san').style.width = `${Math.max(0, player.san)}%`;
+
+            document.getElementById('val-pts').innerText = `${player.pts} PTS`;
+            document.getElementById('val-int').innerText = player.int;
+            document.getElementById('val-phy').innerText = player.phy;
+
+            document.getElementById('current-age-badge').innerText = `${player.age} 岁`;
+            document.getElementById('info-birth').innerText = `出生地: ${player.location}`;
+            document.getElementById('info-bg').innerText = `家庭: ${player.background}`;
+            document.getElementById('info-traits').innerText = `天赋: ${player.traits.join(', ')}`;
+        }
+
+        function showToast(text) {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = 'bg-slate-800/90 text-white text-xs px-3 py-1.5 rounded shadow-lg animate-bounce';
+            toast.innerText = text;
+            container.appendChild(toast);
+            setTimeout(() => toast.remove(), 3000);
+        }
+
+        function checkAgeOrEnd() {
+            // HP 归零提前结束或年龄达到 80 岁
+            if (player.hp <= 0) {
+                showReport("英年早逝 (健康度归零)");
+                return;
+            }
+
+            if (player.daysRemaining <= 0) {
+                player.age++;
+                if (player.age >= 80) {
+                    showReport("寿终正寝 (80岁圆满终局)");
+                } else {
+                    player.daysTotal = isLeapYear(player.birthYear + player.age) ? 366 : 365;
+                    player.daysRemaining = player.daysTotal;
+                    showToast(`🎂 祝贺你满 ${player.age} 岁了！新的一年开启。`);
+                    renderGridMatrix();
+                    updateUI();
                 }
             }
-        })
-    })
-}
-
-//执行属性变更
-function applyEffect(effectObj){
-    for(let key in effectObj){
-        let val=effectObj[key];
-        if(key==="cash"){
-            if(val>0 && val<1){
-                gameState.cash *= (1+val);
-            }else if(val<0 && val>-1){
-                gameState.cash *= (1+val);
-            }else{
-                gameState.cash += val;
-            }
-        }else{
-            gameState[key]= (gameState[key]||0)+val;
         }
-    }
-    gameState.hp=Utils.clamp(gameState.hp,0,100);
-    gameState.san=Utils.clamp(gameState.san,0,100);
-    gameState.pts=Utils.clamp(gameState.pts,0,200);
-    gameState.fam=Utils.clamp(gameState.fam,0,200);
-    gameState.int=Utils.clamp(gameState.int,0,100);
-}
 
-//跨年判断
-function checkYearChange(){
-    if(gameState.dayLeft<=0){
-        gameState.age+=1;
-        initYearGrid();
-    }
-}
-
-//游戏结束判定
-function checkGameOver(){
-    let endReason=null;
-    if(gameState.hp<=0) endReason="英年早逝，健康归零";
-    if(gameState.san<=0) endReason="精神崩溃结局";
-    if(gameState.age>=80) endReason="寿终正寝，走完一生";
-    if(gameState.cash<-200000) endReason="巨额负债破产结局";
-    if(!endReason) return;
-    openModal(`
-    <h2>📃终极一生资产与命运审计报告</h2>
-    <p>出身信息：${gameState.birthInfo.area}｜${gameState.birthInfo.family}</p>
-    <p>终局年龄：${gameState.age}岁｜结局原因：${endReason}</p>
-    <hr>
-    <p>累计经历重大危机：${gameState.crisisCount}次</p>
-    <p>触发流星雨治愈：${gameState.meteorCount}次</p>
-    <p>最终遗产资产：¥${Math.round(gameState.cash).toLocaleString()}</p>
-    <p>最终健康：${Math.round(gameState.hp)}｜快乐：${Math.round(gameState.san)}%</p>
-    <div class="modal-footer">
-        <button id="restartBtn">🔁重新投胎开启新人生</button>
-    </div>
-    `);
-    document.getElementById("restartBtn").onclick=()=>{
-        localStorage.removeItem("gridLifeSave");
-        closeModal();
-        gameState={
-            age:0,birthYear:2010,dayLeft:365,dayProcessed:new Set(),
-            cash:0,hp:100,san:100,pts:100,fam:100,int:50,
-            birthInfo:null,crisisCount:0,meteorCount:0
+        function showReport(reason) {
+            document.getElementById('modal-report').classList.remove('hidden');
+            document.getElementById('rep-age').innerText = `${player.age} 岁 (${reason})`;
+            document.getElementById('rep-days').innerText = (player.age * 365 + player.gridClickedCount).toLocaleString();
+            document.getElementById('rep-cash').innerText = `￥ ${player.cash.toLocaleString()}`;
+            document.getElementById('rep-events').innerText = player.eventTriggeredCount;
         }
-        showReincarnateModal();
-    }
-}
-
-//本地存档
-function saveGameLocal(){
-    const saveCopy = {...gameState};
-    saveCopy.dayProcessed = Array.from(saveCopy.dayProcessed);
-    localStorage.setItem("gridLifeSave",JSON.stringify(saveCopy));
-}
-function loadGameLocal(){
-    const s=localStorage.getItem("gridLifeSave");
-    if(s){
-        const obj = JSON.parse(s);
-        obj.dayProcessed = new Set(obj.dayProcessed||[]);
-        return obj;
-    }
-    return null;
-}
-
-//导出导入存档【修复绑定失效】
-document.querySelector("#exportSave").addEventListener("click",()=>{
-    const saveCopy = {...gameState};
-    saveCopy.dayProcessed = Array.from(saveCopy.dayProcessed);
-    const blob=new Blob([JSON.stringify(saveCopy,null,2)],{type:"application/json"});
-    const a=document.createElement("a");
-    a.href=URL.createObjectURL(blob);
-    a.download="格子人生存档.json";
-    a.click();
-})
-document.querySelector("#importSave").addEventListener("click",()=>document.getElementById("importFile").click());
-document.querySelector("#importFile").addEventListener("change",(ev)=>{
-    const f=ev.target.files[0];
-    const reader=new FileReader();
-    reader.onload=(e)=>{
-        const data=JSON.parse(e.target.result);
-        data.dayProcessed = new Set(data.dayProcessed||[]);
-        gameState=data;
-        initYearGrid();
-        renderStatUI();
-    }
-    reader.readAsText(f);
-})
-
-//Esc按键跳转到boss伪装页面
-document.addEventListener("keydown",(e)=>{
-    if(e.key==="Escape"){
-        window.location.href="./boss-screen.html";
-    }
-})
-
-//页面启动
-window.addEventListener('load',()=>{
-    const oldSave=loadGameLocal();
-    if(oldSave){
-        openModal(`<p>检测到本地存档，是否读取？</p>
-        <div class="modal-footer">
-        <button id="loadOld">读取存档</button>
-        <button id="newGame">开启新投胎</button>
-        </div>`);
-        document.getElementById("loadOld").onclick=()=>{
-            gameState=oldSave;
-            closeModal();
-            initYearGrid();
-            renderStatUI();
-        }
-        document.getElementById("newGame").onclick=()=>{
-            localStorage.removeItem("gridLifeSave");
-            closeModal();
-            showReincarnateModal();
-        }
-    }else{
-        showReincarnateModal();
-    }
-})
-</script>
+    </script>
 </body>
 </html>
