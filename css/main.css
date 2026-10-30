@@ -1,0 +1,75 @@
+*{box-sizing:border-box;margin:0;padding:0;font-family: "Microsoft Yahei",sans-serif;}
+body{background:#f3f3f3;overflow:hidden;}
+.excel-wrap{width:100vw;height:100vh;display:flex;flex-direction:column;}
+.excel-ribbon{
+    background:#217346;color:white;padding:6px 12px;display:flex;gap:16px;align-items:center;
+}
+.ribbon-tab{padding:4px 8px;cursor:pointer;opacity:0.8;}
+.ribbon-tab.active{opacity:1;font-weight:bold;}
+.ribbon-right{margin-left:auto;display:flex;gap:12px;align-items:center;font-size:13px;}
+#resetGameBtn{background:#fff;color:#222;border:none;padding:3px 8px;border-radius:3px;cursor:pointer;}
+.excel-formula-bar{
+    background:white;border-bottom:1px solid #ccc;padding:4px 10px;display:flex;gap:8px;align-items:center;
+}
+.excel-formula-bar input{flex:1;border:none;outline:none;}
+
+.game-container{
+    display:flex;flex:1;overflow:hidden;
+}
+.sidebar-panel{
+    width:280px;background:#ffffff;border-right:1px solid #ccc;padding:12px;overflow-y:auto;
+}
+.stat-item{margin:10px 0;font-size:13px;}
+.stat-item label{display:block;color:#444;margin-bottom:2px;}
+.bar-wrap{width:100%;height:12px;background:#ddd;border-radius:4px;overflow:hidden;margin:2px 0;}
+.bar{height:100%;transition:width 0.3s;}
+.bar.hp{background:#d93025;}
+.bar.san{background:#fbbc05;}
+.tip-box{background:#edf7ff;padding:8px;font-size:12px;margin:12px 0;border-radius:4px;line-height:1.5;}
+.save-btn-group{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px;}
+.save-btn-group button{padding:4px 6px;font-size:12px;cursor:pointer;}
+
+.grid-main{flex:1;padding:12px;display:flex;flex-direction:column;}
+.calendar-grid{
+    flex:1;
+    display:grid;
+    gap:3px;
+}
+.calendar-grid .day-cell{
+    border:1px solid #bbb;
+    background:#fff;
+    cursor:pointer;
+    display:flex;align-items:center;justify-content:center;
+    font-size:11px;
+    transition:0.2s;
+}
+.day-cell.clicked{background:#aaaaaa;color:#fff;cursor:default;}
+.day-cell.fire{animation:fireFlash 0.6s ease-out;}
+@keyframes fireFlash{
+    0%{background:#ffdd00;transform:scale(1.15;}
+    100%{transform:scale(1;}
+}
+.dice-area{margin-top:8px;text-align:center;}
+#diceBtn{padding:8px 20px;font-size:16px;cursor:pointer;}
+
+/*弹窗*/
+.modal-mask{
+    position:fixed;inset:0;background:rgba(0,0,0,0.6);display:flex;align-items:center;justify-content:center;z-index:99;
+}
+.modal-box{
+    width:min(90%,520px);background:#fff;padding:20px;border-radius:6px;max-height:85vh;overflow-y:auto;
+}
+.modal-box h3{margin-bottom:12px;}
+.modal-box p{margin:8px 0;line-height:1.6;}
+.option-btn{
+    display:block;width:100%;margin:6px 0;padding:10px;border:1px solid #ccc;background:#f8f8f8;cursor:pointer;text-align:left;border-radius:4px;
+}
+.option-btn:hover{background:#e8f4ff;}
+.modal-footer{margin-top:14px;text-align:right;}
+.modal-footer button{padding:6px 14px;cursor:pointer;}
+.hidden{display:none !important;}
+
+/*全屏特效画布*/
+.effect-canvas{
+    position:fixed;inset:0;z-index:100;background:#000;
+}
