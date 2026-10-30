@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>人生财务与风险评估表_FY2026.xlsx - Microsoft Excel (3D多边形星球版)</title>
+    <title>人生财务与风险评估表_FY2026.xlsx - Excel (3D紧密星球版)</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Three.js 3D 库 -->
@@ -51,17 +51,17 @@
             <div class="h-3 w-px bg-slate-300 mx-1"></div>
             <div class="flex items-center space-x-1 text-slate-500">
                 <i data-lucide="globe" class="w-3.5 h-3.5"></i>
-                <span>拖动鼠标/手指旋转 3D 白瓷人生星球，点击多边形格子推进时间</span>
+                <span>拖动鼠标/手指旋转紧密 3D 人生星球，按顺序点亮日历格子</span>
             </div>
         </div>
     </header>
 
     <!-- 公式栏 -->
     <div class="bg-white border-b border-slate-200 px-3 py-1 flex items-center space-x-2 text-xs text-slate-600 shrink-0">
-        <span class="font-mono bg-slate-100 px-2 py-0.5 rounded border text-slate-500 font-semibold">POLY_GLOBE_3D</span>
+        <span class="font-mono bg-slate-100 px-2 py-0.5 rounded border text-slate-500 font-semibold">TIGHT_HEX_3D</span>
         <span class="italic font-serif text-slate-400">fx</span>
         <div class="h-4 w-px bg-slate-200"></div>
-        <span class="font-mono text-slate-700">=SUM(EXCEL_WHITE_GLOBE_365) /* 紧密拼接多边形人生星球 */</span>
+        <span class="font-mono text-slate-700">=SUM(EXCEL_TIGHT_GLOBE_365) /* 无缝紧密六边形日历星球 */</span>
     </div>
 
     <!-- 主界面：侧边栏 + 纯白 Excel 3D 星球视口 -->
@@ -112,7 +112,7 @@
                         </div>
                     </div>
 
-                    <!-- 次要隐藏/辅助数值 -->
+                    <!-- 次要数值 -->
                     <div class="grid grid-cols-2 gap-1.5 text-[10px] text-slate-500 pt-1 border-t border-slate-200">
                         <div>智力 (INT): <span id="val-int" class="font-bold text-slate-700">50</span></div>
                         <div>外貌 (PHY): <span id="val-phy" class="font-bold text-slate-700">50</span></div>
@@ -134,9 +134,9 @@
             </div>
 
             <div class="text-[10px] text-slate-400 space-y-1">
-                <p>💡 3D星球操作提示:</p>
-                <p>1. 拖动鼠标或手指旋转白色多边形星球。</p>
-                <p>2. 点击紧密拼接的五边形/六边形推进天数。</p>
+                <p>💡 操作提示:</p>
+                <p>1. 拖动鼠标/手指 360 度无死角旋转星球。</p>
+                <p>2. 第1次点击为 1月1日，按顺序向后推移。</p>
             </div>
         </aside>
 
@@ -146,7 +146,7 @@
             <!-- 顶部轻量日常消息 Toast 提示框 -->
             <div id="toast-container" class="absolute top-3 right-6 z-20 pointer-events-none space-y-2"></div>
 
-            <!-- 星球状态悬浮栏 (纯白 Excel 风格) -->
+            <!-- 星球状态悬浮栏 -->
             <div class="absolute top-3 left-4 z-10 bg-white/95 backdrop-blur border border-slate-300 text-slate-800 px-4 py-2 rounded-md text-xs flex items-center space-x-4 shadow-sm">
                 <div>年度星球 (<span id="birth-year-display">2026</span>年)</div>
                 <div class="text-slate-300">|</div>
@@ -174,15 +174,16 @@
             <div class="bg-[#107c41] text-white px-4 py-3 flex justify-between items-center">
                 <h3 class="font-bold flex items-center space-x-2">
                     <i data-lucide="globe" class="w-4 h-4"></i>
-                    <span>《格子人生：白瓷多边形星球》- 开启人生</span>
+                    <span>《格子人生：紧密无缝星球版》- 开启人生</span>
                 </h3>
             </div>
             <div class="p-5 text-xs text-slate-600 space-y-3">
                 <p class="font-semibold text-slate-800 text-sm">欢迎来到 3D 模拟人生宇宙！</p>
-                <p>界面采用纯白 Excel 规则表格背景，配合<strong>细微灰色边框的紧密多边形 3D 球体</strong>。</p>
+                <p>已全新重构 3D 多边形星球：<strong>格子尺寸加大、紧密无缝拼接，且严格按点击顺序显示公历日历/节气</strong>。</p>
                 <ul class="list-disc list-inside space-y-1 bg-slate-50 p-2.5 rounded border border-slate-200">
                     <li>全角度手势/鼠标自由拖拽旋转。</li>
-                    <li>紧密无缝多边形网格，点击变灰色已记账。</li>
+                    <li>第 1 次点击必定为 1月1日 元旦。</li>
+                    <li>点击后单元格变灰并永久刻印真实日历。</li>
                     <li>按 <strong>Esc</strong> 键一键伪装摸鱼！</li>
                 </ul>
             </div>
@@ -253,7 +254,7 @@
         <div class="bg-white rounded-lg shadow-2xl max-w-xl w-full border border-slate-300 overflow-hidden font-mono text-xs">
             <div class="bg-[#107c41] text-white p-4 text-center">
                 <h2 class="text-base font-bold">2026 终极人生档案与资产清算审计报告</h2>
-                <p class="text-[11px] opacity-80 mt-1">—— 3D 多边形星球终局 ——</p>
+                <p class="text-[11px] opacity-80 mt-1">—— 3D 无缝紧密星球终局 ——</p>
             </div>
             <div class="p-6 space-y-4 text-slate-700">
                 <div class="bg-slate-50 p-3 rounded border border-slate-200">
@@ -275,7 +276,7 @@
         </div>
     </div>
 
-    <!-- 3D 多边形星球与游戏核心逻辑 JS -->
+    <!-- 3D 紧密拼接多边形星球与游戏核心逻辑 JS -->
     <script>
         lucide.createIcons();
 
@@ -284,6 +285,7 @@
             birthYear: 2026,
             daysTotal: 365,
             daysRemaining: 365,
+            clickSequence: 0, // 点击顺序计数器，用于按顺序计算 1月1日，1月2日...
             cash: 0,
             hp: 100,
             san: 100,
@@ -330,6 +332,7 @@
             player.birthYear = 2026 + Math.floor(Math.random() * 15);
             player.daysTotal = isLeapYear(player.birthYear) ? 366 : 365;
             player.daysRemaining = player.daysTotal;
+            player.clickSequence = 0;
 
             const locs = ['北京 (一线城市)', '上海 (一线城市)', '杭州 (新一线)', '成都 (二线城市)', '某三线县城', '偏远乡村'];
             player.location = locs[Math.floor(Math.random() * locs.length)];
@@ -349,32 +352,62 @@
             player.traits = [traitsList[Math.floor(Math.random() * traitsList.length)]];
 
             updateUI();
-            init3DPolyGlobe();
+            init3DTightGlobe();
         }
 
         function isLeapYear(year) {
             return (year % 4 === 0 && year % 100 !== 0) || (year % 400 === 0);
         }
 
-        // ===== 构建纯白多边形足球多面体星球 =====
-        function init3DPolyGlobe() {
+        // ===== 动态创建 Canvas 纹理贴图（处理文字与颜色的 3D 渲染） =====
+        function createTileTexture(text, isLit, isFestival) {
+            const canvas = document.createElement('canvas');
+            canvas.width = 256;
+            canvas.height = 256;
+            const ctx = canvas.getContext('2d');
+
+            // 底色：未点击为白色，点击后为浅灰色
+            ctx.fillStyle = isLit ? '#94a3b8' : '#ffffff';
+            ctx.fillRect(0, 0, 256, 256);
+
+            // 外边框线
+            ctx.strokeStyle = '#cbd5e1';
+            ctx.lineWidth = 12;
+            ctx.strokeRect(6, 6, 244, 244);
+
+            // 若已点击，绘制日期文字或节气
+            if (isLit && text) {
+                ctx.fillStyle = isFestival ? '#15803d' : '#334155';
+                ctx.font = isFestival ? 'bold 42px sans-serif' : 'bold 36px sans-serif';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(text, 128, 128);
+            }
+
+            const texture = new THREE.CanvasTexture(canvas);
+            texture.needsUpdate = true;
+            return texture;
+        }
+
+        // ===== 构建无缝紧密拼接的多边形日历星球 =====
+        function init3DTightGlobe() {
             const container = document.getElementById('webgl-output');
             container.innerHTML = '';
 
             scene = new THREE.Scene();
             camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 1000);
-            camera.position.z = 16;
+            camera.position.z = 15;
 
             renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
             renderer.setSize(container.clientWidth, container.clientHeight);
             renderer.setPixelRatio(window.devicePixelRatio);
             container.appendChild(renderer.domElement);
 
-            // 柔和打光
-            const ambientLight = new THREE.AmbientLight(0xffffff, 0.9);
+            // 全局柔和照明
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.95);
             scene.add(ambientLight);
             
-            const dirLight = new THREE.DirectionalLight(0xffffff, 0.7);
+            const dirLight = new THREE.DirectionalLight(0xffffff, 0.6);
             dirLight.position.set(10, 20, 15);
             scene.add(dirLight);
 
@@ -382,38 +415,32 @@
             scene.add(globeGroup);
 
             polyMeshes = [];
-            const radius = 4.5;
+            const radius = 4.8;
             const totalDays = player.daysTotal;
 
-            // 使用平铺多面体生成球面网格
-            const sphereGeom = new THREE.IcosahedronGeometry(radius, 3);
-            const posAttr = sphereGeom.attributes.position;
-            const indexAttr = sphereGeom.index;
-            const faceCount = indexAttr ? indexAttr.count / 3 : posAttr.count / 3;
+            // 黄金分布 + 紧密无缝多边形排布算法
+            const phiRatio = (1 + Math.sqrt(5)) / 2;
 
-            for (let i = 0; i < Math.min(totalDays, faceCount); i++) {
-                let i1 = indexAttr ? indexAttr.getX(i * 3) : i * 3;
-                let i2 = indexAttr ? indexAttr.getX(i * 3 + 1) : i * 3 + 1;
-                let i3 = indexAttr ? indexAttr.getX(i * 3 + 2) : i * 3 + 2;
+            for (let i = 0; i < totalDays; i++) {
+                const theta = 2 * Math.PI * i / phiRatio;
+                const phi = Math.acos(1 - 2 * (i + 0.5) / totalDays);
 
-                const v1 = new THREE.Vector3().fromBufferAttribute(posAttr, i1);
-                const v2 = new THREE.Vector3().fromBufferAttribute(posAttr, i2);
-                const v3 = new THREE.Vector3().fromBufferAttribute(posAttr, i3);
+                const x = radius * Math.sin(phi) * Math.cos(theta);
+                const y = radius * Math.cos(phi);
+                const z = radius * Math.sin(phi) * Math.sin(theta);
 
-                const center = new THREE.Vector3().addVectors(v1, v2).add(v3).divideScalar(3);
-
-                // 创建六边形/多边形面板形状
+                // 增大六边形尺寸，实现无缝紧密拼接
                 const shape = new THREE.Shape();
-                shape.moveTo(0, 0.32);
-                shape.lineTo(0.28, 0.16);
-                shape.lineTo(0.28, -0.16);
-                shape.lineTo(0, -0.32);
-                shape.lineTo(-0.28, -0.16);
-                shape.lineTo(-0.28, 0.16);
+                shape.moveTo(0, 0.52);
+                shape.lineTo(0.45, 0.26);
+                shape.lineTo(0.45, -0.26);
+                shape.lineTo(0, -0.52);
+                shape.lineTo(-0.45, -0.26);
+                shape.lineTo(-0.45, 0.26);
                 shape.closePath();
 
                 const polyGeom = new THREE.ExtrudeGeometry(shape, {
-                    depth: 0.12,
+                    depth: 0.1,
                     bevelEnabled: true,
                     bevelSegments: 2,
                     steps: 1,
@@ -421,26 +448,20 @@
                     bevelThickness: 0.02
                 });
 
+                // 初始纹理贴图（空白纯白底）
+                const initialTexture = createTileTexture('', false, false);
                 const polyMat = new THREE.MeshStandardMaterial({
-                    color: 0xffffff,
-                    roughness: 0.2,
+                    map: initialTexture,
+                    roughness: 0.3,
                     metalness: 0.05
                 });
 
                 const polyMesh = new THREE.Mesh(polyGeom, polyMat);
-                polyMesh.position.copy(center);
-                polyMesh.lookAt(center.clone().multiplyScalar(2));
-
-                // 极细灰色缝隙边框
-                const edges = new THREE.EdgesGeometry(polyGeom);
-                const lineMat = new THREE.LineBasicMaterial({ color: 0xcbd5e1, linewidth: 1 });
-                const line = new THREE.LineSegments(edges, lineMat);
-                polyMesh.add(line);
+                polyMesh.position.set(x, y, z);
+                polyMesh.lookAt(x * 2, y * 2, z * 2); // 贴合球面朝外
 
                 polyMesh.userData = {
-                    dayIndex: i + 1,
-                    lit: false,
-                    dateStr: dayToDateStr(i + 1, totalDays)
+                    lit: false
                 };
 
                 globeGroup.add(polyMesh);
@@ -507,24 +528,30 @@
             }
         }
 
+        // 点亮格子并按顺序计算公历日历
         function lightUpCell(mesh) {
             mesh.userData.lit = true;
             player.daysRemaining--;
             player.gridClickedCount++;
+            player.clickSequence++; // 递增当前的点击序号 (第1次点击、第2次点击...)
+
             document.getElementById('days-remaining').innerText = player.daysRemaining;
 
-            const dateStr = mesh.userData.dateStr;
-            const term = solarTerms[dateStr.monthDay];
+            // 根据点击顺序计算真实公历日期（第1次点击对应 1月1日）
+            const dateObj = daySequenceToDateStr(player.clickSequence);
+            const term = solarTerms[dateObj.monthDay];
+            const displayLabel = term ? term : dateObj.display;
 
-            // 点过后变成灰色已记账
-            mesh.material.color.setHex(0x94a3b8);
-            mesh.scale.set(0.95, 0.95, 0.6);
+            // 重新绘制并应用带日历/节气文字的灰底贴图
+            const newTexture = createTileTexture(displayLabel, true, !!term);
+            mesh.material.map = newTexture;
+            mesh.material.needsUpdate = true;
 
             if (term) {
                 showToast(`🎉 迎来节气/节日: ${term}`);
                 confetti({ particleCount: 20, spread: 50, origin: { y: 0.7 } });
             } else {
-                showToast(`📅 已记录: ${dateStr.display}`);
+                showToast(`📅 已记录: ${dateObj.display}`);
             }
 
             const rand = Math.random();
@@ -537,6 +564,7 @@
             checkAgeOrEnd();
         }
 
+        // 命运骰子跳跃
         function rollDice() {
             const btn = document.getElementById('btn-dice');
             btn.disabled = true;
@@ -561,9 +589,11 @@
             }, 350);
         }
 
-        function dayToDateStr(dayIndex, totalDays) {
-            let month = Math.ceil(dayIndex / 31);
-            let day = dayIndex % 31 || 31;
+        // 顺序序号转化为真实公历 (1月1日 - 12月31日)
+        function daySequenceToDateStr(seq) {
+            let month = Math.ceil(seq / 31);
+            let day = seq % 31 || 31;
+            if (month > 12) month = 12;
             return { display: `${month}月${day}日`, monthDay: `${month}-${day}` };
         }
 
@@ -745,10 +775,11 @@
                 } else {
                     player.daysTotal = isLeapYear(player.birthYear + player.age) ? 366 : 365;
                     player.daysRemaining = player.daysTotal;
-                    showToast(`🎂 祝贺你满 ${player.age} 岁了！新的一年星球重启。`);
+                    player.clickSequence = 0; // 重置点击序号
+                    showToast(`🎂 祝贺你满 ${player.age} 岁了！新的一年星球重置。`);
                     document.getElementById('birth-year-display').innerText = player.birthYear + player.age;
                     
-                    init3DPolyGlobe();
+                    init3DTightGlobe();
                     updateUI();
                 }
             }
