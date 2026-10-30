@@ -425,6 +425,14 @@
                 cellElem.innerText = dateStr.display;
             }
 
+            else if (rand < 0.30) {
+                const minorEv = minorEventPool[Math.floor(Math.random() * minorEventPool.length)];
+                if (minorEv.san) player.san = Math.min(100, Math.max(0, player.san + minorEv.san));
+                if (minorEv.hp) player.hp = Math.min(100, Math.max(0, player.hp + minorEv.hp));
+                if (minorEv.cash) player.cash += minorEv.cash;
+                showToast(`【日常】${minorEv.text}`);
+                updateUI();
+            }
             // 10% 概率触发重要抉择事件，20% 概率触发日常轻量 Toast 琐事
             const rand = Math.random();
             if (rand < 0.10) {
