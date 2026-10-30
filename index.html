@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>人生财务与风险评估表_FY2026.xlsx - Microsoft Excel (3D星球版)</title>
+    <title>人生财务与风险评估表_FY2026.xlsx - Microsoft Excel (3D多边形星球版)</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Three.js 3D 库 -->
@@ -15,16 +15,23 @@
     <style>
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        /* 纯白 Excel 背景表格背景纹理 */
+        .excel-bg-grid {
+            background-color: #ffffff;
+            background-image: linear-gradient(#e5e7eb 1px, transparent 1px),
+                              linear-gradient(90deg, #e5e7eb 1px, transparent 1px);
+            background-size: 24px 24px;
+        }
     </style>
 </head>
-<body class="bg-slate-100 text-slate-800 font-sans h-screen flex flex-col overflow-hidden select-none">
+<body class="bg-white text-slate-800 font-sans h-screen flex flex-col overflow-hidden select-none">
 
     <!-- 顶部 Excel 伪装标题栏与工具栏 -->
-    <header class="bg-[#107c41] text-white text-xs flex flex-col shrink-0">
+    <header class="bg-[#107c41] text-white text-xs flex flex-col shrink-0 border-b border-emerald-800">
         <div class="flex items-center justify-between px-3 py-1.5 border-b border-emerald-700">
             <div class="flex items-center space-x-2">
                 <i data-lucide="file-spreadsheet" class="w-4 h-4"></i>
-                <span class="font-semibold tracking-wide">人生财务与风险评估表_FY2026.xlsx - Excel (3D星球版)</span>
+                <span class="font-semibold tracking-wide">人生财务与风险评估表_FY2026.xlsx - Excel</span>
                 <span class="bg-emerald-800 text-emerald-200 text-[10px] px-1.5 py-0.5 rounded">自动保存 已开启</span>
             </div>
             <div class="flex items-center space-x-3">
@@ -44,20 +51,20 @@
             <div class="h-3 w-px bg-slate-300 mx-1"></div>
             <div class="flex items-center space-x-1 text-slate-500">
                 <i data-lucide="globe" class="w-3.5 h-3.5"></i>
-                <span>拖动鼠标/手指旋转 3D 人生日历球，点击格子推进时间</span>
+                <span>拖动鼠标/手指旋转 3D 白瓷人生星球，点击多边形格子推进时间</span>
             </div>
         </div>
     </header>
 
     <!-- 公式栏 -->
     <div class="bg-white border-b border-slate-200 px-3 py-1 flex items-center space-x-2 text-xs text-slate-600 shrink-0">
-        <span class="font-mono bg-slate-100 px-2 py-0.5 rounded border text-slate-500 font-semibold">SPHERE_GRID_3D</span>
+        <span class="font-mono bg-slate-100 px-2 py-0.5 rounded border text-slate-500 font-semibold">POLY_GLOBE_3D</span>
         <span class="italic font-serif text-slate-400">fx</span>
         <div class="h-4 w-px bg-slate-200"></div>
-        <span class="font-mono text-slate-700">=SUM(GLOBE_DAYS_365) /* 3D无缝紧密连接人生星球模型 */</span>
+        <span class="font-mono text-slate-700">=SUM(EXCEL_WHITE_GLOBE_365) /* 紧密拼接多边形人生星球 */</span>
     </div>
 
-    <!-- 主界面：侧边栏 + 3D 球体视口 -->
+    <!-- 主界面：侧边栏 + 纯白 Excel 3D 星球视口 -->
     <div class="flex-1 flex overflow-hidden">
         
         <!-- 左侧 8 维数据与属性监控面板 -->
@@ -127,33 +134,33 @@
             </div>
 
             <div class="text-[10px] text-slate-400 space-y-1">
-                <p>💡 3D交互提示:</p>
-                <p>1. 鼠标按住拖动或手指滑动可旋转星球。</p>
-                <p>2. 点击球体上的网格切片推进人生天数。</p>
+                <p>💡 3D星球操作提示:</p>
+                <p>1. 拖动鼠标或手指旋转白色多边形星球。</p>
+                <p>2. 点击紧密拼接的五边形/六边形推进天数。</p>
             </div>
         </aside>
 
-        <!-- 右侧：3D 日历星球视口 -->
-        <main class="flex-1 bg-slate-900 flex flex-col overflow-hidden relative" id="canvas-container">
+        <!-- 右侧：纯白 Excel 3D 星球视口 -->
+        <main class="flex-1 excel-bg-grid flex flex-col overflow-hidden relative" id="canvas-container">
             
             <!-- 顶部轻量日常消息 Toast 提示框 -->
             <div id="toast-container" class="absolute top-3 right-6 z-20 pointer-events-none space-y-2"></div>
 
-            <!-- 星球状态悬浮栏 -->
-            <div class="absolute top-3 left-4 z-10 bg-slate-900/80 backdrop-blur border border-slate-700 text-white px-4 py-2 rounded-lg text-xs flex items-center space-x-4 shadow-xl">
+            <!-- 星球状态悬浮栏 (纯白 Excel 风格) -->
+            <div class="absolute top-3 left-4 z-10 bg-white/90 backdrop-blur border border-slate-300 text-slate-800 px-4 py-2 rounded-md text-xs flex items-center space-x-4 shadow-sm">
                 <div>年度星球 (<span id="birth-year-display">2026</span>年)</div>
-                <div class="text-slate-400">|</div>
-                <div>剩余天数：<strong id="days-remaining" class="text-emerald-400 font-mono text-sm">365</strong> 天</div>
+                <div class="text-slate-300">|</div>
+                <div>当年剩余天数：<strong id="days-remaining" class="text-emerald-600 font-mono text-sm">365</strong> 天</div>
             </div>
 
-            <!-- 3D 渲染画布容器 -->
+            <!-- 3D WebGL 渲染容器 -->
             <div id="webgl-output" class="w-full h-full cursor-grab active:cursor-grabbing"></div>
 
             <!-- 右下角悬浮：命运骰子 -->
             <div class="absolute bottom-5 right-6 z-10 flex items-center space-x-2">
-                <button id="btn-dice" onclick="rollDice()" class="bg-[#107c41] hover:bg-emerald-600 text-white px-4 py-2.5 rounded-full shadow-2xl flex items-center space-x-2 transition transform active:scale-95 font-semibold text-xs border border-emerald-400">
+                <button id="btn-dice" onclick="rollDice()" class="bg-[#107c41] hover:bg-emerald-700 text-white px-4 py-2.5 rounded-full shadow-lg flex items-center space-x-2 transition transform active:scale-95 font-semibold text-xs border border-emerald-500">
                     <i data-lucide="dices" class="w-4 h-4"></i>
-                    <span>星球命运骰子 🎲</span>
+                    <span>命运骰子 🎲</span>
                 </button>
             </div>
         </main>
@@ -161,27 +168,27 @@
 
     <!-- ===== 各种弹窗组件 ===== -->
 
-    <!-- 1. 开局投胎/游戏说明弹窗 -->
-    <div id="modal-start" class="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4">
+    <!-- 1. 开局投胎弹窗 -->
+    <div id="modal-start" class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
         <div class="bg-white rounded-lg shadow-2xl max-w-md w-full border border-slate-300 overflow-hidden">
             <div class="bg-[#107c41] text-white px-4 py-3 flex justify-between items-center">
                 <h3 class="font-bold flex items-center space-x-2">
                     <i data-lucide="globe" class="w-4 h-4"></i>
-                    <span>《格子人生：3D星球版》- 开启人生</span>
+                    <span>《格子人生：白瓷多边形星球》- 开启人生</span>
                 </h3>
             </div>
             <div class="p-5 text-xs text-slate-600 space-y-3">
                 <p class="font-semibold text-slate-800 text-sm">欢迎来到 3D 模拟人生宇宙！</p>
-                <p>这一版将全年 365/366 天无缝拼接为一个<strong>紧密相连的 3D 日历星球</strong>。</p>
+                <p>界面采用纯白 Excel 规则表格背景，配合<strong>细微灰色边框的紧密多边形 3D 球体</strong>。</p>
                 <ul class="list-disc list-inside space-y-1 bg-slate-50 p-2.5 rounded border border-slate-200">
-                    <li><strong>3D 旋转交互</strong>：手指或鼠标随时拖动旋转星球，全方位观察人生轨迹。</li>
-                    <li><strong>无缝紧密拼接</strong>：经纬网结构确保每个日子紧密相连，点亮时绽放粒子烟花。</li>
-                    <li><strong>摸鱼神器</strong>：随时按键盘 <strong>Esc</strong> 键一键切换为集团资产负债表！</li>
+                    <li>全角度手势/鼠标自由拖拽旋转。</li>
+                    <li>紧密无缝多边形网格，点击变灰色已记账。</li>
+                    <li>按 <strong>Esc</strong> 键一键伪装摸鱼！</li>
                 </ul>
             </div>
             <div class="bg-slate-50 px-4 py-3 border-t flex justify-end">
                 <button onclick="startLifeGame()" class="bg-[#107c41] hover:bg-emerald-700 text-white font-bold px-5 py-2 rounded text-xs transition">
-                    确认投胎，点亮星球 ►
+                    确认投胎，开启人生 ►
                 </button>
             </div>
         </div>
@@ -209,12 +216,12 @@
         <canvas id="star-canvas" class="absolute inset-0 w-full h-full"></canvas>
         <div class="relative z-10 text-center px-6 max-w-lg space-y-4 pointer-events-none">
             <div class="text-emerald-400 text-xs font-mono tracking-widest uppercase">── 系统情绪捕获与治愈 ──</div>
-            <p class="text-lg font-serif italic" id="heal-quote">“生活有时比宇宙公式还要复杂。停下来，夜空和群星一直都在。”</p>
-            <p class="text-xs text-slate-400 pt-6">点击任意位置返回人生星球...</p>
+            <p class="text-lg font-serif italic" id="heal-quote">“生活有时比 Excel 的公式还要复杂。停下来，夜空一直都在。”</p>
+            <p class="text-xs text-slate-400 pt-6">点击任意位置返回人生...</p>
         </div>
     </div>
 
-    <!-- 4. 老板键 Boss Key 纯静态伪装界面 -->
+    <!-- 4. 老板键 Boss Key 静态伪装界面 -->
     <div id="boss-key-overlay" class="fixed inset-0 bg-white z-[100] hidden flex-col overflow-auto text-slate-700 font-sans text-xs">
         <div class="bg-slate-100 p-2 border-b text-[11px] font-mono text-slate-500 flex justify-between">
             <span>2026集团财务预算与审计流水汇总表.xlsx [只读]</span>
@@ -246,13 +253,13 @@
         <div class="bg-white rounded-lg shadow-2xl max-w-xl w-full border border-slate-300 overflow-hidden font-mono text-xs">
             <div class="bg-[#107c41] text-white p-4 text-center">
                 <h2 class="text-base font-bold">2026 终极人生档案与资产清算审计报告</h2>
-                <p class="text-[11px] opacity-80 mt-1">—— 3D 星球终局回顾 ——</p>
+                <p class="text-[11px] opacity-80 mt-1">—— 3D 多边形星球终局 ——</p>
             </div>
             <div class="p-6 space-y-4 text-slate-700">
                 <div class="bg-slate-50 p-3 rounded border border-slate-200">
                     <p>【受审人】：<span id="rep-name" class="font-bold">张伟</span></p>
                     <p>【终局年龄】：<span id="rep-age" class="font-bold text-rose-600">80 岁</span></p>
-                    <p>【最终人生评级】：<span id="rep-rank" class="font-bold text-emerald-600">A+ (星际领航员一生)</span></p>
+                    <p>【最终人生评级】：<span id="rep-rank" class="font-bold text-emerald-600">A+ (平凡而伟大的一生)</span></p>
                 </div>
                 <div class="space-y-1">
                     <p>• 累计度过天数：<span id="rep-days">29,200</span> 天</p>
@@ -262,13 +269,13 @@
             </div>
             <div class="bg-slate-50 p-4 border-t flex justify-center">
                 <button onclick="location.reload()" class="bg-[#107c41] hover:bg-emerald-700 text-white font-bold px-6 py-2 rounded text-xs transition">
-                    重新投胎 (开启新星球)
+                    重新投胎 (开启新人生)
                 </button>
             </div>
         </div>
     </div>
 
-    <!-- 3D 游戏核心逻辑 JS 代码 -->
+    <!-- 3D 多边形星球与游戏核心逻辑 JS -->
     <script>
         lucide.createIcons();
 
@@ -294,9 +301,9 @@
 
         let isBossKeyActive = false;
 
-        // Three.js 核心全局变量
+        // Three.js 核心对象
         let scene, camera, renderer, globeGroup;
-        let cellMeshes = []; // 存储所有 365/366 个 3D 格子网格对象
+        let polyMeshes = [];
         let raycaster = new THREE.Raycaster();
         let mouse = new THREE.Vector2();
         let isDragging = false;
@@ -342,76 +349,111 @@
             player.traits = [traitsList[Math.floor(Math.random() * traitsList.length)]];
 
             updateUI();
-            init3DScene();
+            init3DPolyGlobe();
         }
 
         function isLeapYear(year) {
             return (year % 4 === 0 && year % 100 !== 0) || (year % 400 === 0);
         }
 
-        // ===== 初始化 3D 经纬网日历星球 =====
-        function init3DScene() {
+        // ===== 构建纯白多边形足球多面体 (截角二十面体) 星球 =====
+        function init3DPolyGlobe() {
             const container = document.getElementById('webgl-output');
             container.innerHTML = '';
 
             scene = new THREE.Scene();
             camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 1000);
-            camera.position.z = 18;
+            camera.position.z = 15;
 
             renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
             renderer.setSize(container.clientWidth, container.clientHeight);
             renderer.setPixelRatio(window.devicePixelRatio);
             container.appendChild(renderer.domElement);
 
-            // 灯光
-            const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
+            // 柔和打光 (突出白瓷立体感)
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.95);
             scene.add(ambientLight);
-            const pointLight = new THREE.PointLight(0xffffff, 1.5);
-            pointLight.position.set(20, 20, 20);
-            scene.add(pointLight);
+            
+            const dirLight = new THREE.DirectionalLight(0xffffff, 0.6);
+            dirLight.position.set(10, 20, 15);
+            scene.add(dirLight);
 
             globeGroup = new THREE.Group();
             scene.add(globeGroup);
 
-            cellMeshes = [];
-            const radius = 5.0;
+            polyMeshes = [];
+            const radius = 4.8;
             const totalDays = player.daysTotal;
 
-            // 黄金螺旋/球面经纬网均匀分布 365 天格子，确保无缝紧密相连
-            const phiRatio = (1 + Math.sqrt(5)) / 2; // 黄金分割比
+            // 截角二十面体 (Buckyball) 顶点分布原理 + 细极微缩
+            // 使用 SphereGeometry 的微细细分提取紧密多边形面
+            const sphereGeom = new THREE.IcosahedronGeometry(radius, 3); // 细化多边形切片
+            const posAttr = sphereGeom.attributes.position;
+            const indexAttr = sphereGeom.index;
 
-            for (let i = 0; i < totalDays; i++) {
-                // 球面均匀分布算法
-                const theta = 2 * Math.PI * i / phiRatio;
-                const phi = Math.acos(1 - 2 * (i + 0.5) / totalDays);
+            // 提取多边形面组
+            const faceCount = indexAttr ? indexAttr.count / 3 : posAttr.count / 3;
 
-                const x = radius * Math.sin(phi) * Math.cos(theta);
-                const y = radius * Math.cos(phi);
-                const z = radius * Math.sin(phi) * Math.sin(theta);
+            for (let i = 0; i < Math.min(totalDays, faceCount); i++) {
+                let i1 = indexAttr ? indexAttr.getX(i * 3) : i * 3;
+                let i2 = indexAttr ? indexAttr.getX(i * 3 + 1) : i * 3 + 1;
+                let i3 = indexAttr ? indexAttr.getX(i * 3 + 2) : i * 3 + 2;
 
-                // 每个格子使用紧密贴合的小平面几何体
-                const geom = new THREE.BoxGeometry(0.38, 0.38, 0.15);
-                const mat = new THREE.MeshStandardMaterial({
-                    color: 0xffffff,
-                    roughness: 0.3,
-                    metalness: 0.1
+                const v1 = new THREE.Vector3().fromBufferAttribute(posAttr, i1);
+                const v2 = new THREE.Vector3().fromBufferAttribute(posAttr, i2);
+                const v3 = new THREE.Vector3().fromBufferAttribute(posAttr, i3);
+
+                // 计算中心坐标
+                const center = new THREE.Vector3().addVectors(v1, v2).add(v3).divideScalar(3);
+
+                // 创建纯白六边形/多边形面板
+                const shape = new THREE.Shape();
+                shape.moveTo(0, 0.35);
+                shape.lineTo(0.3, 0.18);
+                shape.lineTo(0.3, -0.18);
+                shape.lineTo(0, -0.35);
+                shape.lineTo(-0.3, -0.18);
+                shape.lineTo(-0.3, 0.18);
+                shape.closePath();
+
+                const polyGeom = new THREE.ExtrudeGeometry(shape, {
+                    depth: 0.1,
+                    bevelEnabled: true,
+                    bevelSegments: 2,
+                    steps: 1,
+                    bevelSize: 0.02,
+                    bevelThickness: 0.02
                 });
 
-                const mesh = new THREE.Mesh(geom, mat);
-                mesh.position.set(x, y, z);
-                mesh.lookAt(0, 0, 0); // 朝向球心，完美贴合球面 curvature
+                // 纯白面料，极细灰色边缘
+                const polyMat = new THREE.MeshStandardMaterial({
+                    color: 0xfcfcfc, // 纯白瓷感
+                    roughness: 0.25,
+                    metalness: 0.05
+                });
 
-                mesh.userData = {
+                const polyMesh = new THREE.Mesh(polyGeom, polyMat);
+                polyMesh.position.copy(center);
+                polyMesh.lookAt(center.clone().multiplyScalar(2)); // 朝外对齐
+
+                // 添加极细灰色线框缝隙
+                const edges = new THREE.EdgesGeometry(polyGeom);
+                const lineMat = new THREE.LineBasicMaterial({ color: 0xd1d5db, linewidth: 1 }); // 细灰色缝隙
+                const line = new THREE.LineSegments(edges, lineMat);
+                polyMesh.add(line);
+
+                polyMesh.userData = {
                     dayIndex: i + 1,
                     lit: false,
-                    dateStr: dayToDateStr(i + 1, totalDays)
+                    dateStr: dayToDateStr(i + 1, totalDays),
+                    originalMat: polyMat
                 };
 
-                globeGroup.add(mesh);
-                cellMeshes.push(mesh);
+                globeGroup.add(polyMesh);
+                polyMeshes.push(polyMesh);
             }
 
-            // 交互监听 (鼠标/触控旋转与点击)
+            // 交互监听
             container.addEventListener('mousedown', onPointerDown);
             container.addEventListener('mousemove', onPointerMove);
             container.addEventListener('mouseup', onPointerUp);
@@ -428,9 +470,8 @@
 
         function animate() {
             requestAnimationFrame(animate);
-            // 微弱的自转星际感
             if (!isDragging && globeGroup) {
-                globeGroup.rotation.y += 0.001;
+                globeGroup.rotation.y += 0.0012; // 缓慢自转
             }
             renderer.render(scene, camera);
         }
@@ -446,8 +487,8 @@
             const deltaX = e.clientX - previousMousePosition.x;
             const deltaY = e.clientY - previousMousePosition.y;
 
-            globeGroup.rotation.y += deltaX * 0.008;
-            globeGroup.rotation.x += deltaY * 0.008;
+            globeGroup.rotation.y += deltaX * 0.007;
+            globeGroup.rotation.x += deltaY * 0.007;
 
             previousMousePosition = { x: e.clientX, y: e.clientY };
         }
@@ -456,7 +497,7 @@
             isDragging = false;
         }
 
-        // 点击 3D 单元格格子
+        // 点击 3D 面板格子
         function onPointerClick(e) {
             const container = document.getElementById('webgl-output');
             const rect = container.getBoundingClientRect();
@@ -464,7 +505,7 @@
             mouse.y = -((e.clientY - rect.top) / container.clientHeight) * 2 + 1;
 
             raycaster.setFromCamera(mouse, camera);
-            const intersects = raycaster.intersectObjects(cellMeshes);
+            const intersects = raycaster.intersectObjects(polyMeshes);
 
             if (intersects.length > 0) {
                 const clickedMesh = intersects[0].object;
@@ -474,7 +515,7 @@
             }
         }
 
-        // 点亮格子并处理事件
+        // 点亮/消去格子
         function lightUpCell(mesh) {
             mesh.userData.lit = true;
             player.daysRemaining--;
@@ -484,9 +525,9 @@
             const dateStr = mesh.userData.dateStr;
             const term = solarTerms[dateStr.monthDay];
 
-            // 变为灰色已记账状态
+            // 变灰表示已消去/已记账
             mesh.material.color.setHex(0x94a3b8);
-            mesh.scale.set(1, 1, 0.5);
+            mesh.scale.set(0.95, 0.95, 0.6);
 
             if (term) {
                 showToast(`🎉 迎来节气/节日: ${term}`);
@@ -505,14 +546,14 @@
             checkAgeOrEnd();
         }
 
-        // 命运骰子：随机点亮星球上的格子
+        // 命运骰子跳跃
         function rollDice() {
             const btn = document.getElementById('btn-dice');
             btn.disabled = true;
             const steps = Math.floor(Math.random() * 6) + 1;
             showToast(`🎲 命运骰子摇出 ${steps} 步！`);
 
-            const unlit = cellMeshes.filter(m => !m.userData.lit);
+            const unlit = polyMeshes.filter(m => !m.userData.lit);
             let count = 0;
 
             const interval = setInterval(() => {
@@ -682,7 +723,7 @@
             document.getElementById('bar-hp').style.width = `${Math.max(0, player.hp)}%`;
             document.getElementById('val-san').innerText = `${Math.max(0, player.san)}%`;
             document.getElementById('bar-san').style.width = `${Math.max(0, player.san)}%`;
-            document.getElementById('val-pts').innerText = `${player.pts} PTS`;
+            document.getElementById('val-[#107c41]').innerText = `${player.pts} PTS`;
             document.getElementById('val-int').innerText = player.int;
             document.getElementById('val-phy').innerText = player.phy;
 
@@ -695,7 +736,7 @@
         function showToast(text) {
             const container = document.getElementById('toast-container');
             const toast = document.createElement('div');
-            toast.className = 'bg-slate-800/90 text-white text-xs px-3 py-1.5 rounded shadow-lg border border-slate-700 animate-bounce';
+            toast.className = 'bg-white border border-slate-300 text-slate-800 text-xs px-3 py-1.5 rounded shadow-md animate-bounce';
             toast.innerText = text;
             container.appendChild(toast);
             setTimeout(() => toast.remove(), 3000);
@@ -717,8 +758,7 @@
                     showToast(`🎂 祝贺你满 ${player.age} 岁了！新的一年星球重启。`);
                     document.getElementById('birth-year-display').innerText = player.birthYear + player.age;
                     
-                    // 重建新一年的星球网格
-                    init3DScene();
+                    init3DPolyGlobe();
                     updateUI();
                 }
             }
