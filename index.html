@@ -98,9 +98,9 @@
 
 <script type="module">
 // 使用 type="module" 全部js内联模块导入，解决加载时序BUG
+import Utils from "./js/utils.js";
 import {showMeteorShower,showFireworks,closeEffect} from "./js/canvas-effects.js";
 import {getCandidateEvents,checkOptionCondition} from "./js/event-engine.js";
-import * as Utils from "./js/utils.js";
 
 window.Utils = Utils;
 
