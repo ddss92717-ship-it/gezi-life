@@ -522,49 +522,166 @@
         }
 
         // 年龄阶段重大事件列表
-        function getEventByAge(age) {
-            if (age <= 6) {
-                return {
-                    stage: '阶段一：童年启蒙期',
-                    title: '天价早教班抉择',
-                    desc: '父母讨论是否报每年 3 万元的精英早教班，这会显著消耗家庭积蓄。',
-                    options: [
-                        { text: '咬牙报早教班', effectText: '现金 -3万, 智力+10', apply: () => { player.cash -= 30000; player.int += 10; } },
-                        { text: '享受无忧快乐童年', effectText: '快乐 +10', apply: () => { player.san += 10; } }
-                    ]
-                };
-            } else if (age <= 17) {
-                return {
-                    stage: '阶段二：中考分流与高考',
-                    title: '中考普职分流风暴',
-                    desc: '中考面临分流压力，成绩处于普高录取线边缘。',
-                    options: [
-                        { text: '花高价读民办私立高中', effectText: '现金 -5万, 声望+10', apply: () => { player.cash -= 50000; player.pts += 10; } },
-                        { text: '选择职业技术学校', effectText: '提前接触社会, 快乐-10', isSad: true, sadQuote: '即便命运分流，只要向前，人生终有出口。', apply: () => { player.san -= 10; } }
-                    ]
-                };
-            } else if (age <= 35) {
-                return {
-                    stage: '阶段三：职场与成家立业',
-                    title: '互联网大厂 996 抉择',
-                    desc: '部门主管暗示全员无偿加班，加班可获得更高晋升机会，但会损害健康。',
-                    options: [
-                        { text: '内卷到底，选择加班', effectText: '薪资+20%, 健康-15', isSad: true, sadQuote: '深夜打卡离开大楼，繁星正温柔拥抱每一个拼搏的人。', apply: () => { player.cash += 20000; player.hp -= 15; } },
-                        { text: '准时下班，拒绝内卷', effectText: '健康+5, 声望-10', apply: () => { player.hp += 5; player.pts -= 10; } }
-                    ]
-                };
-            } else {
-                return {
-                    stage: '阶段四：中年危机与家庭重担',
-                    title: '35岁裁员黑天鹅与房贷',
-                    desc: '遭遇公司优化，面临裁员。房贷与家庭开销考验着现金流。',
-                    options: [
-                        { text: '拿 N+1 赔偿降薪跳槽', effectText: '现金+5万, 快乐-15', isSad: true, sadQuote: '挫折只是生命中的插曲，休整一下，明天太阳照常升起。', apply: () => { player.cash += 50000; player.san -= 15; } },
-                        { text: '尝试创业/开副业', effectText: '风险极高, 现金-10万', apply: () => { player.cash -= 100000; } }
-                    ]
-                };
+        // ==================== 全周期中国本土化事件库 ====================
+
+// 1. 日常轻量琐事库（不强弹窗打断，在顶部浮窗显示）
+const minorEventPool = [
+    { text: '今天早上上课/上班通勤挤地铁，差点迟到', san: -2 },
+    { text: '在路边小摊买了个煎饼果子加双蛋，味道绝佳', san: +3, cash: -10 },
+    { text: '深夜熬夜刷短视频到两点，第二天顶着黑眼圈', hp: -3, san: +2 },
+    { text: '公司下午茶抢到了最后一个车厘子蛋糕', san: +4 },
+    { text: '突然收到一条垃圾短信，差点遭遇电信诈骗', mor: -5 },
+    { text: '周末在家泡了一壶茶，难得享受了一下午安静时光', san: +5, hp: +2 },
+    { text: '跟朋友开黑打游戏连输五局，心态有点崩', san: -4 },
+    { text: '体检发现体重又胖了两斤，保温杯里开始泡枸杞', hp: -1 }
+];
+
+// 2. 全年龄段重大抉择事件库（按年龄段自动分流）
+function getEventByAge(age) {
+    // 阶段一：童年与基础教育期 (0 - 12岁)
+    if (age <= 6) {
+        const events = [
+            {
+                stage: '阶段一：幼儿启蒙期',
+                title: '天价早教班抉择',
+                desc: '周围家长都在卷早教。是否花大价钱给孩子报名全能双语早教班？',
+                options: [
+                    { text: '咬牙报班，不能让孩子输在起跑线上', effectText: '现金 -30,000, 智力+10', apply: () => { player.cash -= 30000; player.int += 10; } },
+                    { text: '顺其自然，给孩子一个快乐的童年', effectText: '快乐 +10, 健康+5', apply: () => { player.san += 10; player.hp += 5; } }
+                ]
+            },
+            {
+                stage: '阶段一：幼儿启蒙期',
+                title: '幼儿园突发流感',
+                desc: '近期流感肆虐，班上好几个小朋友发烧请假。',
+                options: [
+                    { text: '请假在家隔离，父母轮流请假照顾', effectText: '家庭关系+5, 现金(请假扣薪)-2000', apply: () => { player.fam += 5; player.cash -= 2000; } },
+                    { text: '坚持送去幼儿园，扛过去产生抗体', effectText: '健康 -10 (触发小病)', isSad: true, sadQuote: '小病也是成长的必经之路，免疫力就是在风雨中建立的。', apply: () => { player.hp -= 10; } }
+                ]
             }
-        }
+        ];
+        return events[Math.floor(Math.random() * events.length)];
+    } 
+    else if (age <= 12) {
+        const events = [
+            {
+                stage: '阶段一：小学内卷期',
+                title: '周末奥数与英语培优班',
+                desc: '小学三年级分水岭，班上同学周末都在上培优班，你面临是否加入内卷的抉择。',
+                options: [
+                    { text: '疯狂报班，周末连轴转', effectText: '智力+15, 快乐-15, 声望+5', apply: () => { player.int += 15; player.san -= 15; player.pts += 5; } },
+                    { text: '拒绝鸡娃，周末去公园抓泥鳅', effectText: '快乐+20, 智力-5', apply: () => { player.san += 20; player.int -= 5; } }
+                ]
+            },
+            {
+                stage: '阶段一：小学内卷期',
+                title: '学区房置换压力',
+                desc: '为了让孩子能上重点初中，父母开始盘算是否卖掉老破小，去背上大额房贷换学区房。',
+                options: [
+                    { text: '支持父母置换学区房', effectText: '现金负债 -300,000, 声望+20', apply: () => { player.cash -= 300000; player.pts += 20; } },
+                    { text: '反对折腾，听天由命参加电脑摇号', effectText: '快乐+10, 声望-10', apply: () => { player.san += 10; player.pts -= 10; } }
+                ]
+            }
+        ];
+        return events[Math.floor(Math.random() * events.length)];
+    }
+    // 阶段二：中高考与大学象牙塔 (13 - 21岁)
+    else if (age <= 18) {
+        const events = [
+            {
+                stage: '阶段二：中考与高中分流',
+                title: '中考“普职分流”风暴',
+                desc: '中考成绩出来，恰好卡在普高线边缘，面临严峻的分流抉择。',
+                options: [
+                    { text: '花高价读民办私立高中', effectText: '现金 -80,000, 获得高考资格', apply: () => { player.cash -= 80000; } },
+                    { text: '接受现实，上职业技术学校', effectText: '声望-15, 提前步入社会', isSad: true, sadQuote: '条条大路通罗马，技术在手，哪里都能发光。', apply: () => { player.pts -= 15; } }
+                ]
+            },
+            {
+                stage: '阶段二：中高考与大学',
+                title: '高考志愿：天坑专业 vs 热门计算机',
+                desc: '高考填报志愿，面对长辈推荐的宇宙尽头“生化环材”或是互联网热门计算机。',
+                options: [
+                    { text: '硬着头皮选计算机/人工智能', effectText: '智力+15, 学习压力巨大(快乐-10)', apply: () => { player.int += 15; player.san -= 10; } },
+                    { text: '听从调剂进入冷门“天坑”专业', effectText: '智力+5, 后期面临考研分流', apply: () => { player.int += 5; } }
+                ]
+            }
+        ];
+        return events[Math.floor(Math.random() * events.length)];
+    }
+    // 阶段三：初入社会与职场内卷 (22 - 35岁)
+    else if (age <= 35) {
+        const events = [
+            {
+                stage: '阶段三：职场与成家立业',
+                title: '互联网大厂 996 抉择',
+                desc: '部门主管暗示全员无偿加班，声称“福报”时代，不加班面临边缘化。',
+                options: [
+                    { text: '内卷到底，疯狂加班冲业绩', effectText: '现金+30,000, 健康HP-15, 声望+10', isSad: true, sadQuote: '深夜写字楼的灯光见证了你的努力，但胃也向你抗议了。', apply: () => { player.cash += 30000; player.hp -= 15; player.pts += 10; } },
+                    { text: '拒绝内卷，到点准时下班摸鱼', effectText: '健康+5, 快乐+10, 面临被优化风险', apply: () => { player.hp += 5; player.san += 10; } }
+                ]
+            },
+            {
+                stage: '阶段三：职场与成家立业',
+                title: '催婚风暴与高额彩礼/首付',
+                desc: '过年回家七大姑八大姨轮番催婚，谈及买房和彩礼，面临巨大的现实经济考验。',
+                options: [
+                    { text: '掏空六个钱包，背上 30 年商业房贷', effectText: '现金 -500,000, 家庭关系+15', apply: () => { player.cash -= 500000; player.fam += 15; } },
+                    { text: '坚持不买房不结婚，坚决不向现实低头', effectText: '家庭冲突(家庭关系-25), 快乐+15', apply: () => { player.fam -= 25; player.san += 15; } }
+                ]
+            },
+            {
+                stage: '阶段三：职场与成家立业',
+                title: '35岁大厂“优化”黑天鹅',
+                desc: '互联网公司迎来降本增效，HR突然拿着协议走到了你的工位旁...。',
+                options: [
+                    { text: '拿到 N+1 赔偿金，迅速降薪跳槽', effectText: '现金+40,000, 快乐-20', isSad: true, sadQuote: '生活就像拼图，打碎了可以重新来过，你比想象中更坚强。', apply: () => { player.cash += 40000; player.san -= 20; } },
+                    { text: '选择裸辞，尝试外卖或网约车创业', effectText: '现金极剧波动, 承受巨大精神压力', apply: () => { player.cash -= 30000; player.san -= 25; } }
+                ]
+            }
+        ];
+        return events[Math.floor(Math.random() * events.length)];
+    }
+    // 阶段四：中年危机与父母养老 (36 - 50岁)
+    else if (age <= 50) {
+        const events = [
+            {
+                stage: '阶段四：中年危机与家庭重担',
+                title: '父母突发重大疾病',
+                desc: '深夜接到老家医院电话，父母突发脑梗/肿瘤，高额自费医疗费考验着你的现金储备。',
+                options: [
+                    { text: '倾家荡产、卖车卖房进ICU全力抢救', effectText: '现金 -300,000, 孝心拉满(家庭+30)', apply: () => { player.cash -= 300000; player.fam += 30; } },
+                    { text: '选择保守治疗与安宁疗护', effectText: '现金节省, 伴随巨大的道德内疚', isSad: true, sadQuote: '树欲静而风不止，子欲养而亲不待，尽力了便问心无愧。', apply: () => { player.san -= 30; player.mor -= 10; } }
+                ]
+            },
+            {
+                stage: '阶段四：中年危机与家庭重担',
+                title: '中年副业投资踩坑',
+                desc: '朋友拉你合伙开线下实体店/炒虚拟币，号称半年回本。',
+                options: [
+                    { text: '盲目轻信，投入大笔积蓄合伙', effectText: '遭遇暴雷，现金 -200,000', apply: () => { player.cash -= 200000; player.san -= 20; } },
+                    { text: '保持理性，坚决拒绝割韭菜项目', effectText: '资金安全，保住现金流', apply: () => { player.san += 5; } }
+                ]
+            }
+        ];
+        return events[Math.floor(Math.random() * events.length)];
+    }
+    // 阶段五：晚年收官与夕阳红 (51 - 80岁)
+    else {
+        const events = [
+            {
+                stage: '阶段五：夕阳红与终局养老',
+                title: '退休后的生活方式抉择',
+                desc: '正式退休，面对漫长的晚年，你是选择含辛茹苦帮子女带孙辈，还是潇洒自我？',
+                options: [
+                    { text: '开启“隔代育儿”劳碌晚年', effectText: '家庭关系+20, 健康消耗(HP-10)', apply: () => { player.fam += 20; player.hp -= 10; } },
+                    { text: '选择全国旅游、公园遛鸟的潇洒退休', effectText: '现金 -50,000, 快乐值+30', apply: () => { player.cash -= 50000; player.san += 30; } }
+                ]
+            }
+        ];
+        return events[Math.floor(Math.random() * events.length)];
+    }
+}
 
         // ===== 6. 治愈系 Canvas 流星雨全屏特效 =====
         function triggerHealCanvas(quote) {
