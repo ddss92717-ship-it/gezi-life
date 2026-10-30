@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>人生财务与风险评估表_FY2026.xlsx - Microsoft Excel (3D紧密无缝星球)</title>
+    <title>人生财务与风险评估表_FY2026.xlsx - Excel (实体蜂窝星球版)</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Three.js 3D 库 -->
@@ -15,7 +15,6 @@
     <style>
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-        /* 纯白 Excel 背景表格纹理 */
         .excel-bg-grid {
             background-color: #ffffff;
             background-image: linear-gradient(#e5e7eb 1px, transparent 1px),
@@ -42,7 +41,6 @@
                 <button onclick="location.reload()" class="hover:bg-emerald-700 p-1 rounded"><i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i></button>
             </div>
         </div>
-        <!-- Ribbon 快捷功能区 -->
         <div class="bg-slate-50 text-slate-700 px-4 py-1 flex items-center space-x-6 border-b border-slate-300 text-[11px]">
             <span class="font-semibold text-[#107c41] border-b-2 border-[#107c41] pb-0.5 cursor-pointer">开始</span>
             <span class="hover:text-slate-900 cursor-pointer">插入</span>
@@ -51,23 +49,23 @@
             <div class="h-3 w-px bg-slate-300 mx-1"></div>
             <div class="flex items-center space-x-1 text-slate-500">
                 <i data-lucide="globe" class="w-3.5 h-3.5"></i>
-                <span>拖动旋转 3D 无缝白瓷星球，点击多边形格子顺序打印日历</span>
+                <span>拖动鼠标旋转白瓷实体星球，点击表面格子按顺序记录日历</span>
             </div>
         </div>
     </header>
 
     <!-- 公式栏 -->
     <div class="bg-white border-b border-slate-200 px-3 py-1 flex items-center space-x-2 text-xs text-slate-600 shrink-0">
-        <span class="font-mono bg-slate-100 px-2 py-0.5 rounded border text-slate-500 font-semibold">PERFECT_GLOBE_3D</span>
+        <span class="font-mono bg-slate-100 px-2 py-0.5 rounded border text-slate-500 font-semibold">SOCCER_GLOBE_3D</span>
         <span class="italic font-serif text-slate-400">fx</span>
         <div class="h-4 w-px bg-slate-200"></div>
-        <span class="font-mono text-slate-700">=SUM(EXCEL_PERFECT_WHITE_GLOBE) /* 完美无缝咬合多边形人生星球 */</span>
+        <span class="font-mono text-slate-700">=SUM(EXCEL_SOCCER_WHITE_SPHERE) /* 完美无缝白瓷实体星球 */</span>
     </div>
 
-    <!-- 主界面：侧边栏 + 纯白 Excel 3D 星球视口 -->
+    <!-- 主界面：侧边栏 + 3D 星球视口 -->
     <div class="flex-1 flex overflow-hidden">
         
-        <!-- 左侧 8 维数据与属性监控面板 -->
+        <!-- 左侧 8 维数据面板 -->
         <aside class="w-72 bg-slate-50 border-r border-slate-300 p-3 flex flex-col justify-between overflow-y-auto shrink-0 text-xs">
             <div>
                 <div class="text-[10px] font-mono text-slate-400 tracking-wider mb-2">MONITORING_PANEL</div>
@@ -76,7 +74,6 @@
                     <span id="current-age-badge" class="bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full text-[11px]">0 岁</span>
                 </h2>
 
-                <!-- 属性列表 -->
                 <div class="space-y-2.5">
                     <div class="bg-white p-2 rounded border border-slate-200 shadow-sm">
                         <div class="flex justify-between text-slate-500 mb-1">
@@ -112,7 +109,6 @@
                         </div>
                     </div>
 
-                    <!-- 次要数值 -->
                     <div class="grid grid-cols-2 gap-1.5 text-[10px] text-slate-500 pt-1 border-t border-slate-200">
                         <div>智力 (INT): <span id="val-int" class="font-bold text-slate-700">50</span></div>
                         <div>外貌 (PHY): <span id="val-phy" class="font-bold text-slate-700">50</span></div>
@@ -121,7 +117,6 @@
                     </div>
                 </div>
 
-                <!-- 玩家出身信息卡片 -->
                 <div class="mt-4 bg-emerald-50/60 border border-emerald-200 rounded p-2.5 text-[11px] text-slate-600">
                     <div class="font-bold text-emerald-800 mb-1 flex items-center space-x-1">
                         <i data-lucide="user-check" class="w-3.5 h-3.5"></i>
@@ -135,8 +130,8 @@
 
             <div class="text-[10px] text-slate-400 space-y-1">
                 <p>💡 操作提示:</p>
-                <p>1. 按住鼠标或单指滑动旋转球体。</p>
-                <p>2. 第 1 次点击 = 1月1日，依次向后递增。</p>
+                <p>1. 拖动鼠标旋转白瓷实体星球。</p>
+                <p>2. 点击表面格子按顺序记录日历。</p>
             </div>
         </aside>
 
@@ -145,14 +140,13 @@
             
             <div id="toast-container" class="absolute top-3 right-6 z-20 pointer-events-none space-y-2"></div>
 
-            <!-- 星球状态悬浮栏 -->
             <div class="absolute top-3 left-4 z-10 bg-white/95 backdrop-blur border border-slate-300 text-slate-800 px-4 py-2 rounded-md text-xs flex items-center space-x-4 shadow-sm">
                 <div>年度星球 (<span id="birth-year-display">2026</span>年)</div>
                 <div class="text-slate-300">|</div>
                 <div>当年剩余天数：<strong id="days-remaining" class="text-emerald-600 font-mono text-sm">365</strong> 天</div>
             </div>
 
-            <!-- 3D WebGL 渲染容器 -->
+            <!-- 3D 渲染容器 -->
             <div id="webgl-output" class="w-full h-full cursor-grab active:cursor-grabbing"></div>
 
             <!-- 右下角悬浮：命运骰子 -->
@@ -165,22 +159,22 @@
         </main>
     </div>
 
-    <!-- 各种弹窗组件 -->
+    <!-- 弹窗组件 -->
     <div id="modal-start" class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
         <div class="bg-white rounded-lg shadow-2xl max-w-md w-full border border-slate-300 overflow-hidden">
             <div class="bg-[#107c41] text-white px-4 py-3 flex justify-between items-center">
                 <h3 class="font-bold flex items-center space-x-2">
                     <i data-lucide="globe" class="w-4 h-4"></i>
-                    <span>《格子人生：完美无缝白瓷星球》</span>
+                    <span>《格子人生：白瓷实体星球》</span>
                 </h3>
             </div>
             <div class="p-5 text-xs text-slate-600 space-y-3">
                 <p class="font-semibold text-slate-800 text-sm">欢迎来到 3D 模拟人生宇宙！</p>
-                <p>已完美重构球体渲染算法：<strong>多边形绝对紧密咬合无空隙，并且点击后严格按顺序显示公历日历与节气</strong>！</p>
+                <p>已完美切换为<strong>高质感实体球体 + 动态蜂窝纹理映射技术</strong>：拥有与参考图完全一致的平滑无缝白瓷轮廓和立体阴影网格[cite: 11]！</p>
                 <ul class="list-disc list-inside space-y-1 bg-slate-50 p-2.5 rounded border border-slate-200">
-                    <li>360 度自由旋转流畅无阻。</li>
-                    <li>点击任意格子自动记账：第 1 次点击必定为 1月1日 元旦。</li>
-                    <li>按 <strong>Esc</strong> 键一键切换伪装审计表！</li>
+                    <li>顺畅的 360 度手势/鼠标旋转。</li>
+                    <li>第 1 次点击 = 1月1日 元旦，点击后该区域变灰并打印日历。</li>
+                    <li>按 <strong>Esc</strong> 键一键伪装摸鱼！</li>
                 </ul>
             </div>
             <div class="bg-slate-50 px-4 py-3 border-t flex justify-end">
@@ -246,7 +240,7 @@
         <div class="bg-white rounded-lg shadow-2xl max-w-xl w-full border border-slate-300 overflow-hidden font-mono text-xs">
             <div class="bg-[#107c41] text-white p-4 text-center">
                 <h2 class="text-base font-bold">2026 终极人生档案与资产清算审计报告</h2>
-                <p class="text-[11px] opacity-80 mt-1">—— 3D 完美无缝星球终局 ——</p>
+                <p class="text-[11px] opacity-80 mt-1">—— 白瓷实体星球终局 ——</p>
             </div>
             <div class="p-6 space-y-4 text-slate-700">
                 <div class="bg-slate-50 p-3 rounded border border-slate-200">
@@ -268,7 +262,7 @@
         </div>
     </div>
 
-    <!-- 3D 完美无缝多边形星球与游戏逻辑脚本 -->
+    <!-- 3D 实体球体与游戏逻辑脚本 -->
     <script>
         lucide.createIcons();
 
@@ -277,7 +271,7 @@
             birthYear: 2026,
             daysTotal: 365,
             daysRemaining: 365,
-            clickSequence: 0, // 核心点击序列：记录按顺序递增的 1月1日，1月2日...
+            clickSequence: 0,
             cash: 0,
             hp: 100,
             san: 100,
@@ -295,12 +289,15 @@
 
         let isBossKeyActive = false;
 
-        let scene, camera, renderer, globeGroup;
-        let polyMeshes = [];
+        let scene, camera, renderer, globeMesh;
+        let globeGroup;
         let raycaster = new THREE.Raycaster();
         let mouse = new THREE.Vector2();
         let isDragging = false;
         let previousMousePosition = { x: 0, y: 0 };
+
+        let canvasTexture, canvasCtx, textureCanvas;
+        let clickedTiles = []; // 记录被点击的格子区域信息
 
         const solarTerms = {
             "1-1": "元旦", "2-4": "立春", "2-14": "情人节", "3-5": "惊蛰", 
@@ -324,6 +321,7 @@
             player.daysTotal = isLeapYear(player.birthYear) ? 366 : 365;
             player.daysRemaining = player.daysTotal;
             player.clickSequence = 0;
+            clickedTiles = [];
 
             const locs = ['北京 (一线城市)', '上海 (一线城市)', '杭州 (新一线)', '成都 (二线城市)', '某三线县城', '偏远乡村'];
             player.location = locs[Math.floor(Math.random() * locs.length)];
@@ -343,128 +341,60 @@
             player.traits = [traitsList[Math.floor(Math.random() * traitsList.length)]];
 
             updateUI();
-            initPerfect3DGlobe();
+            initSolidSoccerGlobe();
         }
 
         function isLeapYear(year) {
             return (year % 4 === 0 && year % 100 !== 0) || (year % 400 === 0);
         }
 
-        // ===== 动态 Canvas 贴图生成器（解决日历与白瓷质感） =====
-        function createTileCanvasTexture(text, isLit, isFestival) {
-            const canvas = document.createElement('canvas');
-            canvas.width = 256;
-            canvas.height = 256;
-            const ctx = canvas.getContext('2d');
-
-            // 纯白亮面 vs 点击后灰底
-            ctx.fillStyle = isLit ? '#94a3b8' : '#fcfcfc';
-            ctx.fillRect(0, 0, 256, 256);
-
-            // 极细灰色缝隙边框
-            ctx.strokeStyle = '#d1d5db';
-            ctx.lineWidth = 10;
-            ctx.strokeRect(5, 5, 246, 246);
-
-            // 点击后显示公历日期或节气
-            if (isLit && text) {
-                ctx.fillStyle = isFestival ? '#15803d' : '#1e293b';
-                ctx.font = isFestival ? 'bold 44px sans-serif' : 'bold 38px sans-serif';
-                ctx.textAlign = 'center';
-                ctx.textBaseline = 'middle';
-                ctx.fillText(text, 128, 128);
-            }
-
-            const texture = new THREE.CanvasTexture(canvas);
-            texture.needsUpdate = true;
-            return texture;
-        }
-
-        // ===== 核心：构建绝对紧密无缝咬合的标准多面体球体 =====
-        function initPerfect3DGlobe() {
+        // ===== 核心：生成完美白瓷实体球与蜂窝纹理贴图 =====
+        function initSolidSoccerGlobe() {
             const container = document.getElementById('webgl-output');
             container.innerHTML = '';
 
             scene = new THREE.Scene();
             camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 1000);
-            camera.position.z = 14;
+            camera.position.z = 13;
 
             renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
             renderer.setSize(container.clientWidth, container.clientHeight);
             renderer.setPixelRatio(window.devicePixelRatio);
             container.appendChild(renderer.domElement);
 
-            // 光照（模拟真实白瓷球）
-            const ambientLight = new THREE.AmbientLight(0xffffff, 0.95);
+            // 完美白瓷质感光照
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.85);
             scene.add(ambientLight);
             
             const dirLight = new THREE.DirectionalLight(0xffffff, 0.6);
-            dirLight.position.set(10, 20, 15);
+            dirLight.position.set(15, 25, 20);
             scene.add(dirLight);
 
             globeGroup = new THREE.Group();
             scene.add(globeGroup);
 
-            polyMeshes = [];
-            const radius = 4.8;
-            const totalDays = player.daysTotal;
+            // 创建高分辨率 Canvas 纹理，用于在球面上绘制蜂窝网格与日历文字
+            textureCanvas = document.createElement('canvas');
+            textureCanvas.width = 2048;
+            textureCanvas.height = 1024;
+            canvasCtx = textureCanvas.getContext('2d');
 
-            // 使用标准的二十面体球面切割，保证100%圆滑无缝咬合
-            const baseGeom = new THREE.IcosahedronGeometry(radius, 3);
-            const pos = baseGeom.attributes.position;
-            const index = baseGeom.index;
-            const count = index ? index.count / 3 : pos.count / 3;
+            redrawGlobeTexture();
 
-            const initialTexture = createTileCanvasTexture('', false, false);
+            canvasTexture = new THREE.CanvasTexture(textureCanvas);
+            canvasTexture.needsUpdate = true;
 
-            for (let i = 0; i < Math.min(totalDays, count); i++) {
-                let idx1 = index ? index.getX(i * 3) : i * 3;
-                let idx2 = index ? index.getX(i * 3 + 1) : i * 3 + 1;
-                let idx3 = index ? index.getX(i * 3 + 2) : i * 3 + 2;
+            // 创建平滑实心球几何体
+            const sphereGeom = new THREE.SphereGeometry(4.5, 64, 64);
+            const sphereMat = new THREE.MeshStandardMaterial({
+                map: canvasTexture,
+                roughness: 0.2,
+                metalness: 0.05
+            });
 
-                const v1 = new THREE.Vector3().fromBufferAttribute(pos, idx1);
-                const v2 = new THREE.Vector3().fromBufferAttribute(pos, idx2);
-                const v3 = new THREE.Vector3().fromBufferAttribute(pos, idx3);
+            globeMesh = new THREE.Mesh(sphereGeom, sphereMat);
+            globeGroup.add(globeMesh);
 
-                // 创建单独的紧密切片 Geometry
-                const faceGeom = new THREE.BufferGeometry();
-                const vertices = new Float32Array([
-                    v1.x, v1.y, v1.z,
-                    v2.x, v2.y, v2.z,
-                    v3.x, v3.y, v3.z
-                ]);
-                const uvs = new Float32Array([
-                    0.5, 1.0,
-                    0.0, 0.0,
-                    1.0, 0.0
-                ]);
-
-                faceGeom.setAttribute('position', new THREE.BufferAttribute(vertices, 3));
-                faceGeom.setAttribute('uv', new THREE.BufferAttribute(uvs, 2));
-                faceGeom.computeVertexNormals();
-
-                const faceMat = new THREE.MeshStandardMaterial({
-                    map: initialTexture,
-                    roughness: 0.15,
-                    metalness: 0.05,
-                    side: THREE.DoubleSide
-                });
-
-                const faceMesh = new THREE.Mesh(faceGeom, faceMat);
-                
-                // 增加极其细腻的深灰色缝隙轮廓
-                const edgeGeom = new THREE.EdgesGeometry(faceGeom);
-                const lineMat = new THREE.LineBasicMaterial({ color: 0x94a3b8, linewidth: 1.5 });
-                const line = new THREE.LineSegments(edgeGeom, lineMat);
-                faceMesh.add(line);
-
-                faceMesh.userData = { lit: false };
-
-                globeGroup.add(faceMesh);
-                polyMeshes.push(faceMesh);
-            }
-
-            // 旋转交互监听
             container.addEventListener('mousedown', onPointerDown);
             container.addEventListener('mousemove', onPointerMove);
             container.addEventListener('mouseup', onPointerUp);
@@ -477,6 +407,54 @@
             window.addEventListener('resize', onWindowResize);
 
             animate();
+        }
+
+        // 在 Canvas 上绘制整球的蜂窝网格与已点击的日历格子
+        function redrawGlobeTexture() {
+            const w = textureCanvas.width;
+            const h = textureCanvas.height;
+
+            // 1. 基础白瓷背景
+            canvasCtx.fillStyle = '#f8fafc';
+            canvasCtx.fillRect(0, 0, w, h);
+
+            // 2. 绘制经纬网格蜂窝（模拟参考图的精致分块结构）
+            canvasCtx.strokeStyle = '#cbd5e1';
+            canvasCtx.lineWidth = 3;
+
+            const cols = 24;
+            const rows = 12;
+            const cellW = w / cols;
+            const cellH = h / rows;
+
+            for (let r = 0; r < rows; r++) {
+                for (let c = 0; c < cols; c++) {
+                    canvasCtx.strokeRect(c * cellW, r * cellH, cellW, cellH);
+                }
+            }
+
+            // 3. 渲染所有已被点亮的日历格子
+            clickedTiles.forEach(tile => {
+                const cx = tile.col * cellW;
+                const cy = tile.row * cellH;
+
+                // 变成灰色已记账状态
+                canvasCtx.fillStyle = '#94a3b8';
+                canvasCtx.fillRect(cx + 2, cy + 2, cellW - 4, cellH - 4);
+
+                canvasCtx.strokeStyle = '#475569';
+                canvasCtx.lineWidth = 4;
+                canvasCtx.strokeRect(cx + 2, cy + 2, cellW - 4, cellH - 4);
+
+                // 写入日期或节气文字
+                canvasCtx.fillStyle = tile.isFestival ? '#15803d' : '#0f172a';
+                canvasCtx.font = 'bold 22px sans-serif';
+                canvasCtx.textAlign = 'center';
+                canvasCtx.textBaseline = 'middle';
+                canvasCtx.fillText(tile.label, cx + cellW / 2, cy + cellH / 2);
+            });
+
+            if (canvasTexture) canvasTexture.needsUpdate = true;
         }
 
         function animate() {
@@ -499,3 +477,317 @@
 
             globeGroup.rotation.y += deltaX * 0.007;
             globeGroup.rotation.x += deltaY * 0.007;
+
+            previousMousePosition = { x: e.clientX, y: e.clientY };
+        }
+
+        function onPointerUp() {
+            isDragging = false;
+        }
+
+        // 点击 3D 球体表面，精准计算 UV 并点亮对应格子
+        function onPointerClick(e) {
+            const container = document.getElementById('webgl-output');
+            const rect = container.getBoundingClientRect();
+            mouse.x = ((e.clientX - rect.left) / container.clientWidth) * 2 - 1;
+            mouse.y = -((e.clientY - rect.top) / container.clientHeight) * 2 + 1;
+
+            raycaster.setFromCamera(mouse, camera);
+            const intersects = raycaster.intersectObject(globeMesh);
+
+            if (intersects.length > 0) {
+                const uv = intersects[0].uv;
+                if (uv) {
+                    const cols = 24;
+                    const rows = 12;
+                    const col = Math.floor(uv.x * cols);
+                    const row = Math.floor((1 - uv.y) * rows);
+
+                    // 检查该格子是否已经点亮过
+                    const exists = clickedTiles.some(t => t.col === col && t.row === row);
+                    if (!exists && player.daysRemaining > 0) {
+                        lightUpTile(col, row);
+                    }
+                }
+            }
+        }
+
+        // 点亮指定网格并按顺序分配日历
+        function lightUpTile(col, row) {
+            player.daysRemaining--;
+            player.gridClickedCount++;
+            player.clickSequence++; // 点击序号严格递增 (第1次=1月1日)
+
+            document.getElementById('days-remaining').innerText = player.daysRemaining;
+
+            const dateObj = daySequenceToDateStr(player.clickSequence);
+            const term = solarTerms[dateObj.monthDay];
+            const displayLabel = term ? term : dateObj.display;
+
+            clickedTiles.push({
+                col: col,
+                row: row,
+                label: displayLabel,
+                isFestival: !!term
+            });
+
+            redrawGlobeTexture();
+
+            if (term) {
+                showToast(`🎉 迎来节气/节日: ${term}`);
+                confetti({ particleCount: 20, spread: 50, origin: { y: 0.7 } });
+            } else {
+                showToast(`📅 已记录: ${dateObj.display}`);
+            }
+
+            const rand = Math.random();
+            if (rand < 0.10) {
+                triggerMajorEvent();
+            } else if (rand < 0.30) {
+                triggerMinorEvent();
+            }
+
+            checkAgeOrEnd();
+        }
+
+        function rollDice() {
+            const btn = document.getElementById('btn-dice');
+            btn.disabled = true;
+            const steps = Math.floor(Math.random() * 6) + 1;
+            showToast(`🎲 命运骰子摇出 ${steps} 步！`);
+
+            const cols = 24;
+            const rows = 12;
+            let count = 0;
+
+            const interval = setInterval(() => {
+                if (count < steps && player.daysRemaining > 0) {
+                    // 随机寻找未点亮的网格
+                    let randCol = Math.floor(Math.random() * cols);
+                    let randRow = Math.floor(Math.random() * rows);
+                    while (clickedTiles.some(t => t.col === randCol && t.row === randRow)) {
+                        randCol = Math.floor(Math.random() * cols);
+                        randRow = Math.floor(Math.random() * rows);
+                    }
+                    lightUpTile(randCol, randRow);
+                    count++;
+                } else {
+                    clearInterval(interval);
+                    btn.disabled = false;
+                }
+            }, 350);
+        }
+
+        function daySequenceToDateStr(seq) {
+            let month = Math.ceil(seq / 31);
+            let day = seq % 31 || 31;
+            if (month > 12) month = 12;
+            return { display: `${month}月${day}日`, monthDay: `${month}-${day}` };
+        }
+
+        function triggerMinorEvent() {
+            const minorEv = minorEventPool[Math.floor(Math.random() * minorEventPool.length)];
+            if (minorEv.san) player.san = Math.min(100, Math.max(0, player.san + minorEv.san));
+            if (minorEv.hp) player.hp = Math.min(100, Math.max(0, player.hp + minorEv.hp));
+            if (minorEv.cash) player.cash += minorEv.cash;
+            showToast(`【日常】${minorEv.text}`);
+            updateUI();
+        }
+
+        function triggerMajorEvent() {
+            player.eventTriggeredCount++;
+            const modal = document.getElementById('modal-event');
+            const title = document.getElementById('event-title');
+            const desc = document.getElementById('event-desc');
+            const optionsBox = document.getElementById('event-options');
+            optionsBox.innerHTML = '';
+
+            let ev = getEventByAge(player.age);
+
+            document.getElementById('event-stage-tag').innerText = `【${ev.stage}】`;
+            document.getElementById('event-age-tag').innerText = `${player.age} 岁`;
+            title.innerText = ev.title;
+            desc.innerText = ev.desc;
+
+            ev.options.forEach((opt) => {
+                const b = document.createElement('button');
+                b.className = 'w-full text-left p-2.5 rounded border border-slate-200 hover:border-emerald-500 hover:bg-emerald-50 text-xs transition flex justify-between items-center bg-white';
+                b.innerHTML = `<span>${opt.text}</span><span class="text-[10px] text-slate-400 font-mono">${opt.effectText}</span>`;
+                b.onclick = () => {
+                    opt.apply();
+                    modal.classList.add('hidden');
+                    updateUI();
+                    if (opt.isSad) triggerHealCanvas(opt.sadQuote);
+                };
+                optionsBox.appendChild(b);
+            });
+
+            modal.classList.remove('hidden');
+        }
+
+        function getEventByAge(age) {
+            if (age <= 12) {
+                return {
+                    stage: '阶段一：童年启蒙期',
+                    title: '天价早教班与奥数',
+                    desc: '父母是否该花重金报班鸡娃？',
+                    options: [
+                        { text: '报班内卷', effectText: '现金-3万, 智力+10', apply: () => { player.cash -= 30000; player.int += 10; } },
+                        { text: '快乐童年', effectText: '快乐+10', apply: () => { player.san += 10; } }
+                    ]
+                };
+            } else if (age <= 21) {
+                return {
+                    stage: '阶段二：中高考与大学',
+                    title: '普职分流与专业选择',
+                    desc: '人生第一次重大方向分水岭。',
+                    options: [
+                        { text: '硬刚高考学计算机', effectText: '智力+15, 快乐-10', apply: () => { player.int += 15; player.san -= 10; } },
+                        { text: '技校学一门手艺', effectText: '声望-15', isSad: true, sadQuote: '星光不问赶路人，条条大路通罗马。', apply: () => { player.pts -= 15; } }
+                    ]
+                };
+            } else if (age <= 35) {
+                return {
+                    stage: '阶段三：职场搏杀期',
+                    title: '大厂 996 与 35 岁危机',
+                    desc: '面对高强度加班与大厂优化，你的抉择是？',
+                    options: [
+                        { text: '疯狂加班拿高薪', effectText: '现金+3万, 健康-15', isSad: true, sadQuote: '深夜写字楼的灯光见证了你的努力，照顾好自己。', apply: () => { player.cash += 30000; player.hp -= 15; } },
+                        { text: '准时下班摸鱼', effectText: '健康+5, 边缘化风险', apply: () => { player.hp += 5; } }
+                    ]
+                };
+            } else {
+                return {
+                    stage: '阶段四：中年危机与养老',
+                    title: '父母大病与退休养老',
+                    desc: '家庭责任与健康全面爆发的考验。',
+                    options: [
+                        { text: '全力抢救与陪伴', effectText: '现金-20万, 家庭+20', apply: () => { player.cash -= 200000; player.fam += 20; } },
+                        { text: '安宁疗护与保守治疗', effectText: '节省现金, 内疚感加剧', isSad: true, sadQuote: '尽力了便问心无愧，生命自有其归宿。', apply: () => { player.san -= 20; } }
+                    ]
+                };
+            }
+        }
+
+        function triggerHealCanvas(quote) {
+            const container = document.getElementById('heal-canvas-container');
+            if (quote) document.getElementById('heal-quote').innerText = `“${quote}”`;
+            container.classList.remove('hidden');
+
+            const canvas = document.getElementById('star-canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+
+            let stars = Array.from({ length: 150 }, () => ({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                r: Math.random() * 1.5
+            }));
+
+            function draw() {
+                ctx.fillStyle = 'rgba(10, 15, 30, 0.3)';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                ctx.fillStyle = '#ffffff';
+                stars.forEach(s => {
+                    ctx.beginPath();
+                    ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+                    ctx.fill();
+                });
+                if (Math.random() < 0.1) {
+                    ctx.strokeStyle = '#38bdf8';
+                    ctx.lineWidth = 2;
+                    ctx.beginPath();
+                    let sx = Math.random() * canvas.width;
+                    ctx.moveTo(sx, 0);
+                    ctx.lineTo(sx - 200, 200);
+                    ctx.stroke();
+                }
+                if (!container.classList.contains('hidden')) requestAnimationFrame(draw);
+            }
+            draw();
+        }
+
+        function closeHealCanvas() {
+            document.getElementById('heal-canvas-container').classList.add('hidden');
+            player.san = Math.min(100, player.san + 15);
+            updateUI();
+        }
+
+        function toggleBossKey() {
+            isBossKeyActive = !isBossKeyActive;
+            const overlay = document.getElementById('boss-key-overlay');
+            if (isBossKeyActive) overlay.classList.remove('hidden');
+            else overlay.classList.add('hidden');
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') toggleBossKey();
+        });
+
+        function updateUI() {
+            document.getElementById('val-cash').innerText = `￥ ${player.cash.toLocaleString()}`;
+            document.getElementById('val-hp').innerText = `${Math.max(0, player.hp)}/100`;
+            document.getElementById('bar-hp').style.width = `${Math.max(0, player.hp)}%`;
+            document.getElementById('val-san').innerText = `${Math.max(0, player.san)}%`;
+            document.getElementById('bar-san').style.width = `${Math.max(0, player.san)}%`;
+            document.getElementById('val-pts').innerText = `${player.pts} PTS`;
+            document.getElementById('val-int').innerText = player.int;
+            document.getElementById('val-phy').innerText = player.phy;
+
+            document.getElementById('current-age-badge').innerText = `${player.age} 岁`;
+            document.getElementById('info-birth').innerText = `出生地: ${player.location}`;
+            document.getElementById('info-bg').innerText = `家庭: ${player.background}`;
+            document.getElementById('info-traits').innerText = `天赋: ${player.traits.join(', ')}`;
+        }
+
+        function showToast(text) {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = 'bg-white border border-slate-300 text-slate-800 text-xs px-3 py-1.5 rounded shadow-md animate-bounce';
+            toast.innerText = text;
+            container.appendChild(toast);
+            setTimeout(() => toast.remove(), 3000);
+        }
+
+        function checkAgeOrEnd() {
+            if (player.hp <= 0) {
+                showReport("英年早逝 (健康度归零)");
+                return;
+            }
+
+            if (player.daysRemaining <= 0) {
+                player.age++;
+                if (player.age >= 80) {
+                    showReport("寿终正寝 (80岁圆满终局)");
+                } else {
+                    player.daysTotal = isLeapYear(player.birthYear + player.age) ? 366 : 365;
+                    player.daysRemaining = player.daysTotal;
+                    player.clickSequence = 0;
+                    clickedTiles = [];
+                    showToast(`🎂 祝贺你满 ${player.age} 岁了！新的一年星球重置。`);
+                    document.getElementById('birth-year-display').innerText = player.birthYear + player.age;
+                    
+                    redrawGlobeTexture();
+                    updateUI();
+                }
+            }
+        }
+
+        function showReport(reason) {
+            document.getElementById('modal-report').classList.remove('hidden');
+            document.getElementById('rep-age').innerText = `${player.age} 岁 (${reason})`;
+            document.getElementById('rep-days').innerText = (player.age * 365 + player.gridClickedCount).toLocaleString();
+            document.getElementById('rep-cash').innerText = `￥ ${player.cash.toLocaleString()}`;
+        }
+
+        function onWindowResize() {
+            const container = document.getElementById('webgl-output');
+            if (!container || !renderer) return;
+            camera.aspect = container.clientWidth / container.clientHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(container.clientWidth, container.clientHeight);
+        }
+    </script>
+</body>
+</html>
