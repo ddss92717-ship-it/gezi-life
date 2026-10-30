@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2026集团财务预算审计表</title>
+    <style>
+        :root {
+            --excel-green: #217346;
+            --excel-gray: #f3f3f3;
+            --excel-border: #d4d4d4;
+            --text-main: #333;
+            --text-muted: #666;
+        }
+        * { box-sizing: border-box; user-select: none; }
+        body {
+            margin: 0; padding: 0; font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+            background-color: #f9f9f9; color: var(--text-main);
+            height: 100vh; display: flex; flex-direction: column; overflow: hidden;
+        }
+        
+        /* 顶部 Excel 伪装外壳 */
+        .ribbon { background-color: var(--excel-green); color: white; padding: 5px 15px; font-size: 13px; display: flex; gap: 15px; }
+        .ribbon span { cursor: pointer; opacity: 0.8; }
+        .ribbon span:hover { opacity: 1; }
+        .formula-bar { background: white; border-bottom: 1px solid var(--excel-border); padding: 5px 10px; display: flex; align-items: center; font-size: 13px; }
+        .formula-bar .fx { color: var(--text-muted); margin-right: 10px; font-style: italic; }
+        
+        /* 主布局 */
+        .main-container { display: flex; flex: 1; overflow: hidden; }
+        
+        /* 左侧属性面板 */
+        .sidebar { width: 220px; background: white; border-right: 1px solid var(--excel-border); padding: 15px; display: flex; flex-direction: column; gap: 15px; z-index: 10; box-shadow: 2px 0 5px rgba(0,0,0,0.05); }
+        .stat-item { border: 1px solid var(--excel-border); padding: 10px; border-radius: 4px; background: var(--excel-gray); }
+        .stat-title { font-size: 12px; color: var(--text-muted); margin-bottom: 5px; }
+        .stat-value { font-size: 18px; font-weight: bold; }
+        .stat-value.cash { color: #e67e22; }
+        .stat-value.hp { color: #e74c3c; }
+        .stat-value.san { color: #3498db; }
+        .stat-value.pts { color: #9b59b6; }
+
+        /* 中间网格区 */
+        .grid-wrapper { flex: 1; overflow-y: auto; padding: 10px; position: relative; background: white; }
+        .col-headers, .row-headers { display: flex; position: absolute; }
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(40px, 1fr));
+            gap: 2px;
+            padding-left: 30px; padding-top: 20px; /* 留出标尺空间 */
+        }
+        .cell {
+            background: white; border: 1px solid var(--excel-border);
+            height: 40px; display: flex; align-items: center; justify-content: center;
+            font-size: 10px; color: #ccc; cursor: pointer; position: relative; overflow: hidden;
+            transition: all 0.2s;
+        }
+        .cell:hover { background: #e8f4fd; border-color: #3498db; }
+        .cell.consumed { background: var(--excel-gray); color: var(--text-muted); cursor: default; border-color: #eee; }
+        .cell.consumed:hover { background: var(--excel-gray); border-color: #eee; }
+        .cell.event-cell { background: #fff3cd; border-color: #ffeeba; animation: flash 0.5s; }
+        .cell.date-display { font-size: 11px; color: #333; font-weight: bold; }
+        
+        /* 动画特效 */
+        @keyframes flash {
+            0% { background: #f1c40f; transform: scale(1.1); z-index: 2; }
+            50% { background: #e74c3c; color: white; }
+            100% { background: white; transform: scale(1); }
+        }
+
+        /* 骰子按钮 */
+        .dice-btn {
+            position: fixed; bottom: 30px; right: 30px;
+            width: 60px; height: 60px; border-radius: 50%;
+            background: var(--excel-green); color: white;
+            font-size: 30px; border: none; cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            display: flex; align-items: center; justify-content: center;
+            z-index: 20; transition: transform 0.1s;
+        }
+        .dice-btn:active { transform: scale(0.9); }
+        .dice-btn:hover { background: #1a5c36; }
+
+        /* 弹窗系统 */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.5); display: none; align-items: center; justify-content: center; z-index: 100;
+        }
+        .modal-overlay.active { display: flex; }
+        .modal-content {
+            background: white; border-radius: 8px; width: 450px; max-width: 90%;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2); overflow: hidden;
+            animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        @keyframes popIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        .modal-header { background: #f8f9fa; padding: 15px; border-bottom: 1px solid #eee; font-weight: bold; display: flex; justify-content: space-between; }
+        .modal-body { padding: 20px; font-size: 14px; line-height: 1.6; }
+        .modal-footer { padding: 15px; border-top: 1px solid #eee; display: flex; gap: 10px; flex-direction: column; }
+        .btn-choice {
+            padding: 12px; border: 1px solid #ddd; background: white; border-radius: 5px;
+            cursor: pointer; text-align: left; transition: all 0.2s; font-size: 14px;
+        }
+        .btn-choice:hover { background: #f0f8ff; border-color: #3498db; color: #2980b9; }
+        .btn-choice .effect-text { font-size: 12px; color: #e74c3c; margin-top: 4px; display: block; }
+
+        /* Boss Key 遮挡层 */
+        #boss-layer {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: white; z-index: 9999; display: none; padding: 20px;
+            font-family: 'Courier New', Courier, monospace; color: #333;
+        }
+        .boss-table { width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 12px; }
+        .boss-table th, .boss-table td { border: 1px solid #999; padding: 8px; text-align: right; }
+        .boss-table th { text-align: center; background: #eee; }
+        
+        /* 隐藏的标尺 */
+        .ruler-corner { position: absolute; top: 10px; left: 10px; width: 20px; height: 20px; background: var(--excel-gray); border: 1px solid var(--excel-border); }
+        .top-ruler { position: absolute; top: 10px; left: 30px; right: 10px; height: 20px; display: flex; }
+        .top-ruler div { flex: 1; text-align: center; font-size: 10px; color: #888; border-right: 1px solid var(--excel-border); background: var(--excel-gray); }
+    </style>
+</head>
+<body>
+
+    <!-- Boss Key 假账本 -->
+    <div id="boss-layer">
+        <h2>2026集团财务预算审计表（绝密）</h2>
+        <table class="boss-table">
+            <thead><tr><th>项目</th><th>Q1预算(万)</th><th>Q2预算(万)</th><th>同比变动</th><th>审计结论</th></tr></thead>
+            <tbody>
+                <tr><td>研发部门人力成本</td><td>1,200.00</td><td>1,350.00</td><td>+12.5%</td><td>合规</td></tr>
+                <tr><td>市场营销费用</td><td>850.00</td><td>920.00</td><td>+8.2%</td><td>需复核</td></tr>
+                <tr><td>行政及差旅支出</td><td>320.00</td><td>280.00</td><td>-12.5%</td><td>合规</td></tr>
+                <tr><td>固定资产折旧</td><td>450.00</td><td>450.00</td><td>0.00%</td><td>合规</td></tr>
+                <tr><td>应缴税费（增值税等）</td><td>680.00</td><td>710.00</td><td>+4.4%</td><td>已计提</td></tr>
+                <tr><td>其他营业外支出</td><td>50.00</td><td>120.00</td><td>+140%</td><td>重点核查</td></tr>
+            </tbody>
+        </table>
+        <p style="margin-top: 30px; color: #999; font-size: 12px;">* 请确认所有单元格已核对，勿将此文件外传。</p>
+    </div>
+
+    <!-- 主界面 -->
+    <div id="game-ui">
+        <div class="ribbon">
+            <span>文件</span><span>开始</span><span>插入</span><span>页面布局</span><span>公式</span><span>数据</span><span>审阅</span><span>视图</span>
+        </div>
+        <div class="formula-bar">
+            <span class="fx">fx</span>
+            <span id="formula-text">=SUM(A1:Z100)</span>
+        </div>
+
+        <div class="main-container">
+            <!-- 侧边栏面板 -->
+            <div class="sidebar">
+                <div class="stat-item">
+                    <div class="stat-title">当前年龄 / 剩余天数</div>
+                    <div class="stat-value" style="color: #2c3e50;">
+                        <span id="ui-age">0</span>岁 / <span id="ui-days">0</span>天
+                    </div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-title">现金资产 (CASH)</div>
+                    <div class="stat-value cash" id="ui-cash">¥0</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-title">健康值 (HP)</div>
+                    <div class="stat-value hp" id="ui-hp">100</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-title">快乐值 (SAN)</div>
+                    <div class="stat-value san" id="ui-san">100</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-title">社会声望 (PTS)</div>
+                    <div class="stat-value pts" id="ui-pts">0</div>
+                </div>
+                <button class="btn-choice" style="margin-top: auto; text-align: center; font-size: 12px;" onclick="restartGame()">重新投胎</button>
+            </div>
+
+            <!-- 网格区 -->
+            <div class="grid-wrapper" id="grid-wrapper">
+                <div class="ruler-corner"></div>
+                <div class="top-ruler" id="top-ruler"></div>
+                <div class="grid-container" id="grid-container">
+                    <!-- 格子由 JS 生成 -->
+                </div>
+            </div>
+        </div>
+
+        <button class="dice-btn" id="dice-btn" onclick="rollDice()">🎲</button>
+    </div>
+
+    <!-- 事件弹窗 -->
+    <div class="modal-overlay" id="event-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span id="modal-title">系统提示</span>
+                <span style="color:#999; cursor:pointer;" onclick="closeModal()">×</span>
+            </div>
+            <div class="modal-body" id="modal-desc">
+                这里显示事件描述...
+            </div>
+            <div class="modal-footer" id="modal-options">
+                <!-- 选项按钮由 JS 生成 -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ================= 核心数据设定 =================
+        let state = {
+            age: 0,
+            daysLeft: 365,
+            currentDayIndex: 0, // 0 代表 1月1日
+            dayCells: [], // 存储每个格子的状态
+            stats: { cash: 0, hp: 100, san: 100, pts: 0 },
+            eventsTriggered: 0,
+            isGameOver: false
+        };
+
+        // 真实的日期数组 (平年365天)
+        function getDatesForYear(year) {
+            const isLeap = (year % 4 === 0 && year % 100 !== 0) || (year % 400 === 0);
+            const days = isLeap ? 366 : 365;
+            const dates = [];
+            const start = new Date(year, 0, 1);
+            for (let i = 0; i < days; i++) {
+                const d = new Date(start);
+                d.setDate(start.getDate() + i);
+                dates.push(`${d.getMonth() + 1}月${d.getDate()}日`);
+            }
+            return dates;
+        }
+
+        // ================= 事件库（中国式人生真实事件） =================
+        // 设定：按年龄段限制，必须符合现实逻辑
+        const eventDB = [
+            // 0-6岁
+            { ageMin: 0, ageMax: 6, title: "早教班的抉择", desc: "隔壁小孩都报了双语早教班，父母看着你，犹豫要不要也花这笔钱。", options: [
+                { text: "报吧，不能输在起跑线上", effect: { cash: -10000, san: -5, pts: 10 } },
+                { text: "快乐童年最重要", effect: { san: 10, hp: 5 } }
+            ]},
+            { ageMin: 0, ageMax: 6, title: "幼儿园的霸凌", desc: "你在幼儿园被抢了玩具，还被推倒在地。", options: [
+                { text: "告诉老师", effect: { san: 5, pts: -5 } },
+                { text: "自己抢回来", effect: { hp: -5, pts: 10 } }
+            ]},
+            // 7-12岁
+            { ageMin: 7, ageMax: 12, title: "疯狂的周末", desc: "周末到了，父母给你报了奥数和英语培优班。", options: [
+                { text: "乖乖去上课", effect: { san: -15, pts: 15 } },
+                { text: "装病逃课去玩", effect: { san: 15, hp: 5, pts: -10 } }
+            ]},
+            // 13-17岁
+            { ageMin: 13, ageMax: 17, title: "普职分流", desc: "中考成绩出来了，刚好在普高线边缘。", options: [
+                { text: "花钱去私立高中", effect: { cash: -50000, san: -10, pts: 10 } },
+                { text: "去读中专学门手艺", effect: { cash: 0, pts: -20 } }
+            ]},
+            { ageMin: 13, ageMax: 17, title: "青春期的叛逆", desc: "你偷偷去网吧被父亲抓个正着，爆发了激烈的争吵。", options: [
+                { text: "认错服软", effect: { san: -10, pts: 5 } },
+                { text: "离家出走半天", effect: { hp: -10, san: 10 } }
+            ]},
+            // 18-22岁
+            { ageMin: 18, ageMax: 22, title: "天坑专业", desc: "你被调剂到了生化环材专业，大一非常迷茫。", options: [
+                { text: "疯狂考证准备转专业", effect: { san: -20, pts: 20 } },
+                { text: "躺平打游戏度过", effect: { san: 10, pts: -20 } }
+            ]},
+            // 23-30岁
+            { ageMin: 23, ageMax: 30, title: "大厂 996 抉择", desc: "主管要求全员无偿加班，冲刺年底绩效。", options: [
+                { text: "内卷到底", effect: { cash: 20000, hp: -20, pts: 10 } },
+                { text: "准时下班", effect: { cash: 0, hp: 10, pts: -10 } }
+            ]},
+            { ageMin: 23, ageMax: 30, title: "彩礼与房贷", desc: "准备结婚，对方要求高昂彩礼和一线城市首付。", options: [
+                { text: "掏空六个钱包", effect: { cash: -200000, hp: -10, san: -10, pts: 10 } },
+                { text: "裸婚", effect: { cash: 0, san: 10, pts: -20 } }
+            ]},
+            // 31-50岁
+            { ageMin: 31, ageMax: 50, title: "35岁危机", desc: "HR约谈，暗示你主动离职，N+1赔偿。", options: [
+                { text: "拿赔偿去创业", effect: { cash: -50000, hp: -15, san: -20, pts: 10 } },
+                { text: "降薪跳槽苟着", effect: { cash: -10000, hp: -10, san: -10 } }
+            ]},
+            { ageMin: 31, ageMax: 50, title: "父母大病", desc: "母亲突发脑梗，ICU每天费用高达几千。", options: [
+                { text: "卖房全力救治", effect: { cash: -300000, hp: -10, san: -20, pts: 20 } },
+                { text: "保守治疗", effect: { cash: -50000, san: -30, pts: -10 } }
+            ]},
+            // 51-80岁
+            { ageMin: 51, ageMax: 80, title: "养老与带娃", desc: "退休了，儿女希望你帮忙带孙子。", options: [
+                { text: "去带孙子", effect: { hp: -15, san: -10, pts: 10 } },
+                { text: "去旅游，享受生活", effect: { cash: -50000, hp: 10, san: 20 } }
+            ]}
+        ];
+
+        // ================= 游戏初始化与渲染 =================
+        const gridContainer = document.getElementById('grid-container');
+        const topRuler = document.getElementById('top-ruler');
+
+        function initGame() {
+            // 随机开局属性
+            state.age = 0;
+            state.stats.cash = Math.floor(Math.random() * 50000) + 10000; // 随机家境
+            state.stats.hp = 100;
+            state.stats.san = Math.floor(Math.random() * 30) + 70;
+            state.stats.pts = Math.floor(Math.random() * 20);
+            state.isGameOver = false;
+            state.eventsTriggered = 0;
+            
+            startNewYear();
+            updateUI();
+        }
+
+        function startNewYear() {
+            const dates = getDatesForYear(2000 + state.age);
+            state.daysLeft = dates.length;
+            state.currentDayIndex = 0;
+            state.dayCells = dates.map((dateStr, index) => ({
+                id: index,
+                date: dateStr,
+                status: 'empty' // empty, consumed, event
+            }));
+
+            renderGrid();
+            updateUI();
+        }
+
+        function renderGrid() {
+            gridContainer.innerHTML = '';
+            // 生成顶部标尺 (A, B, C...)
+            topRuler.innerHTML = '';
+            for (let i = 0; i < 30; i++) {
+                const div = document.createElement('div');
+                div.innerText = String.fromCharCode(65 + (i % 26));
+                topRuler.appendChild(div);
+            }
+
+            // 生成格子
+            state.dayCells.forEach(cell => {
+                const el = document.createElement('div');
+                el.className = 'cell';
+                el.id = `cell-${cell.id}`;
+                if (cell.status === 'consumed') {
+                    el.classList.add('consumed', 'date-display');
+                    el.innerText = cell.date;
+                }
+                el.onclick = () => handleCellClick(cell.id);
+                gridContainer.appendChild(el);
+            });
+        }
+
+        // ================= 核心交互逻辑 =================
+        function handleCellClick(cellId, isDice = false) {
+            if (state.isGameOver) return;
+            const cell = state.dayCells[cellId];
+            if (cell.status === 'consumed') return;
+
+            // 1. 消耗天数
+            state.daysLeft--;
+            state.currentDayIndex++;
+            
+            // 2. 更新格子状态
+            cell.status = 'consumed';
+            const el = document.getElementById(`cell-${cellId}`);
+            
+            // 触发彩色闪光特效
+            el.style.animation = 'none'; // 重置动画
+            el.offsetHeight; // 触发重绘
+            el.style.animation = 'flash 0.5s';
+            
+            setTimeout(() => {
+                el.classList.add('consumed', 'date-display');
+                el.innerText = cell.date;
+            }, isDice ? 150 : 300); // 骰子连点间隔稍微短一点
+
+            updateUI();
+
+            // 3. 判定是否触发事件 (每3-5格一次)
+            state.eventsTriggered++;
+            const triggerThreshold = Math.floor(Math.random() * 3) + 3; // 3, 4, 5
+            if (state.eventsTriggered >= triggerThreshold) {
+                state.eventsTriggered = 0; // 重置计数器
+                setTimeout(() => triggerEvent(), 600); // 等闪烁结束再弹窗
+            }
+
+            // 4. 检查是否跨年或死亡
+            checkGameStatus();
+        }
+
+        function checkGameStatus() {
+            if (state.isGameOver) return;
+
+            if (state.stats.hp <= 0) {
+                endGame("你的健康值归零，因过度劳累/突发疾病，英年早逝。");
+                return;
+            }
+            if (state.stats.cash < -500000) {
+                endGame("你的负债过高，资金链彻底断裂，在绝望中结束了这一生。");
+                return;
+            }
+
+            if (state.daysLeft <= 0) {
+                state.age++;
+                if (state.age > 80) {
+                    endGame("你活到了80岁，寿终正寝。回顾一生，皆是定数。");
+                    return;
+                }
+                // 跨年
+                setTimeout(() => {
+                    alert(`🎉 恭喜你活到了 ${state.age} 岁！新的一年开始了。`);
+                    startNewYear();
+                }, 500);
+            }
+        }
+
+        function rollDice() {
+            if (state.isGameOver) return;
+            const num = Math.floor(Math.random() * 6) + 1;
+            
+            // 找出所有未消耗的格子
+            const availableCells = state.dayCells.filter(c => c.status === 'empty');
+            if (availableCells.length === 0) return;
+            
+            // 随机选 num 个
+            const count = Math.min(num, availableCells.length);
+            const selected = [];
+            while (selected.length < count) {
+                const randIdx = Math.floor(Math.random() * availableCells.length);
+                const cell = availableCells.splice(randIdx, 1)[0];
+                selected.push(cell.id);
+            }
+
+            // 依次点亮
+            selected.forEach((cellId, index) => {
+                setTimeout(() => {
+                    handleCellClick(cellId, true);
+                }, index * 200); // 200ms 间隔
+            });
+        }
+
+        // ================= 事件弹窗系统 =================
+        function triggerEvent() {
+            if (state.isGameOver) return;
+            
+            // 根据当前年龄筛选事件
+            const availableEvents = eventDB.filter(e => state.age >= e.ageMin && state.age <= e.ageMax);
+            if (availableEvents.length === 0) return;
+
+            const ev = availableEvents[Math.floor(Math.random() * availableEvents.length)];
+            
+            document.getElementById('modal-title').innerText = `【${state.age}岁】${ev.title}`;
+            document.getElementById('modal-desc').innerText = ev.desc;
+            
+            const optionsDiv = document.getElementById('modal-options');
+            optionsDiv.innerHTML = '';
+            
+            ev.options.forEach(opt => {
+                const btn = document.createElement('button');
+                btn.className = 'btn-choice';
+                
+                // 生成效果文本
+                let effectStr = [];
+                if (opt.effect.cash) effectStr.push(`现金 ${opt.effect.cash > 0 ? '+' : ''}${opt.effect.cash}`);
+                if (opt.effect.hp) effectStr.push(`健康 ${opt.effect.hp > 0 ? '+' : ''}${opt.effect.hp}`);
+                if (opt.effect.san) effectStr.push(`快乐 ${opt.effect.san > 0 ? '+' : ''}${opt.effect.san}`);
+                if (opt.effect.pts) effectStr.push(`声望 ${opt.effect.pts > 0 ? '+' : ''}${opt.effect.pts}`);
+                
+                btn.innerHTML = `${opt.text} <span class="effect-text">${effectStr.join(' | ')}</span>`;
+                btn.onclick = () => {
+                    // 应用数值
+                    if (opt.effect.cash) state.stats.cash += opt.effect.cash;
+                    if (opt.effect.hp) state.stats.hp += opt.effect.hp;
+                    if (opt.effect.san) state.stats.san += opt.effect.san;
+                    if (opt.effect.pts) state.stats.pts += opt.effect.pts;
+                    
+                    closeModal();
+                    updateUI();
+                    checkGameStatus();
+                };
+                optionsDiv.appendChild(btn);
+            });
+
+            document.getElementById('event-modal').classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('event-modal').classList.remove('active');
+        }
+
+        // ================= UI 与数据同步 =================
+        function updateUI() {
+            document.getElementById('ui-age').innerText = state.age;
+            document.getElementById('ui-days').innerText = state.daysLeft;
+            document.getElementById('ui-cash').innerText = `¥${state.stats.cash.toLocaleString()}`;
+            
+            // 健康、快乐、声望进度条颜色
+            const hpEl = document.getElementById('ui-hp');
+            hpEl.innerText = Math.max(0, state.stats.hp);
+            hpEl.style.color = state.stats.hp < 30 ? '#e74c3c' : '#27ae60';
+
+            const sanEl = document.getElementById('ui-san');
+            sanEl.innerText = Math.max(0, state.stats.san);
+            sanEl.style.color = state.stats.san < 30 ? '#e74c3c' : '#3498db';
+
+            const ptsEl = document.getElementById('ui-pts');
+            ptsEl.innerText = state.stats.pts;
+            
+            // 侧边栏公式栏伪装
+            document.getElementById('formula-text').innerText = `=VLOOKUP("LIFE", A${state.age}:Z${state.daysLeft}, 8, FALSE)`;
+        }
+
+        function endGame(reason) {
+            state.isGameOver = true;
+            alert(`【人生终局】\n\n${reason}\n\n最终年龄：${state.age}岁\n现金：¥${state.stats.cash}\n健康：${state.stats.hp}\n快乐：${state.stats.san}\n声望：${state.stats.pts}`);
+            restartGame();
+        }
+
+        function restartGame() {
+            if (confirm("确定要抹除这一生，重新投胎吗？")) {
+                initGame();
+            }
+        }
+
+        // ================= Boss Key 监听 (Esc) =================
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                const bossLayer = document.getElementById('boss-layer');
+                const gameUI = document.getElementById('game-ui');
+                if (bossLayer.style.display === 'block') {
+                    bossLayer.style.display = 'none';
+                    gameUI.style.display = 'block';
+                } else {
+                    bossLayer.style.display = 'block';
+                    gameUI.style.display = 'none';
+                }
+            }
+        });
+
+        // 启动游戏
+        initGame();
+    </script>
+</body>
+</html>
