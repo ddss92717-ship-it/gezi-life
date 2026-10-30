@@ -1,4 +1,6 @@
-const EffectCanvas=document.getElementById("effectCanvas");
+import Utils from "./utils.js";
+
+let EffectCanvas=document.getElementById("effectCanvas");
 const ctx=EffectCanvas.getContext("2d");
 let particleList=[];
 let animId=null;
