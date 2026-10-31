@@ -49,7 +49,7 @@
             <div class="h-3 w-px bg-slate-300 mx-1"></div>
             <div class="flex items-center space-x-1 text-slate-500">
                 <i data-lucide="globe" class="w-3.5 h-3.5"></i>
-                <span>拖动鼠标旋转 3D 六边形蜂窝星球，点击格子按顺序记录日历</span>
+                <span>拖动鼠标旋转六边形蜂窝星球，点击格子按顺序记录日历</span>
             </div>
         </div>
     </header>
@@ -170,7 +170,7 @@
             </div>
             <div class="p-5 text-xs text-slate-600 space-y-3">
                 <p class="font-semibold text-slate-800 text-sm">欢迎来到 3D 模拟人生宇宙！</p>
-                <p>已完美升级为<strong>纯正的六边形蜂窝网格实体球</strong>：球面上布满无缝咬合的标准六边形蜂窝，点击后变灰并依次打印日历！</p>
+                <p>已彻底去除右上角过曝高光，全角度视野均匀清晰，六边形网格和日历文字完美呈现！</p>
                 <ul class="list-disc list-inside space-y-1 bg-slate-50 p-2.5 rounded border border-slate-200">
                     <li>顺畅的 360 度旋转。</li>
                     <li>第 1 次点击 = 1月1日 元旦，点击后变灰打印日期。</li>
@@ -296,7 +296,7 @@
         let previousMousePosition = { x: 0, y: 0 };
 
         let canvasTexture, canvasCtx, textureCanvas;
-        let hexTiles = []; // 存储所有六边形格子列表及其中心点
+        let hexTiles = [];
 
         const solarTerms = {
             "1-1": "元旦", "2-4": "立春", "2-14": "情人节", "3-5": "惊蛰", 
@@ -347,7 +347,7 @@
             return (year % 4 === 0 && year % 100 !== 0) || (year % 400 === 0);
         }
 
-        // ===== 核心：生成完美的六边形蜂窝纹理贴图 =====
+        // ===== 核心：生成完美无曝高光的六边形蜂窝星球 =====
         function initHexHoneycombGlobe() {
             const container = document.getElementById('webgl-output');
             container.innerHTML = '';
@@ -361,35 +361,28 @@
             renderer.setPixelRatio(window.devicePixelRatio);
             container.appendChild(renderer.domElement);
 
-            const ambientLight = new THREE.AmbientLight(0xffffff, 0.85);
+            // 彻底去除方向强光，只用柔和的纯环境光，杜绝任何大面积过曝高光
+            const ambientLight = new THREE.AmbientLight(0xffffff, 1.0);
             scene.add(ambientLight);
-            
-            const dirLight = new THREE.DirectionalLight(0xffffff, 0.6);
-            dirLight.position.set(15, 25, 20);
-            scene.add(dirLight);
 
             globeGroup = new THREE.Group();
             scene.add(globeGroup);
 
-            // 创建高分辨率纹理画布 (2048x1024)
             textureCanvas = document.createElement('canvas');
             textureCanvas.width = 2048;
             textureCanvas.height = 1024;
             canvasCtx = textureCanvas.getContext('2d');
 
-            // 预先生成所有六边形网格的中心与行列坐标
             generateHexGridCoordinates();
-
             redrawHexGlobeTexture();
 
             canvasTexture = new THREE.CanvasTexture(textureCanvas);
             canvasTexture.needsUpdate = true;
 
             const sphereGeom = new THREE.SphereGeometry(4.5, 64, 64);
-            const sphereMat = new THREE.MeshStandardMaterial({
-                map: canvasTexture,
-                roughness: 0.2,
-                metalness: 0.05
+            // 使用 MeshBasicMaterial，不受光源强弱影响，全方位亮度绝对均匀，永不过曝
+            const sphereMat = new THREE.MeshBasicMaterial({
+                map: canvasTexture
             });
 
             globeMesh = new THREE.Mesh(sphereGeom, sphereMat);
@@ -409,13 +402,12 @@
             animate();
         }
 
-        // 数学计算：在展平的 UV 纹理上排布标准六边形蜂窝
         function generateHexGridCoordinates() {
             hexTiles = [];
             const w = textureCanvas.width;
             const h = textureCanvas.height;
             
-            const hexRadius = 38; // 六边形大小
+            const hexRadius = 38;
             const dx = hexRadius * Math.sqrt(3);
             const dy = hexRadius * 1.5;
 
@@ -427,7 +419,7 @@
                         id: id++,
                         x: x,
                         y: y,
-                        radius: hexRadius - 2, // 留出间隙形成蜂窝凹槽线
+                        radius: hexRadius - 2,
                         lit: false,
                         label: '',
                         isFestival: false
@@ -436,7 +428,6 @@
             }
         }
 
-        // 绘制单个六边形路径
         function drawHexagonPath(ctx, x, y, r) {
             ctx.beginPath();
             for (let i = 0; i < 6; i++) {
@@ -449,35 +440,29 @@
             ctx.closePath();
         }
 
-        // 刷新渲染整个六边形蜂窝星球贴图
         function redrawHexGlobeTexture() {
             const w = textureCanvas.width;
             const h = textureCanvas.height;
 
-            // 1. 纯白亮面背景
             canvasCtx.fillStyle = '#f8fafc';
             canvasCtx.fillRect(0, 0, w, h);
 
-            // 2. 遍历并绘制所有六边形格子
             hexTiles.forEach(tile => {
                 drawHexagonPath(canvasCtx, tile.x, tile.y, tile.radius);
 
                 if (tile.lit) {
-                    // 已点击变灰并高亮边框
                     canvasCtx.fillStyle = '#94a3b8';
                     canvasCtx.fill();
                     canvasCtx.strokeStyle = '#334155';
                     canvasCtx.lineWidth = 4;
                     canvasCtx.stroke();
 
-                    // 写入日历文字
                     canvasCtx.fillStyle = tile.isFestival ? '#15803d' : '#0f172a';
                     canvasCtx.font = 'bold 20px sans-serif';
                     canvasCtx.textAlign = 'center';
                     canvasCtx.textBaseline = 'middle';
                     canvasCtx.fillText(tile.label, tile.x, tile.y);
                 } else {
-                    // 未点击的白瓷六边形蜂窝
                     canvasCtx.fillStyle = '#ffffff';
                     canvasCtx.fill();
                     canvasCtx.strokeStyle = '#cbd5e1';
@@ -517,7 +502,6 @@
             isDragging = false;
         }
 
-        // 点击 3D 球体表面，通过 UV 坐标精准命中点击的六边形
         function onPointerClick(e) {
             const container = document.getElementById('webgl-output');
             const rect = container.getBoundingClientRect();
@@ -533,9 +517,8 @@
                     const clickX = uv.x * textureCanvas.width;
                     const clickY = (1 - uv.y) * textureCanvas.height;
 
-                    // 寻找距离点击位置最近的六边形格子
                     let closest = null;
-                    let minDist = 40; // 判定半径
+                    let minDist = 40;
                     hexTiles.forEach(tile => {
                         if (!tile.lit) {
                             let dist = Math.hypot(tile.x - clickX, tile.y - clickY);
@@ -553,12 +536,11 @@
             }
         }
 
-        // 点亮六边形格子并严格按顺序记录公历日历
         function lightUpHexTile(tile) {
             tile.lit = true;
             player.daysRemaining--;
             player.gridClickedCount++;
-            player.clickSequence++; // 点击序号严格递增 (第1次=1月1日)
+            player.clickSequence++; // 按顺序递增 (第1次=1月1日)
 
             document.getElementById('days-remaining').innerText = player.daysRemaining;
 
