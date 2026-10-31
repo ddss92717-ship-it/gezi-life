@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>人生财务与风险评估表_FY2026.xlsx - Excel (365阶放大版多面体星球)</title>
+    <title>人生财务与风险评估表_FY2026.xlsx - Excel (视角平滑旋转打卡星球)</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Three.js 3D 库 -->
@@ -49,17 +49,17 @@
             <div class="h-3 w-px bg-slate-300 mx-1"></div>
             <div class="flex items-center space-x-1 text-slate-500">
                 <i data-lucide="globe" class="w-3.5 h-3.5"></i>
-                <span>365块1.5倍放大立体多面体星球：拖动鼠标旋转，点击按顺序记录日历</span>
+                <span>点击任意积木块：视角平滑转至正面，点亮彩色日历，熄灭后为浅灰色</span>
             </div>
         </div>
     </header>
 
     <!-- 公式栏 -->
     <div class="bg-white border-b border-slate-200 px-3 py-1 flex items-center space-x-2 text-xs text-slate-600 shrink-0">
-        <span class="font-mono bg-slate-100 px-2 py-0.5 rounded border text-slate-500 font-semibold">SOLID_POLYHEDRON_365</span>
+        <span class="font-mono bg-slate-100 px-2 py-0.5 rounded border text-slate-500 font-semibold">SMOOTH_ROTATE_CALENDAR</span>
         <span class="italic font-serif text-slate-400">fx</span>
         <div class="h-4 w-px bg-slate-200"></div>
-        <span class="font-mono text-slate-700">=SUM(365_SOLID_POLYHEDRON_BLOCKS_X1.5) /* 1.5倍放大立体多面体星球 */</span>
+        <span class="font-mono text-slate-700">=SUM(ACTIVE_BLOCK_AUTO_ROTATE_TO_FRONT) /* 点击自动转正彩打 */</span>
     </div>
 
     <!-- 主界面：侧边栏 + 3D 星球视口 -->
@@ -130,8 +130,8 @@
 
             <div class="text-[10px] text-slate-400 space-y-1">
                 <p>💡 操作提示:</p>
-                <p>1. 拖动鼠标旋转 3D 立体多面体星球。</p>
-                <p>2. 点击任意立体块按顺序记录日历。</p>
+                <p>1. 点击任意方块，星球自动平滑旋转至正面展示。</p>
+                <p>2. 已打卡块呈现炫彩高亮，未点亮块为优雅浅灰色。</p>
             </div>
         </aside>
 
@@ -165,15 +165,14 @@
             <div class="bg-[#107c41] text-white px-4 py-3 flex justify-between items-center">
                 <h3 class="font-bold flex items-center space-x-2">
                     <i data-lucide="globe" class="w-4 h-4"></i>
-                    <span>《格子人生：放大版立体多面体星球》</span>
+                    <span>《格子人生：视角平滑转正打卡版》</span>
                 </h3>
             </div>
             <div class="p-5 text-xs text-slate-600 space-y-3">
                 <p class="font-semibold text-slate-800 text-sm">欢迎来到 3D 模拟人生宇宙！</p>
-                <p>已将 365 块 3D 独立多面体切块<strong>放大至约 1.5 倍</strong>：块与块之间无缝咬合更紧凑，没有任何球面拉伸变形！</p>
+                <p><strong>全新丝滑交互升级</strong>：点击任意一天后，星球会自动平滑将该块转到正前方展示，点亮时呈现绚丽彩色，未点亮则为浅灰色！</p>
                 <ul class="list-disc list-inside space-y-1 bg-slate-50 p-2.5 rounded border border-slate-200">
-                    <li>顺畅的 360 度手势/鼠标旋转。</li>
-                    <li>第 1 次点击 = 1月1日 元旦，点击后立体块变灰并打印日历。</li>
+                    <li>点击自动定向平滑旋转（带缓动阻尼）。</li>
                     <li>按 <strong>Esc</strong> 键一键伪装摸鱼！</li>
                 </ul>
             </div>
@@ -240,7 +239,7 @@
         <div class="bg-white rounded-lg shadow-2xl max-w-xl w-full border border-slate-300 overflow-hidden font-mono text-xs">
             <div class="bg-[#107c41] text-white p-4 text-center">
                 <h2 class="text-base font-bold">2026 终极人生档案与资产清算审计报告</h2>
-                <p class="text-[11px] opacity-80 mt-1">—— 放大版立体多面体星球终局 ——</p>
+                <p class="text-[11px] opacity-80 mt-1">—— 丝滑转正打卡终局 ——</p>
             </div>
             <div class="p-6 space-y-4 text-slate-700">
                 <div class="bg-slate-50 p-3 rounded border border-slate-200">
@@ -262,7 +261,7 @@
         </div>
     </div>
 
-    <!-- 3D 1.5倍放大立体多面体星球脚本 -->
+    <!-- 3D 丝滑平滑转正打卡脚本 -->
     <script>
         lucide.createIcons();
 
@@ -290,11 +289,18 @@
         let isBossKeyActive = false;
 
         let scene, camera, renderer, globeGroup;
-        let polyBlocks = []; // 存储所有 3D 实体多面体小块对象
+        let polyBlocks = [];
         let raycaster = new THREE.Raycaster();
         let mouse = new THREE.Vector2();
         let isDragging = false;
         let previousMousePosition = { x: 0, y: 0 };
+
+        // 动画过渡状态控制
+        let isAnimatingToFront = false;
+        let targetRotation = new THREE.Euler();
+        let startRotation = new THREE.Euler();
+        let animationProgress = 0;
+        const animationDuration = 45.0; // 动画帧数（控制旋转速度，数值越大转得越慢越稳）
 
         const solarTerms = {
             "1-1": "元旦", "2-4": "立春", "2-14": "情人节", "3-5": "惊蛰", 
@@ -328,7 +334,7 @@
                 { name: '工薪家庭', cash: 5000, pts: 90 },
                 { name: '困难家庭 (逆风翻盘)', cash: -10000, pts: 80 }
             ];
-            const bg = bgs[Math.floor(Math.random() * bgs.length)];
+            const bg = bgs[Math.floor(Math.random() * bgNamesLen = bgs.length)];
             player.background = bg.name;
             player.cash = bg.cash;
             player.pts = bg.pts;
@@ -344,7 +350,6 @@
             return (year % 4 === 0 && year % 100 !== 0) || (year % 400 === 0);
         }
 
-        // ===== 核心：构建 365 块 1.5 倍放大的 3D 独立多面体切块星球 =====
         function init3DPolyhedronSphere() {
             const container = document.getElementById('webgl-output');
             container.innerHTML = '';
@@ -358,7 +363,6 @@
             renderer.setPixelRatio(window.devicePixelRatio);
             container.appendChild(renderer.domElement);
 
-            // 柔和光照
             const ambientLight = new THREE.AmbientLight(0xffffff, 0.85);
             scene.add(ambientLight);
             
@@ -371,10 +375,8 @@
 
             polyBlocks = [];
             const total = player.daysTotal;
-            const phiRatio = (1 + Math.sqrt(5)) / 2; // 黄金螺线
+            const phiRatio = (1 + Math.sqrt(5)) / 2;
             const sphereRadius = 4.3;
-
-            // 把每个小切块尺寸从 0.24 放大 1.5 倍至 0.36
             const blockRadius = 0.36; 
             const blockHeight = 0.10;
 
@@ -386,11 +388,11 @@
                 const y = sphereRadius * Math.cos(phi);
                 const z = sphereRadius * Math.sin(phi) * Math.sin(theta);
 
-                // 生成 6 边形 3D 立体多面体小块
                 const geom = new THREE.CylinderGeometry(blockRadius, blockRadius, blockHeight, 6);
+                // 未点亮时使用浅灰色 (#f1f5f9 / 0xe2e8f0)
                 const mat = new THREE.MeshStandardMaterial({ 
-                    color: 0xffffff, 
-                    roughness: 0.2, 
+                    color: 0xe2e8f0, 
+                    roughness: 0.3, 
                     metalness: 0.05 
                 });
                 
@@ -399,19 +401,18 @@
                 mesh.lookAt(x * 2, y * 2, z * 2);
                 mesh.rotateX(Math.PI / 2);
 
-                // 立体倒角边框线
                 const edgeGeom = new THREE.EdgesGeometry(geom);
-                const edgeMat = new THREE.LineBasicMaterial({ color: 0x64748b, linewidth: 2 });
+                const edgeMat = new THREE.LineBasicMaterial({ color: 0x94a3b8, linewidth: 1 });
                 const edgeLine = new THREE.LineSegments(edgeGeom, edgeMat);
                 mesh.add(edgeLine);
 
-                // 绑定自定义数据
                 mesh.userData = {
                     id: i,
                     lit: false,
                     label: '',
                     isFestival: false,
-                    edgeLine: edgeLine
+                    edgeLine: edgeLine,
+                    basePosition: new THREE.Vector3(x, y, z)
                 };
 
                 globeGroup.add(mesh);
@@ -432,18 +433,27 @@
             animate();
         }
 
-        // 使用 Canvas 动态为被点亮的多面体生成文字贴图
-        function createTextTexture(text, isFestival) {
+        // 动态生成炫彩高亮打卡纹理
+        function createColorTextTexture(text, isFestival) {
             const canvas = document.createElement('canvas');
             canvas.width = 256;
             canvas.height = 256;
             const ctx = canvas.getContext('2d');
 
-            ctx.fillStyle = '#94a3b8'; // 变灰色打卡状态
+            // 渐变彩色高亮背景
+            const grad = ctx.createLinearGradient(0, 0, 256, 256);
+            if (isFestival) {
+                grad.addColorStop(0, '#34d399');
+                grad.addColorStop(1, '#059669');
+            } else {
+                grad.addColorStop(0, '#38bdf8');
+                grad.addColorStop(1, '#6366f1');
+            }
+            ctx.fillStyle = grad;
             ctx.fillRect(0, 0, 256, 256);
 
-            ctx.fillStyle = isFestival ? '#15803d' : '#0f172a';
-            ctx.font = 'bold 54px sans-serif';
+            ctx.fillStyle = '#ffffff';
+            ctx.font = 'bold 50px sans-serif';
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
             ctx.fillText(text, 128, 128);
@@ -453,19 +463,34 @@
 
         function animate() {
             requestAnimationFrame(animate);
-            if (!isDragging && globeGroup) {
-                globeGroup.rotation.y += 0.001;
+
+            // 如果正在执行平滑转正动画
+            if (isAnimatingToFront) {
+                animationProgress += 1 / animationDuration;
+                if (animationProgress >= 1) {
+                    animationProgress = 1;
+                    isAnimatingToFront = false;
+                }
+                // 使用 easeOutCubic 缓动函数使旋转极其丝滑自然
+                const ease = 1 - Math.pow(1 - animationProgress, 3);
+                globeGroup.rotation.x = THREE.MathUtils.lerp(startRotation.x, targetRotation.x, ease);
+                globeGroup.rotation.y = THREE.MathUtils.lerp(startRotation.y, targetRotation.y, ease);
+                globeGroup.rotation.z = THREE.MathUtils.lerp(startRotation.z, targetRotation.z, ease);
+            } else if (!isDragging) {
+                globeGroup.rotation.y += 0.0008; // 正常缓慢自转
             }
+
             renderer.render(scene, camera);
         }
 
         function onPointerDown(e) {
+            if (isAnimatingToFront) return; // 动画中禁止拖动
             isDragging = true;
             previousMousePosition = { x: e.clientX, y: e.clientY };
         }
 
         function onPointerMove(e) {
-            if (!isDragging) return;
+            if (!isDragging || isAnimatingToFront) return;
             const deltaX = e.clientX - previousMousePosition.x;
             const deltaY = e.clientY - previousMousePosition.y;
 
@@ -479,8 +504,10 @@
             isDragging = false;
         }
 
-        // 3D 射线点击多面体小块
+        // 点击积木块：触发旋转到正面 + 炫彩打卡
         function onPointerClick(e) {
+            if (isAnimatingToFront) return; // 正在转正时防止连续点击
+
             const container = document.getElementById('webgl-output');
             const rect = container.getBoundingClientRect();
             mouse.x = ((e.clientX - rect.left) / container.clientWidth) * 2 - 1;
@@ -492,17 +519,36 @@
             if (intersects.length > 0 && player.daysRemaining > 0) {
                 const clickedMesh = intersects[0].object;
                 if (!clickedMesh.userData.lit) {
+                    smoothRotateToBlock(clickedMesh);
                     lightUpPolyBlock(clickedMesh);
                 }
             }
         }
 
-        // 点亮立体多面体块并顺序记录公历
+        // 计算让被点击的目标块转到正前方 (Z轴正方向) 所需要的旋转角度
+        function smoothRotateToBlock(mesh) {
+            // 获取该网格在世界坐标系中的方向向量
+            const worldPos = mesh.position.clone();
+            globeGroup.localToWorld(worldPos);
+
+            // 计算目标旋转角度，使该点朝向摄像机 (0, 0, 1)
+            const phi = Math.atan2(worldPos.x, worldPos.z);
+            const theta = Math.asin(worldPos.y / worldPos.length());
+
+            startRotation.copy(globeGroup.rotation);
+            
+            // 计算最终目标欧拉角
+            targetRotation.set(-theta, -phi + Math.PI, 0, 'XYZ');
+            
+            animationProgress = 0;
+            isAnimatingToFront = true;
+        }
+
         function lightUpPolyBlock(mesh) {
             mesh.userData.lit = true;
             player.daysRemaining--;
             player.gridClickedCount++;
-            player.clickSequence++; // 点击序号严格递增 (第1次=1月1日)
+            player.clickSequence++; 
 
             document.getElementById('days-remaining').innerText = player.daysRemaining;
 
@@ -513,23 +559,23 @@
             mesh.userData.label = displayLabel;
             mesh.userData.isFestival = !!term;
 
-            // 更换贴图与深度高亮边框
-            const txtTexture = createTextTexture(displayLabel, mesh.userData.isFestival);
+            // 变为炫彩高亮打卡材质
+            const txtTexture = createColorTextTexture(displayLabel, mesh.userData.isFestival);
             mesh.material = new THREE.MeshStandardMaterial({
                 map: txtTexture,
-                roughness: 0.3
+                roughness: 0.2
             });
             mesh.userData.edgeLine.material.color.setHex(0x1e293b);
 
-            // 立体下压与回弹打卡动效
-            mesh.position.multiplyScalar(0.96);
-            setTimeout(() => mesh.position.multiplyScalar(1.04), 150);
+            // 点击下压微动效
+            mesh.position.multiplyScalar(0.95);
+            setTimeout(() => mesh.position.multiplyScalar(1.05), 200);
 
             if (term) {
                 showToast(`🎉 迎来节气/节日: ${term}`);
-                confetti({ particleCount: 20, spread: 50, origin: { y: 0.7 } });
+                confetti({ particleCount: 25, spread: 60, origin: { y: 0.7 } });
             } else {
-                showToast(`📅 已记录: ${dateObj.display}`);
+                showToast(`📅 已打卡记录: ${dateObj.display}`);
             }
 
             const rand = Math.random();
@@ -543,6 +589,7 @@
         }
 
         function rollDice() {
+            if (isAnimatingToFront) return;
             const btn = document.getElementById('btn-dice');
             btn.disabled = true;
             const steps = Math.floor(Math.random() * 6) + 1;
@@ -557,13 +604,14 @@
                     const idx = unlitBlocks.indexOf(randomMesh);
                     if (idx > -1) unlitBlocks.splice(idx, 1);
                     
+                    smoothRotateToBlock(randomMesh);
                     lightUpPolyBlock(randomMesh);
                     count++;
                 } else {
                     clearInterval(interval);
                     btn.disabled = false;
                 }
-            }, 350);
+            }, 1200); // 放慢速度，等待转正动画完成
         }
 
         function daySequenceToDateStr(seq) {
@@ -763,7 +811,7 @@
         }
 
         function showReport(reason) {
-            document.getElementById('modal-report').classList.remove('hidden');
+            document.getElementById('modal-report').classList.add('hidden');
             document.getElementById('rep-age').innerText = `${player.age} 岁 (${reason})`;
             document.getElementById('rep-days').innerText = (player.age * 365 + player.gridClickedCount).toLocaleString();
             document.getElementById('rep-cash').innerText = `￥ ${player.cash.toLocaleString()}`;
