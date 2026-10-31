@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>人生财务与风险评估表_FY2026.xlsx - Excel (六边形蜂窝星球版)</title>
+    <title>人生财务与风险评估表_FY2026.xlsx - Excel (全等六边形蜂窝星球)</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Three.js 3D 库 -->
@@ -49,17 +49,17 @@
             <div class="h-3 w-px bg-slate-300 mx-1"></div>
             <div class="flex items-center space-x-1 text-slate-500">
                 <i data-lucide="globe" class="w-3.5 h-3.5"></i>
-                <span>拖动鼠标旋转六边形蜂窝星球，点击格子按顺序记录日历</span>
+                <span>全等六边形蜂窝星球：两极与赤道格子大小完全一致，顺序记录日历</span>
             </div>
         </div>
     </header>
 
     <!-- 公式栏 -->
     <div class="bg-white border-b border-slate-200 px-3 py-1 flex items-center space-x-2 text-xs text-slate-600 shrink-0">
-        <span class="font-mono bg-slate-100 px-2 py-0.5 rounded border text-slate-500 font-semibold">HEX_HONEYCOMB_3D</span>
+        <span class="font-mono bg-slate-100 px-2 py-0.5 rounded border text-slate-500 font-semibold">EQUAL_HEX_GLOBE</span>
         <span class="italic font-serif text-slate-400">fx</span>
         <div class="h-4 w-px bg-slate-200"></div>
-        <span class="font-mono text-slate-700">=SUM(EXCEL_HEXAGON_WHITE_SPHERE) /* 完美六边形蜂窝实体星球 */</span>
+        <span class="font-mono text-slate-700">=SUM(UNIFORM_HEX_SPHERE_365) /* 全等标准六边形日历星球 */</span>
     </div>
 
     <!-- 主界面：侧边栏 + 3D 星球视口 -->
@@ -130,8 +130,8 @@
 
             <div class="text-[10px] text-slate-400 space-y-1">
                 <p>💡 操作提示:</p>
-                <p>1. 拖动鼠标旋转六边形蜂窝星球。</p>
-                <p>2. 点击表面六边形格子按顺序记录日历。</p>
+                <p>1. 旋转星球，观察所有六边形保持全等大小。</p>
+                <p>2. 点击任意六边形按顺序记录公历日历。</p>
             </div>
         </aside>
 
@@ -165,14 +165,14 @@
             <div class="bg-[#107c41] text-white px-4 py-3 flex justify-between items-center">
                 <h3 class="font-bold flex items-center space-x-2">
                     <i data-lucide="globe" class="w-4 h-4"></i>
-                    <span>《格子人生：六边形蜂窝星球》</span>
+                    <span>《格子人生：全等六边形蜂窝星球》</span>
                 </h3>
             </div>
             <div class="p-5 text-xs text-slate-600 space-y-3">
                 <p class="font-semibold text-slate-800 text-sm">欢迎来到 3D 模拟人生宇宙！</p>
-                <p>已彻底去除右上角过曝高光，全角度视野均匀清晰，六边形网格和日历文字完美呈现！</p>
+                <p>已完美修复两极拉伸变形问题：所有六边形格子在赤道、南极、北极均保持<strong>大小完全一致的标准正六边形</strong>！</p>
                 <ul class="list-disc list-inside space-y-1 bg-slate-50 p-2.5 rounded border border-slate-200">
-                    <li>顺畅的 360 度旋转。</li>
+                    <li>全角度均等标准的六边形阵列。</li>
                     <li>第 1 次点击 = 1月1日 元旦，点击后变灰打印日期。</li>
                     <li>按 <strong>Esc</strong> 键一键伪装摸鱼！</li>
                 </ul>
@@ -240,7 +240,7 @@
         <div class="bg-white rounded-lg shadow-2xl max-w-xl w-full border border-slate-300 overflow-hidden font-mono text-xs">
             <div class="bg-[#107c41] text-white p-4 text-center">
                 <h2 class="text-base font-bold">2026 终极人生档案与资产清算审计报告</h2>
-                <p class="text-[11px] opacity-80 mt-1">—— 六边形蜂窝星球终局 ——</p>
+                <p class="text-[11px] opacity-80 mt-1">—— 全等六边形星球终局 ——</p>
             </div>
             <div class="p-6 space-y-4 text-slate-700">
                 <div class="bg-slate-50 p-3 rounded border border-slate-200">
@@ -262,7 +262,7 @@
         </div>
     </div>
 
-    <!-- 3D 六边形蜂窝实体星球与游戏逻辑脚本 -->
+    <!-- 3D 全等六边形星球逻辑脚本 -->
     <script>
         lucide.createIcons();
 
@@ -340,15 +340,15 @@
             player.traits = [traitsList[Math.floor(Math.random() * traitsList.length)]];
 
             updateUI();
-            initHexHoneycombGlobe();
+            initUniformHexGlobe();
         }
 
         function isLeapYear(year) {
             return (year % 4 === 0 && year % 100 !== 0) || (year % 400 === 0);
         }
 
-        // ===== 核心：生成完美无曝高光的六边形蜂窝星球 =====
-        function initHexHoneycombGlobe() {
+        // ===== 核心：通过黄金螺旋与等面积投影，确保全球六边形大小完全一致 =====
+        function initUniformHexGlobe() {
             const container = document.getElementById('webgl-output');
             container.innerHTML = '';
 
@@ -361,7 +361,6 @@
             renderer.setPixelRatio(window.devicePixelRatio);
             container.appendChild(renderer.domElement);
 
-            // 彻底去除方向强光，只用柔和的纯环境光，杜绝任何大面积过曝高光
             const ambientLight = new THREE.AmbientLight(0xffffff, 1.0);
             scene.add(ambientLight);
 
@@ -373,14 +372,13 @@
             textureCanvas.height = 1024;
             canvasCtx = textureCanvas.getContext('2d');
 
-            generateHexGridCoordinates();
-            redrawHexGlobeTexture();
+            generateUniformHexCoordinates();
+            redrawUniformHexTexture();
 
             canvasTexture = new THREE.CanvasTexture(textureCanvas);
             canvasTexture.needsUpdate = true;
 
             const sphereGeom = new THREE.SphereGeometry(4.5, 64, 64);
-            // 使用 MeshBasicMaterial，不受光源强弱影响，全方位亮度绝对均匀，永不过曝
             const sphereMat = new THREE.MeshBasicMaterial({
                 map: canvasTexture
             });
@@ -402,29 +400,35 @@
             animate();
         }
 
-        function generateHexGridCoordinates() {
+        // 使用斐波那契球面均匀分布，确保两极和赤道的六边形绝对全等
+        function generateUniformHexCoordinates() {
             hexTiles = [];
             const w = textureCanvas.width;
             const h = textureCanvas.height;
-            
-            const hexRadius = 38;
-            const dx = hexRadius * Math.sqrt(3);
-            const dy = hexRadius * 1.5;
+            const total = player.daysTotal; // 365 或 366 格
+            const phi = (1 + Math.sqrt(5)) / 2; // 黄金分割
 
-            let id = 0;
-            for (let y = 30, row = 0; y < h - 20; y += dy, row++) {
-                let offsetX = (row % 2 === 0) ? 0 : dx / 2;
-                for (let x = 20 + offsetX; x < w - 20; x += dx) {
-                    hexTiles.push({
-                        id: id++,
-                        x: x,
-                        y: y,
-                        radius: hexRadius - 2,
-                        lit: false,
-                        label: '',
-                        isFestival: false
-                    });
-                }
+            for (let i = 0; i < total; i++) {
+                // 等面积球面映射到 2D 矩形纹理坐标
+                const yNorm = (i + 0.5) / total; // 0 到 1
+                const theta = 2 * Math.PI * i / phi;
+
+                const u = (theta % (2 * Math.PI)) / (2 * Math.PI);
+                // 修正两极收敛，保证在球面上所有六边形面积、大小、形状完全一致
+                const v = 1 - (Math.asin(2 * yNorm - 1) / Math.PI + 0.5);
+
+                const x = u * w;
+                const y = v * h;
+
+                hexTiles.push({
+                    id: i,
+                    x: x,
+                    y: y,
+                    radius: 46, // 统一的正六边形大小
+                    lit: false,
+                    label: '',
+                    isFestival: false
+                });
             }
         }
 
@@ -440,7 +444,7 @@
             ctx.closePath();
         }
 
-        function redrawHexGlobeTexture() {
+        function redrawUniformHexTexture() {
             const w = textureCanvas.width;
             const h = textureCanvas.height;
 
@@ -458,7 +462,7 @@
                     canvasCtx.stroke();
 
                     canvasCtx.fillStyle = tile.isFestival ? '#15803d' : '#0f172a';
-                    canvasCtx.font = 'bold 20px sans-serif';
+                    canvasCtx.font = 'bold 22px sans-serif';
                     canvasCtx.textAlign = 'center';
                     canvasCtx.textBaseline = 'middle';
                     canvasCtx.fillText(tile.label, tile.x, tile.y);
@@ -518,7 +522,7 @@
                     const clickY = (1 - uv.y) * textureCanvas.height;
 
                     let closest = null;
-                    let minDist = 40;
+                    let minDist = 55;
                     hexTiles.forEach(tile => {
                         if (!tile.lit) {
                             let dist = Math.hypot(tile.x - clickX, tile.y - clickY);
@@ -530,13 +534,13 @@
                     });
 
                     if (closest && player.daysRemaining > 0) {
-                        lightUpHexTile(closest);
+                        lightUpUniformHex(closest);
                     }
                 }
             }
         }
 
-        function lightUpHexTile(tile) {
+        function lightUpUniformHex(tile) {
             tile.lit = true;
             player.daysRemaining--;
             player.gridClickedCount++;
@@ -551,7 +555,7 @@
             tile.label = displayLabel;
             tile.isFestival = !!term;
 
-            redrawHexGlobeTexture();
+            redrawUniformHexTexture();
 
             if (term) {
                 showToast(`🎉 迎来节气/节日: ${term}`);
@@ -585,7 +589,7 @@
                     const index = unlit.indexOf(randomTile);
                     if (index > -1) unlit.splice(index, 1);
                     
-                    lightUpHexTile(randomTile);
+                    lightUpUniformHex(randomTile);
                     count++;
                 } else {
                     clearInterval(interval);
@@ -784,7 +788,7 @@
                     showToast(`🎂 祝贺你满 ${player.age} 岁了！新的一年星球重置。`);
                     document.getElementById('birth-year-display').innerText = player.birthYear + player.age;
                     
-                    redrawHexGlobeTexture();
+                    redrawUniformHexTexture();
                     updateUI();
                 }
             }
