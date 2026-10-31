@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>人生财务与风险评估表_FY2026.xlsx - Excel (视角平滑旋转打卡星球)</title>
+    <title>人生财务与风险评估表_FY2026.xlsx - Excel (视角平滑转正打卡星球)</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Three.js 3D 库 -->
@@ -300,7 +300,7 @@
         let targetRotation = new THREE.Euler();
         let startRotation = new THREE.Euler();
         let animationProgress = 0;
-        const animationDuration = 45.0; // 动画帧数（控制旋转速度，数值越大转得越慢越稳）
+        const animationDuration = 45.0; // 动画帧数（控制旋转速度）
 
         const solarTerms = {
             "1-1": "元旦", "2-4": "立春", "2-14": "情人节", "3-5": "惊蛰", 
@@ -334,7 +334,7 @@
                 { name: '工薪家庭', cash: 5000, pts: 90 },
                 { name: '困难家庭 (逆风翻盘)', cash: -10000, pts: 80 }
             ];
-            const bg = bgs[Math.floor(Math.random() * bgNamesLen = bgs.length)];
+            const bg = bgs[Math.floor(Math.random() * bgs.length)];
             player.background = bg.name;
             player.cash = bg.cash;
             player.pts = bg.pts;
@@ -389,7 +389,6 @@
                 const z = sphereRadius * Math.sin(phi) * Math.sin(theta);
 
                 const geom = new THREE.CylinderGeometry(blockRadius, blockRadius, blockHeight, 6);
-                // 未点亮时使用浅灰色 (#f1f5f9 / 0xe2e8f0)
                 const mat = new THREE.MeshStandardMaterial({ 
                     color: 0xe2e8f0, 
                     roughness: 0.3, 
@@ -433,14 +432,12 @@
             animate();
         }
 
-        // 动态生成炫彩高亮打卡纹理
         function createColorTextTexture(text, isFestival) {
             const canvas = document.createElement('canvas');
             canvas.width = 256;
             canvas.height = 256;
             const ctx = canvas.getContext('2d');
 
-            // 渐变彩色高亮背景
             const grad = ctx.createLinearGradient(0, 0, 256, 256);
             if (isFestival) {
                 grad.addColorStop(0, '#34d399');
@@ -464,27 +461,25 @@
         function animate() {
             requestAnimationFrame(animate);
 
-            // 如果正在执行平滑转正动画
             if (isAnimatingToFront) {
                 animationProgress += 1 / animationDuration;
                 if (animationProgress >= 1) {
                     animationProgress = 1;
                     isAnimatingToFront = false;
                 }
-                // 使用 easeOutCubic 缓动函数使旋转极其丝滑自然
                 const ease = 1 - Math.pow(1 - animationProgress, 3);
                 globeGroup.rotation.x = THREE.MathUtils.lerp(startRotation.x, targetRotation.x, ease);
                 globeGroup.rotation.y = THREE.MathUtils.lerp(startRotation.y, targetRotation.y, ease);
                 globeGroup.rotation.z = THREE.MathUtils.lerp(startRotation.z, targetRotation.z, ease);
             } else if (!isDragging) {
-                globeGroup.rotation.y += 0.0008; // 正常缓慢自转
+                globeGroup.rotation.y += 0.0008;
             }
 
             renderer.render(scene, camera);
         }
 
         function onPointerDown(e) {
-            if (isAnimatingToFront) return; // 动画中禁止拖动
+            if (isAnimatingToFront) return;
             isDragging = true;
             previousMousePosition = { x: e.clientX, y: e.clientY };
         }
@@ -504,9 +499,8 @@
             isDragging = false;
         }
 
-        // 点击积木块：触发旋转到正面 + 炫彩打卡
         function onPointerClick(e) {
-            if (isAnimatingToFront) return; // 正在转正时防止连续点击
+            if (isAnimatingToFront) return;
 
             const container = document.getElementById('webgl-output');
             const rect = container.getBoundingClientRect();
@@ -525,19 +519,14 @@
             }
         }
 
-        // 计算让被点击的目标块转到正前方 (Z轴正方向) 所需要的旋转角度
         function smoothRotateToBlock(mesh) {
-            // 获取该网格在世界坐标系中的方向向量
             const worldPos = mesh.position.clone();
             globeGroup.localToWorld(worldPos);
 
-            // 计算目标旋转角度，使该点朝向摄像机 (0, 0, 1)
             const phi = Math.atan2(worldPos.x, worldPos.z);
             const theta = Math.asin(worldPos.y / worldPos.length());
 
             startRotation.copy(globeGroup.rotation);
-            
-            // 计算最终目标欧拉角
             targetRotation.set(-theta, -phi + Math.PI, 0, 'XYZ');
             
             animationProgress = 0;
@@ -559,7 +548,6 @@
             mesh.userData.label = displayLabel;
             mesh.userData.isFestival = !!term;
 
-            // 变为炫彩高亮打卡材质
             const txtTexture = createColorTextTexture(displayLabel, mesh.userData.isFestival);
             mesh.material = new THREE.MeshStandardMaterial({
                 map: txtTexture,
@@ -567,7 +555,6 @@
             });
             mesh.userData.edgeLine.material.color.setHex(0x1e293b);
 
-            // 点击下压微动效
             mesh.position.multiplyScalar(0.95);
             setTimeout(() => mesh.position.multiplyScalar(1.05), 200);
 
@@ -611,7 +598,7 @@
                     clearInterval(interval);
                     btn.disabled = false;
                 }
-            }, 1200); // 放慢速度，等待转正动画完成
+            }, 1200);
         }
 
         function daySequenceToDateStr(seq) {
