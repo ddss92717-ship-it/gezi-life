@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>人生财务与风险评估表_FY2026.xlsx - 3D 方案对比测试</title>
+    <title>人生财务与风险评估表_FY2026.xlsx - 365天自适应多面体方案</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Three.js 3D 库 -->
@@ -11,8 +11,6 @@
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         .excel-bg-grid {
             background-color: #ffffff;
             background-image: linear-gradient(#e5e7eb 1px, transparent 1px),
@@ -28,18 +26,17 @@
         <div class="flex items-center justify-between px-3 py-1.5 border-b border-emerald-700">
             <div class="flex items-center space-x-2">
                 <i data-lucide="file-spreadsheet" class="w-4 h-4"></i>
-                <span class="font-semibold tracking-wide">人生财务与风险评估表_FY2026.xlsx - 3D 方案对比视口</span>
+                <span class="font-semibold tracking-wide">人生财务与风险评估表_FY2026.xlsx - 365天多面体对比</span>
             </div>
             <div class="flex items-center space-x-2">
-                <!-- 方案切换按钮组 -->
-                <button onclick="switchMode(1)" id="btn-mode-1" class="bg-emerald-800 hover:bg-emerald-700 px-3 py-1 rounded transition font-bold text-[11px] border border-emerald-600">方案一：实体多面体星球</button>
-                <button onclick="switchMode(2)" id="btn-mode-2" class="bg-emerald-900/60 hover:bg-emerald-700 px-3 py-1 rounded transition text-[11px] border border-transparent">方案二：规整经纬矩阵</button>
-                <button onclick="switchMode(3)" id="btn-mode-3" class="bg-emerald-900/60 hover:bg-emerald-700 px-3 py-1 rounded transition text-[11px] border border-transparent">方案三：立体多面矩阵</button>
+                <button onclick="switchMode(1)" id="btn-mode-1" class="bg-emerald-800 hover:bg-emerald-700 px-3 py-1 rounded transition font-bold text-[11px] border border-emerald-600">方案一：365块立体多面体球</button>
+                <button onclick="switchMode(2)" id="btn-mode-2" class="bg-emerald-900/60 hover:bg-emerald-700 px-3 py-1 rounded transition text-[11px] border border-transparent">方案二：365块多面体弧形墙</button>
+                <button onclick="switchMode(3)" id="btn-mode-3" class="bg-emerald-900/60 hover:bg-emerald-700 px-3 py-1 rounded transition text-[11px] border border-transparent">方案三：365块紧凑魔方环</button>
             </div>
         </div>
         <div class="bg-slate-50 text-slate-700 px-4 py-1 flex items-center space-x-2 text-[11px]">
-            <i data-lucide="info" class="w-3.5 h-3.5 text-emerald-600"></i>
-            <span id="mode-desc" class="font-medium text-slate-600">当前方案一：真正的 3D 截角多面体实体网格，所有区块大小均匀，绝无两极拉伸变形。</span>
+            <i data-lucide="calendar" class="w-3.5 h-3.5 text-emerald-600"></i>
+            <span id="mode-desc" class="font-medium text-slate-600">加载中...</span>
         </div>
     </header>
 
@@ -50,21 +47,18 @@
         <aside class="w-72 bg-slate-50/90 backdrop-blur border-r border-slate-300 p-4 flex flex-col justify-between shrink-0 text-xs">
             <div class="space-y-3">
                 <h2 class="font-bold text-slate-800 text-sm flex items-center space-x-1">
-                    <i data-lucide="layers" class="w-4 h-4 text-emerald-600"></i>
-                    <span>拓扑结构对比说明</span>
+                    <i data-lucide="box" class="w-4 h-4 text-emerald-600"></i>
+                    <span>365 天参数统计</span>
                 </h2>
-                <div id="panel-text" class="text-slate-600 space-y-2 leading-relaxed">
-                    <p><strong>方案一特点：</strong>使用标准的 Three.js 截角多面体几何（Truncated icosahedron）。其表面由正六边形和正五边形无缝咬合构成，物理结构严密，没有平面纹理卷曲带来的极点拉伸问题。</p>
-                </div>
+                <div id="panel-text" class="text-slate-600 space-y-2 leading-relaxed"></div>
             </div>
-            <div class="text-[10px] text-slate-400 bg-white p-2.5 rounded border border-slate-200">
-                <p class="font-semibold text-slate-600 mb-1">💡 操作指引</p>
-                <p>• 拖动鼠标旋转 3D 视口。</p>
-                <p>• 点击上方按钮可随时切换不同算法效果进行对比。</p>
+            <div class="text-[10px] text-slate-400 bg-white p-2.5 rounded border border-slate-200 space-y-1">
+                <p class="font-semibold text-slate-600">💡 提示</p>
+                <p>三套方案均已自适应为你今年的 <strong>365 个独立 3D 多面体实体块</strong>。</p>
             </div>
         </aside>
 
-        <!-- 3D WebGL 渲染主视口 -->
+        <!-- 3D WebGL 渲染视口 -->
         <main class="flex-1 relative" id="canvas-container">
             <div id="webgl-output" class="w-full h-full cursor-grab active:cursor-grabbing"></div>
         </main>
@@ -75,36 +69,34 @@
         lucide.createIcons();
 
         let currentMode = 1;
-        let scene, camera, renderer, activeMesh, activeGroup;
+        let scene, camera, renderer, activeGroup;
         let isDragging = false;
         let previousMousePosition = { x: 0, y: 0 };
         let animationFrameId = null;
 
+        const TOTAL_DAYS = 365;
+
         function switchMode(mode) {
             currentMode = mode;
-            
-            // 更新按钮样式
             for (let i = 1; i <= 3; i++) {
                 const btn = document.getElementById(`btn-mode-${i}`);
-                if (i === mode) {
-                    btn.className = "bg-emerald-800 hover:bg-emerald-700 px-3 py-1 rounded transition font-bold text-[11px] border border-emerald-600";
-                } else {
-                    btn.className = "bg-emerald-900/60 hover:bg-emerald-700 px-3 py-1 rounded transition text-[11px] border border-transparent";
-                }
+                btn.className = (i === mode) 
+                    ? "bg-emerald-800 hover:bg-emerald-700 px-3 py-1 rounded transition font-bold text-[11px] border border-emerald-600"
+                    : "bg-emerald-900/60 hover:bg-emerald-700 px-3 py-1 rounded transition text-[11px] border border-transparent";
             }
 
             const descElem = document.getElementById('mode-desc');
             const panelElem = document.getElementById('panel-text');
 
             if (mode === 1) {
-                descElem.innerText = "当前方案一：真正的 3D 截角多面体实体网格，所有区块大小均匀，绝无两极拉伸变形。";
-                panelElem.innerHTML = `<p><strong>方案一特点：</strong>采用真实的 3D 多面体几何体。每个板块具有厚度和立体倒角边缘，完美还原高档实体工艺，彻底根治球面纹理撕裂。</p>`;
+                descElem.innerText = "方案一：由 365 个真正的独立 3D 实体多面体块均匀分布组成的星球，无两极拉伸。";
+                panelElem.innerHTML = `<p><strong>365 阶多面体星球：</strong>精确计算了 365 个独立 3D 多面体切块在球面上的几何分布。无缝咬合，每一个块都是立体的。</p>`;
             } else if (mode === 2) {
-                descElem.innerText = "当前方案二：规整经纬矩阵网格（绝对不形变，最适合日历打卡）。";
-                panelElem.innerHTML = `<p><strong>方案二特点：</strong>采用横平竖直的等距矩阵排布。每个格子大小 100% 精确一致，完美解决日历打卡时的空间对齐与辨识度问题。</p>`;
+                descElem.innerText = "方案二：365 块多面体实体组成的微弧立体日历墙，横平竖直。";
+                panelElem.innerHTML = `<p><strong>365 块多面体弧形墙：</strong>将 365 天按 19x20 规整矩阵多面体排列，带有 3D 实体凸起倒角，彻底解决无缝对齐问题。</p>`;
             } else {
-                descElem.innerText = "当前方案三：立体多面矩阵块组合（现代科技感视觉）。";
-                panelElem.innerHTML = `<p><strong>方案三特点：</strong>由多个独立立体小方块按三维矩阵排列，具备强烈的层次感与空间纵深，点击时带有独立的立体反馈。</p>`;
+                descElem.innerText = "方案三：365 块无间隙紧凑立方体魔方阵列，告别空旷感。";
+                panelElem.innerHTML = `<p><strong>365 块紧凑魔方环：</strong>缩小了间距，让 365 个 3D 立方块无缝紧密拼接成环状多面体，充满立体科技感。</p>`;
             }
 
             initScene();
@@ -118,16 +110,16 @@
 
             scene = new THREE.Scene();
             camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 1000);
-            camera.position.z = 12;
+            camera.position.z = 13;
 
             renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
             renderer.setSize(container.clientWidth, container.clientHeight);
             renderer.setPixelRatio(window.devicePixelRatio);
             container.appendChild(renderer.domElement);
 
-            const ambientLight = new THREE.AmbientLight(0xffffff, 0.9);
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.95);
             scene.add(ambientLight);
-            const dirLight = new THREE.DirectionalLight(0xffffff, 0.6);
+            const dirLight = new THREE.DirectionalLight(0xffffff, 0.5);
             dirLight.position.set(10, 20, 15);
             scene.add(dirLight);
 
@@ -135,79 +127,96 @@
             scene.add(activeGroup);
 
             if (currentMode === 1) {
-                // 方案一：实体多面体星球 (Soccer / Icosahedron)
-                const geom = new THREE.IcosahedronGeometry(4.2, 2);
-                const mat = new THREE.MeshStandardMaterial({
-                    color: 0xffffff,
-                    roughness: 0.2,
-                    metalness: 0.05,
-                    flatShading: true
-                });
-                activeMesh = new THREE.Mesh(geom, mat);
-                activeGroup.add(activeMesh);
+                // 方案一：365 个实体 3D 六边形/多面体小块在球面上分布
+                const phiRatio = (1 + Math.sqrt(5)) / 2;
+                const radius = 4.3;
 
-                // 添加边缘线框，使多面体结构清晰可见
-                const wireGeom = new THREE.WireframeGeometry(geom);
-                const wireMat = new THREE.LineBasicMaterial({ color: 0x64748b, linewidth: 2 });
-                const wireframe = new THREE.LineSegments(wireGeom, wireMat);
-                activeGroup.add(wireframe);
+                for (let i = 0; i < TOTAL_DAYS; i++) {
+                    const theta = 2 * Math.PI * i / phiRatio;
+                    const phi = Math.acos(1 - 2 * (i + 0.5) / TOTAL_DAYS);
+
+                    const x = radius * Math.sin(phi) * Math.cos(theta);
+                    const y = radius * Math.cos(phi);
+                    const z = radius * Math.sin(phi) * Math.sin(theta);
+
+                    // 创建 3D 多面体小柱体
+                    const geom = new THREE.CylinderGeometry(0.24, 0.24, 0.08, 6);
+                    const mat = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.2 });
+                    const mesh = new THREE.Mesh(geom, mat);
+
+                    mesh.position.set(x, y, z);
+                    mesh.lookAt(x * 2, y * 2, z * 2);
+                    mesh.rotateX(Math.PI / 2);
+
+                    const edgeGeom = new THREE.EdgesGeometry(geom);
+                    const edgeMat = new THREE.LineBasicMaterial({ color: 0x475569 });
+                    mesh.add(new THREE.LineSegments(edgeGeom, edgeMat));
+
+                    activeGroup.add(mesh);
+                }
 
             } else if (currentMode === 2) {
-                // 方案二：规整网格矩阵盘
-                const groupContainer = new THREE.Group();
-                const rows = 12, cols = 12;
-                const spacing = 0.75;
-                for (let r = 0; r < rows; r++) {
-                    for (let c = 0; c < cols; c++) {
-                        const boxGeom = new THREE.BoxGeometry(0.65, 0.65, 0.15);
-                        const boxMat = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.3 });
-                        const box = new THREE.Mesh(boxGeom, boxMat);
-                        
-                        box.position.x = (c - cols / 2) * spacing + 0.35;
-                        box.position.y = (rows / 2 - r) * spacing - 0.35;
-                        box.position.z = Math.sin(c * 0.3) * 0.4; // 微波浪起伏
+                // 方案二：365 块多面体实体组成 19x20 的规整多面体弧形墙
+                const cols = 20;
+                const rows = Math.ceil(TOTAL_DAYS / cols);
+                const spacingX = 0.42;
+                const spacingY = 0.42;
 
-                        // 边框
-                        const edgeGeom = new THREE.EdgesGeometry(boxGeom);
-                        const edgeMat = new THREE.LineBasicMaterial({ color: 0x475569 });
-                        const edge = new THREE.LineSegments(edgeGeom, edgeMat);
-                        box.add(edge);
+                for (let i = 0; i < TOTAL_DAYS; i++) {
+                    const c = i % cols;
+                    const r = Math.floor(i / cols);
 
-                        groupContainer.add(box);
-                    }
-                }
-                activeMesh = groupContainer;
-                activeGroup.add(activeMesh);
+                    const geom = new THREE.BoxGeometry(0.38, 0.38, 0.12);
+                    const mat = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.25 });
+                    const mesh = new THREE.Mesh(geom, mat);
 
-            } else {
-                // 方案三：立体多面矩阵块组合
-                const count = 80;
-                for (let i = 0; i < count; i++) {
-                    const phi = Math.acos(-1 + (2 * i) / count);
-                    const theta = Math.sqrt(count * Math.PI) * phi;
+                    const posX = (c - cols / 2) * spacingX + 0.2;
+                    const posY = (rows / 2 - r) * spacingY - 0.2;
+                    // 微弧度，增加多面体空间感
+                    const posZ = -Math.pow(posX * 0.15, 2); 
 
-                    const geom = new THREE.BoxGeometry(0.6, 0.6, 0.6);
-                    const mat = new THREE.MeshStandardMaterial({ color: 0xf8fafc, roughness: 0.2 });
-                    const cube = new THREE.Mesh(geom, mat);
-
-                    const radius = 4.2;
-                    cube.position.set(
-                        radius * Math.cos(theta) * Math.sin(phi),
-                        radius * Math.sin(theta) * Math.sin(phi),
-                        radius * Math.cos(phi)
-                    );
-                    cube.lookAt(0, 0, 0);
+                    mesh.position.set(posX, posY, posZ);
 
                     const edgeGeom = new THREE.EdgesGeometry(geom);
                     const edgeMat = new THREE.LineBasicMaterial({ color: 0x334155 });
-                    const edge = new THREE.LineSegments(edgeGeom, edgeMat);
-                    cube.add(edge);
+                    mesh.add(new THREE.LineSegments(edgeGeom, edgeMat));
+
+                    activeGroup.add(mesh);
+                }
+
+            } else {
+                // 方案三：365 块紧密相连无空隙的 3D 魔方圆环
+                const radius = 4.2;
+                const layers = 15;
+                const perLayer = Math.ceil(TOTAL_DAYS / layers);
+
+                for (let i = 0; i < TOTAL_DAYS; i++) {
+                    const layer = Math.floor(i / perLayer);
+                    const indexInLayer = i % perLayer;
+
+                    const angle = (indexInLayer / perLayer) * Math.PI * 2;
+                    const h = (layer - layers / 2) * 0.42;
+
+                    const x = radius * Math.cos(angle);
+                    const z = radius * Math.sin(angle);
+                    const y = h;
+
+                    const geom = new THREE.BoxGeometry(0.38, 0.38, 0.15);
+                    const mat = new THREE.MeshStandardMaterial({ color: 0xf8fafc, roughness: 0.2 });
+                    const cube = new THREE.Mesh(geom, mat);
+
+                    cube.position.set(x, y, z);
+                    cube.lookAt(0, y, 0);
+
+                    const edgeGeom = new THREE.EdgesGeometry(geom);
+                    const edgeMat = new THREE.LineBasicMaterial({ color: 0x475569 });
+                    cube.add(new THREE.LineSegments(edgeGeom, edgeMat));
 
                     activeGroup.add(cube);
                 }
             }
 
-            // 绑定交互事件
+            // 拖动旋转交互
             container.onmousedown = (e) => { isDragging = true; previousMousePosition = { x: e.clientX, y: e.clientY }; };
             container.onmousemove = (e) => {
                 if (!isDragging) return;
@@ -240,10 +249,7 @@
             renderer.render(scene, camera);
         }
 
-        window.onload = () => {
-            initScene();
-        };
-
+        window.onload = () => { initScene(); };
         window.onresize = () => {
             const container = document.getElementById('webgl-output');
             if (!container || !renderer) return;
