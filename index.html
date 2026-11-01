@@ -3,34 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>人生财务与风险评估表_FY2026.xlsx - Microsoft Excel</title>
+    <title>人生财务与风险评估表_FY2026.xlsx - Excel (完整事件库与情感治愈版)</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- FontAwesome & Lucide -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <!-- Three.js CDN -->
+    <!-- Three.js 3D 库 -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <!-- Canvas Confetti -->
+    <!-- Canvas Confetti 烟花库 -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
     <style>
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-
-        /* Excel 伪装背景网格 */
         .excel-bg-grid {
             background-color: #ffffff;
-            background-image: 
-                linear-gradient(to right, #e2e8f0 1px, transparent 1px),
-                linear-gradient(to bottom, #e2e8f0 1px, transparent 1px);
-            background-size: 60px 24px;
+            background-image: linear-gradient(#e5e7eb 1px, transparent 1px),
+                              linear-gradient(90deg, #e5e7eb 1px, transparent 1px);
+            background-size: 24px 24px;
         }
     </style>
 </head>
-<body class="bg-slate-100 text-slate-800 font-sans h-screen flex flex-col overflow-hidden select-none">
+<body class="bg-white text-slate-800 font-sans h-screen flex flex-col overflow-hidden select-none">
 
     <!-- 顶部 Excel 伪装标题栏与工具栏 -->
-    <header class="bg-[#107c41] text-white text-xs flex flex-col shrink-0 z-20">
+    <header class="bg-[#107c41] text-white text-xs flex flex-col shrink-0 border-b border-emerald-800">
         <div class="flex items-center justify-between px-3 py-1.5 border-b border-emerald-700">
             <div class="flex items-center space-x-2">
                 <i data-lucide="file-spreadsheet" class="w-4 h-4"></i>
@@ -45,7 +41,6 @@
                 <button onclick="location.reload()" class="hover:bg-emerald-700 p-1 rounded"><i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i></button>
             </div>
         </div>
-        <!-- Ribbon 快捷功能区 -->
         <div class="bg-slate-50 text-slate-700 px-4 py-1 flex items-center space-x-6 border-b border-slate-300 text-[11px]">
             <span class="font-semibold text-[#107c41] border-b-2 border-[#107c41] pb-0.5 cursor-pointer">开始</span>
             <span class="hover:text-slate-900 cursor-pointer">插入</span>
@@ -54,32 +49,31 @@
             <div class="h-3 w-px bg-slate-300 mx-1"></div>
             <div class="flex items-center space-x-1 text-slate-500">
                 <i data-lucide="globe" class="w-3.5 h-3.5"></i>
-                <span>拖拽鼠标/手指旋转 3D 日历星球，点击格子或掷骰子推进人生</span>
+                <span>点击任意积木块：视角平滑转至正面，触发 13 阶段中国式人生事件与情感治愈彩蛋</span>
             </div>
         </div>
     </header>
 
     <!-- 公式栏 -->
-    <div class="bg-white border-b border-slate-200 px-3 py-1 flex items-center space-x-2 text-xs text-slate-600 shrink-0 z-20">
-        <span class="font-mono bg-slate-100 px-2 py-0.5 rounded border text-slate-500 font-semibold">GLOBE_3D</span>
+    <div class="bg-white border-b border-slate-200 px-3 py-1 flex items-center space-x-2 text-xs text-slate-600 shrink-0">
+        <span class="font-mono bg-slate-100 px-2 py-0.5 rounded border text-slate-500 font-semibold">C12</span>
         <span class="italic font-serif text-slate-400">fx</span>
         <div class="h-4 w-px bg-slate-200"></div>
-        <span class="font-mono text-slate-700">=SPHERICAL_LIFE_MATRIX(365) /* 3D旋转日历星球引擎 */</span>
+        <span class="font-mono text-slate-700">=SUM(C3:C90) /* 计算当前行 (Enter / Space) */</span>
     </div>
 
-    <!-- 主界面：侧边栏 + 3D 渲染视图 -->
-    <div class="flex-1 flex overflow-hidden relative">
+    <!-- 主界面：侧边栏 + 3D 星球视口 -->
+    <div class="flex-1 flex overflow-hidden">
         
-        <!-- 左侧 8 维数据与属性监控面板 -->
-        <aside class="w-72 bg-slate-50 border-r border-slate-300 p-3 flex flex-col justify-between overflow-y-auto shrink-0 text-xs z-20">
+        <!-- 左侧 8 维数据面板 -->
+        <aside class="w-72 bg-slate-50 border-r border-slate-300 p-3 flex flex-col justify-between overflow-y-auto shrink-0 text-xs">
             <div>
                 <div class="text-[10px] font-mono text-slate-400 tracking-wider mb-2">MONITORING_PANEL</div>
                 <h2 class="font-bold text-slate-700 text-sm mb-3 flex items-center justify-between">
-                    <span>核心参数监控面板</span>
+                    <span>人生核心参数监控表</span>
                     <span id="current-age-badge" class="bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full text-[11px]">0 岁</span>
                 </h2>
 
-                <!-- 属性列表 -->
                 <div class="space-y-2.5">
                     <div class="bg-white p-2 rounded border border-slate-200 shadow-sm">
                         <div class="flex justify-between text-slate-500 mb-1">
@@ -117,13 +111,12 @@
 
                     <div class="grid grid-cols-2 gap-1.5 text-[10px] text-slate-500 pt-1 border-t border-slate-200">
                         <div>智力 (INT): <span id="val-int" class="font-bold text-slate-700">50</span></div>
-                        <div>外貌 (PHY): <span id="val-phy" class="font-bold text-slate-700">50</span></div>
                         <div>家庭 (FAM): <span id="val-fam" class="font-bold text-slate-700">60</span></div>
-                        <div>合规 (MOR): <span id="val-mor" class="font-bold text-slate-700">80</span></div>
+                        <div>理想达成: <span id="val-goals" class="font-bold text-emerald-600">0</span></div>
+                        <div>挫折经历: <span id="val-setbacks" class="font-bold text-rose-500">0</span></div>
                     </div>
                 </div>
 
-                <!-- 玩家出身信息卡片 -->
                 <div class="mt-4 bg-emerald-50/60 border border-emerald-200 rounded p-2.5 text-[11px] text-slate-600">
                     <div class="font-bold text-emerald-800 mb-1 flex items-center space-x-1">
                         <i data-lucide="user-check" class="w-3.5 h-3.5"></i>
@@ -135,37 +128,30 @@
                 </div>
             </div>
 
-            <div class="text-[10px] text-slate-400 space-y-1">
-                <p>💡 3D交互提示:</p>
-                <p>1. 鼠标拖拽或手指滑动旋转日历星球。</p>
-                <p>2. 点击球体上的日期方块推进人生历程。</p>
+            <div class="text-[10px] text-slate-400 space-y-1 mt-3">
+                <p>💡 操作指南:</p>
+                <p>1. 点击网格或按摇骰子推动人生年龄。</p>
+                <p>2. 根据现实情况触发抉择，健康归零将结束生命。</p>
             </div>
         </aside>
 
-        <!-- 右侧：3D 三维日历星球视口 -->
-        <main class="flex-1 excel-bg-grid flex flex-col overflow-hidden relative" id="globe-container">
+        <!-- 右侧：纯白 Excel 3D 星球视口 -->
+        <main class="flex-1 excel-bg-grid flex flex-col overflow-hidden relative" id="canvas-container">
             
-            <!-- 顶部状态浮条 -->
-            <div class="absolute top-3 left-4 right-4 z-10 flex justify-between items-center text-xs text-slate-700 pointer-events-none">
-                <div class="bg-white/90 backdrop-blur px-3 py-1.5 rounded-lg border border-slate-300 shadow-sm flex items-center space-x-3">
-                    <span class="font-bold text-emerald-700" id="birth-year-display">2026年</span>
-                    <span>|</span>
-                    <span>当年剩余天数：<strong id="days-remaining" class="text-amber-600 font-mono text-sm">365</strong> 天</span>
-                </div>
-                <div class="bg-white/90 backdrop-blur px-3 py-1.5 rounded-lg border border-slate-300 shadow-sm text-[11px] text-slate-600">
-                    🌐 3D 细缝多面体日历已激活
-                </div>
+            <div id="toast-container" class="absolute top-3 right-6 z-20 pointer-events-none space-y-2"></div>
+
+            <div class="absolute top-3 left-4 z-10 bg-white/95 backdrop-blur border border-slate-300 text-slate-800 px-4 py-2 rounded-md text-xs flex items-center space-x-4 shadow-sm">
+                <div>出生年份：<span id="birth-year-display">2026</span>年</div>
+                <div class="text-slate-300">|</div>
+                <div>本岁剩余天数：<strong id="days-remaining" class="text-emerald-600 font-mono text-sm">365</strong> 天</div>
             </div>
 
-            <!-- 轻量日常消息 Toast 提示框 -->
-            <div id="toast-container" class="absolute top-16 left-1/2 -translate-x-1/2 z-30 pointer-events-none space-y-2"></div>
-
-            <!-- Three.js 渲染画布 -->
-            <div id="canvas-target" class="w-full h-full cursor-grab active:cursor-grabbing"></div>
+            <!-- 3D 渲染容器 -->
+            <div id="webgl-output" class="w-full h-full cursor-grab active:cursor-grabbing"></div>
 
             <!-- 右下角悬浮：命运骰子 -->
-            <div class="absolute bottom-6 right-6 z-20 flex items-center space-x-2">
-                <button id="btn-dice" onclick="rollDice()" class="bg-[#107c41] hover:bg-emerald-700 text-white px-5 py-2.5 rounded-xl shadow-lg flex items-center space-x-2 transition transform active:scale-95 font-bold text-xs border border-emerald-600">
+            <div class="absolute bottom-5 right-6 z-10 flex items-center space-x-2">
+                <button id="btn-dice" onclick="rollDice()" class="bg-[#107c41] hover:bg-emerald-700 text-white px-4 py-2.5 rounded-full shadow-lg flex items-center space-x-2 transition transform active:scale-95 font-semibold text-xs border border-emerald-500">
                     <i data-lucide="dices" class="w-4 h-4"></i>
                     <span>命运骰子 🎲</span>
                 </button>
@@ -173,57 +159,62 @@
         </main>
     </div>
 
-    <!-- ===== 模态框组件库 ===== -->
-
-    <!-- 1. 开局投胎说明弹窗 -->
-    <div id="modal-start" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-        <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full border border-slate-200 overflow-hidden">
-            <div class="bg-[#107c41] text-white px-5 py-4 flex items-center space-x-2">
-                <i data-lucide="sparkles" class="w-5 h-5"></i>
-                <span class="font-bold text-sm">《格子人生：3D星球版》- 开启人生</span>
+    <!-- 启动弹窗 -->
+    <div id="modal-start" class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-lg shadow-2xl max-w-md w-full border border-slate-300 overflow-hidden">
+            <div class="bg-[#107c41] text-white px-4 py-3 flex justify-between items-center">
+                <h3 class="font-bold flex items-center space-x-2">
+                    <i data-lucide="globe" class="w-4 h-4"></i>
+                    <span>《格子人生：中国式生存法则》</span>
+                </h3>
             </div>
-            <div class="p-6 text-xs text-slate-600 space-y-3">
-                <p class="font-semibold text-slate-800 text-sm">欢迎来到 3D 沉浸式模拟人生！</p>
-                <p>将 365 天化作一颗旋转的<strong>日历星球</strong>。你可以用手指或鼠标任意旋转、拨动星球，探索不同日子的命运轨迹。</p>
-                <ul class="list-disc list-inside space-y-1 bg-slate-50 p-3 rounded-lg border border-slate-200 text-slate-500">
-                    <li>点击星球上的日期格子点亮岁月。</li>
-                    <li>随时按键盘 <strong>Esc</strong> 键一键切换为资产负债表进行合规摸鱼。</li>
-                </ul>
+            <div class="p-5 text-xs text-slate-600 space-y-3">
+                <p class="font-semibold text-slate-800 text-sm">你即将开启一段从 0 岁新生儿到 80 岁终局的宏大微观人生历程。</p>
+                <div class="bg-slate-50 p-3 rounded border border-slate-200 space-y-1.5">
+                    <p class="font-bold text-slate-700">【核心设定与机制】</p>
+                    <p>• 每一岁拥有 365 个格子代表全年的日子。</p>
+                    <p>• 点击格子或投掷命运骰子（🎲）推进时间。</p>
+                    <p>• 每次前进精准打卡真实公历/节日，踩中随机触发中国式人生抉择事件。</p>
+                </div>
+                <p class="text-emerald-700 text-[11px]">摸鱼提示：随时按下键盘上的 <strong>Esc</strong> 键，可一键切换为纯正的“资产负债表与审计流水”进行合规摸鱼！</p>
             </div>
-            <div class="bg-slate-50 px-6 py-4 border-t flex justify-end">
-                <button onclick="startLifeGame()" class="bg-[#107c41] hover:bg-emerald-700 text-white font-bold px-6 py-2.5 rounded-xl text-xs transition shadow-lg">
-                    确认投胎，开启星球之旅 ►
+            <div class="bg-slate-50 px-4 py-3 border-t flex justify-end">
+                <button onclick="startLifeGame()" class="bg-[#107c41] hover:bg-emerald-700 text-white font-bold px-5 py-2 rounded text-xs transition">
+                    确认投胎，开启人生 ►
                 </button>
             </div>
         </div>
     </div>
 
-    <!-- 2. 重大事件抉择强弹窗 -->
-    <div id="modal-event" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-white rounded-2xl shadow-2xl max-w-lg w-full border border-slate-200 overflow-hidden">
-            <div class="bg-slate-900 text-white px-5 py-3 flex justify-between items-center text-xs">
-                <span class="font-mono text-emerald-400 font-semibold" id="event-stage-tag">【阶段三】</span>
-                <span class="text-slate-400" id="event-age-tag">28 岁</span>
+    <!-- 事件弹窗 -->
+    <div id="modal-event" class="fixed inset-0 bg-black/60 z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-lg shadow-2xl max-w-lg w-full border border-slate-300 overflow-hidden transform transition-all">
+            <div class="bg-slate-800 text-white px-4 py-2.5 flex justify-between items-center">
+                <span class="text-xs font-mono text-emerald-400" id="event-stage-tag">【阶段三：学龄前】</span>
+                <span class="text-xs text-slate-300" id="event-age-tag">4 岁</span>
             </div>
-            <div class="p-6 space-y-3">
-                <h3 class="font-bold text-slate-800 text-base" id="event-title">事件标题</h3>
-                <p class="text-xs text-slate-600 leading-relaxed bg-slate-50 p-3.5 rounded-xl border border-slate-200" id="event-desc">描述...</p>
-                <div class="space-y-2 pt-2" id="event-options"></div>
+            <div class="p-5">
+                <h3 class="font-bold text-slate-800 text-base mb-2" id="event-title">事件标题</h3>
+                <p class="text-xs text-slate-600 leading-relaxed mb-4 bg-slate-50 p-3 rounded border border-slate-200" id="event-desc">
+                    事件详细描述内容...
+                </p>
+                <div class="space-y-2" id="event-options"></div>
             </div>
         </div>
     </div>
 
-    <!-- 3. 治愈系流星雨彩蛋 -->
+    <!-- 情感治愈画布容器 (支持 4 种四维情感彩蛋) -->
     <div id="heal-canvas-container" class="fixed inset-0 bg-slate-950 z-50 hidden flex flex-col items-center justify-center text-white cursor-pointer" onclick="closeHealCanvas()">
         <canvas id="star-canvas" class="absolute inset-0 w-full h-full"></canvas>
         <div class="relative z-10 text-center px-6 max-w-lg space-y-4 pointer-events-none">
-            <div class="text-emerald-400 text-xs font-mono tracking-widest uppercase">── 系统情绪捕获与治愈 ──</div>
-            <p class="text-lg font-serif italic" id="heal-quote">“生活有时比公式还要复杂，但夜空一直都在。”</p>
-            <p class="text-xs text-slate-400 pt-6">点击任意位置返回星球...</p>
+            <div class="text-emerald-400 text-xs font-mono tracking-widest uppercase" id="heal-tag">── 系统心境捕获 ──</div>
+            <p class="text-[13px] text-slate-300 italic" id="heal-subtitle">“系统检测到当前情绪出现断崖式下跌...”</p>
+            <p class="text-lg font-serif italic" id="heal-quote">“生活有时比 Excel 的公式还要复杂。停下来，夜空一直都在。”</p>
+            <p class="text-xs text-slate-400 pt-6">点击任意位置返回人生...</p>
         </div>
     </div>
 
-    <!-- 4. 老板键 Boss Key 纯静态伪装表 -->
+    <!-- Boss Key 摸鱼界面 -->
     <div id="boss-key-overlay" class="fixed inset-0 bg-white z-[100] hidden flex-col overflow-auto text-slate-700 font-sans text-xs">
         <div class="bg-slate-100 p-2 border-b text-[11px] font-mono text-slate-500 flex justify-between">
             <span>2026集团财务预算与审计流水汇总表.xlsx [只读]</span>
@@ -244,42 +235,44 @@
                 <tbody>
                     <tr><td class="border border-slate-300 p-2 font-mono">1001</td><td class="border border-slate-300 p-2">库存现金与流转资金</td><td class="border border-slate-300 p-2 font-mono">1,250,000.00</td><td class="border border-slate-300 p-2 font-mono">-120,400.00</td><td class="border border-slate-300 p-2 font-mono">1,129,600.00</td></tr>
                     <tr><td class="border border-slate-300 p-2 font-mono">1002</td><td class="border border-slate-300 p-2">银行存款及风险储备金</td><td class="border border-slate-300 p-2 font-mono">5,800,000.00</td><td class="border border-slate-300 p-2 font-mono">+350,000.00</td><td class="border border-slate-300 p-2 font-mono">6,150,000.00</td></tr>
+                    <tr><td class="border border-slate-300 p-2 font-mono">2001</td><td class="border border-slate-300 p-2">长期应付款 (房贷与融资)</td><td class="border border-slate-300 p-2 font-mono">3,200,000.00</td><td class="border border-slate-300 p-2 font-mono">-50,000.00</td><td class="border border-slate-300 p-2 font-mono">3,150,000.00</td></tr>
                 </tbody>
             </table>
         </div>
     </div>
 
-    <!-- 5. 终局审计报告弹窗 -->
-    <div id="modal-report" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-[60] hidden flex items-center justify-center p-4 overflow-y-auto">
-        <div class="bg-white rounded-2xl shadow-2xl max-w-xl w-full border border-slate-200 overflow-hidden font-mono text-xs">
-            <div class="bg-[#107c41] text-white p-5 text-center">
+    <!-- 审计总结报告 -->
+    <div id="modal-report" class="fixed inset-0 bg-black/70 z-[60] hidden flex items-center justify-center p-4 overflow-y-auto">
+        <div class="bg-white rounded-lg shadow-2xl max-w-xl w-full border border-slate-300 overflow-hidden font-mono text-xs">
+            <div class="bg-[#107c41] text-white p-4 text-center">
                 <h2 class="text-base font-bold">2026 终极人生档案与资产清算审计报告</h2>
-                <p class="text-[11px] opacity-80 mt-1">—— 丝滑转正打卡终局 ——</p>
+                <p class="text-[11px] opacity-80 mt-1">—— 平凡而伟大的一生 ——</p>
             </div>
             <div class="p-6 space-y-4 text-slate-700">
-                <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-200 space-y-1">
-                    <p>【受审人】：<span class="font-bold">张伟</span></p>
+                <div class="bg-slate-50 p-3 rounded border border-slate-200 space-y-1">
+                    <p>【受审人】：<span id="rep-name" class="font-bold">中国式玩家</span></p>
                     <p>【终局年龄】：<span id="rep-age" class="font-bold text-rose-600">80 岁</span></p>
-                    <p>【最终人生评级】：<span class="font-bold text-emerald-600">A+ (星球传奇)</span></p>
+                    <p>【最终评价】：<span id="rep-rank" class="font-bold text-emerald-600">A+ (击败生活的勇士)</span></p>
                 </div>
-                <div class="space-y-1">
+                <div class="space-y-1.5">
                     <p>• 累计度过天数：<span id="rep-days">29,200</span> 天</p>
-                    <p>• 最终积累总资产：<span id="rep-cash" class="font-bold text-emerald-600">￥ 0</span></p>
+                    <p>• 终局积攒总资产：<span id="rep-cash" class="font-bold text-emerald-600">￥ 0</span></p>
+                    <p>• 达成理想成就数：<span id="rep-goals" class="font-bold text-blue-600">0</span> 次</p>
+                    <p>• 挺过重大挫折数：<span id="rep-setbacks" class="font-bold text-rose-500">0</span> 次</p>
                 </div>
             </div>
             <div class="bg-slate-50 p-4 border-t flex justify-center">
-                <button onclick="location.reload()" class="bg-[#107c41] hover:bg-emerald-700 text-white font-bold px-6 py-2.5 rounded-xl text-xs transition">
-                    重新投胎 (开启新星球)
+                <button onclick="location.reload()" class="bg-[#107c41] hover:bg-emerald-700 text-white font-bold px-6 py-2 rounded text-xs transition">
+                    重新投胎 (开启新人生)
                 </button>
             </div>
         </div>
     </div>
 
-    <!-- 3D 丝滑平滑转正打卡脚本 -->
+    <!-- JavaScript 全局控制逻辑 -->
     <script>
         lucide.createIcons();
 
-        // 玩家全套数据状态对象
         let player = {
             age: 0,
             birthYear: 2026,
@@ -291,9 +284,9 @@
             san: 100,
             pts: 100,
             int: 50,
-            phy: 50,
             fam: 60,
-            mor: 80,
+            goals: 0,
+            setbacks: 0,
             location: '',
             background: '',
             traits: [],
@@ -310,13 +303,13 @@
         let isDragging = false;
         let previousMousePosition = { x: 0, y: 0 };
 
-        // 动画过渡与四元数旋转控制
+        // 四元数精准平滑旋转变量
         let isAnimatingToFront = false;
         let targetQuaternion = new THREE.Quaternion();
-        let startQuaternion = new THREE.Quaternion();
         let animationProgress = 0;
-        const animationDuration = 45.0; // 动画帧数
+        const animationDuration = 40.0;
 
+        // 节气与节日映射表
         const solarTerms = {
             "1-1": "元旦", "2-4": "立春", "2-14": "情人节", "3-5": "惊蛰", 
             "4-5": "清明", "5-1": "劳动节", "5-21": "小满", "6-21": "夏至", 
@@ -324,31 +317,190 @@
             "11-7": "立冬", "12-21": "冬至"
         };
 
+        // 7 种缤纷渐变材质色彩
+        const vibrantGradients = [
+            ['#f43f5e', '#fb7185'], // 玫瑰粉红
+            ['#0ea5e9', '#38bdf8'], // 蒂芙尼蓝
+            ['#8b5cf6', '#a78bfa'], // 罗兰金紫
+            ['#f59e0b', '#fbbf24'], // 璀璨琥珀
+            ['#10b981', '#34d399'], // 翡翠嫩绿
+            ['#ec4899', '#f472b6'], // 霓虹亮粉
+            ['#6366f1', '#818cf8']  // 幻彩靛蓝
+        ];
+
+        // 涵盖 13 个完整人生年龄阶段的中国式大数据库
+        const ageEventDatabase = {
+            0: [ // 0 岁：出生与婴儿期
+                {
+                    stage: '阶段一：0岁新生儿期',
+                    title: '生理性黄疸照蓝光',
+                    desc: '刚出生一周，医生告知宝宝黄疸指标偏高，需要住院照蓝光治疗。',
+                    options: [
+                        { text: '听从医嘱住院照蓝光', effectText: '现金-2000, 健康+10', apply: () => { player.cash -= 2000; player.hp += 10; } },
+                        { text: '带回家多晒太阳保守观察', effectText: '省钱但担心不安', apply: () => { player.san -= 10; } }
+                    ]
+                },
+                {
+                    stage: '阶段一：0岁新生儿期',
+                    title: '自费二类疫苗接种',
+                    desc: '面临五联疫苗与口服轮状病毒疫苗等自费二类疫苗选择。',
+                    options: [
+                        { text: '全套安排自费疫苗', effectText: '现金-800, 健康度抗性+10', apply: () => { player.cash -= 800; player.hp += 10; } },
+                        { text: '仅接种免费一类疫苗', effectText: '节省家庭开支', apply: () => { player.cash += 0; } }
+                    ]
+                }
+            ],
+            1: [ // 1-3 岁：幼儿期
+                {
+                    stage: '阶段二：1-3岁幼儿期',
+                    title: '深夜高烧与急诊排队',
+                    desc: '深夜突然发烧到39.5度，儿童医院排队挂号人满为患。',
+                    options: [
+                        { text: '连夜赶往儿童医院急诊', effectText: '现金-500, 家庭累加', apply: () => { player.cash -= 500; player.fam += 5; } },
+                        { text: '在家物理降温喂退烧药', effectText: '考验父母心理素质', apply: () => { player.san -= 8; } }
+                    ]
+                },
+                {
+                    stage: '阶段二：1-3岁幼儿期',
+                    title: '断奶与托育早教抉择',
+                    desc: '面临强行断奶期，且父母因工作原因考虑是否送双语早教班。',
+                    options: [
+                        { text: '咬牙报高价托育班', effectText: '现金-15000, 智力+10', apply: () => { player.cash -= 15000; player.int += 10; } },
+                        { text: '交给爷爷奶奶陪伴带大', effectText: '家庭关系+10, 省钱', apply: () => { player.fam += 10; } }
+                    ]
+                }
+            ],
+            3: [ // 3-6 岁：学龄前
+                {
+                    stage: '阶段三：3-6岁学龄前',
+                    title: '公立普惠园 vs 私立双语园',
+                    desc: '面临幼儿园报名，私立双语园学费昂贵但外教丰富，公立园离家近。',
+                    options: [
+                        { text: '咬牙读私立双语园', effectText: '现金-60000, 智力+15', apply: () => { player.cash -= 60000; player.int += 15; } },
+                        { text: '读公立普惠园', effectText: '现金-6000, 快乐+10', apply: () => { player.cash -= 6000; player.san += 10; } }
+                    ]
+                }
+            ],
+            6: [ // 6-12 岁：小学阶段
+                {
+                    stage: '阶段四：6-12岁小学阶段',
+                    title: '小升初“学区房”抉择',
+                    desc: '面临公办摇号与民办择校，父母盘算是否卖掉老破小换名校学区房。',
+                    options: [
+                        { text: '掏空钱包置换学区房', effectText: '现金-300000(负债), 声望+20', apply: () => { player.cash -= 300000; player.pts += 20; player.goals++; } },
+                        { text: '顺其自然参加公办摇号', effectText: '快乐+15, 节省资金', apply: () => { player.san += 15; } }
+                    ]
+                }
+            ],
+            12: [ // 12-15 岁：初中青春期
+                {
+                    stage: '阶段五：12-15岁中考分流',
+                    title: '15岁中考“普职分流”',
+                    desc: '面对中考分流第一道分水岭，模考成绩悬在普高录取线边缘。',
+                    options: [
+                        { text: '拼命熬夜刷题冲刺普高', effectText: '智力+15, 健康-10', apply: () => { player.int += 15; player.hp -= 10; } },
+                        { text: '考虑报读特色中专/职高', effectText: '声望-15, 提前就业', isSad: true, sadMoodType: 'SAD', sadQuote: '星光不问赶路人，条条大路通罗马。', apply: () => { player.pts -= 15; player.setbacks++; } }
+                    ]
+                }
+            ],
+            15: [ // 15-18 岁：高中与高考
+                {
+                    stage: '阶段六：15-18岁高中与高考',
+                    title: '18岁高考志愿填报',
+                    desc: '人生命运转折点：城市、名校 (985/211) 与专业抉择。',
+                    options: [
+                        { text: '冲击热门计算机/AI专业', effectText: '智力+20, 竞争极大', apply: () => { player.int += 20; player.goals++; } },
+                        { text: '报读公费师范/定向医学生', effectText: '保障编制稳定, 现金+10000', apply: () => { player.cash += 10000; player.pts += 10; } }
+                    ]
+                }
+            ],
+            18: [ // 18-22 岁：大学与高职
+                {
+                    stage: '阶段七：18-22岁毕业分化',
+                    title: '毕业出路：考研/考公 vs 秋招就业',
+                    desc: '大四毕业季，面临备战考研考公与直接投递简历秋招的选择。',
+                    options: [
+                        { text: '脱产备战考研考公', effectText: '快乐-15, 期待上岸', apply: () => { player.san -= 15; player.int += 15; } },
+                        { text: '签约私企直接秋招', effectText: '现金+5000/月, 社会毒打', apply: () => { player.cash += 5000; player.pts += 5; } }
+                    ]
+                }
+            ],
+            22: [ // 22-30 岁：青年初入社会
+                {
+                    stage: '阶段八：22-30岁职场与婚姻',
+                    title: '大厂 996 与高额加班',
+                    desc: '高强度工作带来丰厚薪资，但体检报告开始出现多项红字。',
+                    options: [
+                        { text: '疯狂加班拼命攒钱', effectText: '现金+40000, 健康-15', isSad: true, sadMoodType: 'ANGRY', sadQuote: '深夜写字楼的灯光见证了努力，但也请照顾好身体。', apply: () => { player.cash += 40000; player.hp -= 15; player.setbacks++; } },
+                        { text: '拒绝内卷准时下班', effectText: '健康+10, 边缘化风险', apply: () => { player.hp += 10; player.pts -= 5; } }
+                    ]
+                },
+                {
+                    stage: '阶段八：22-30岁职场与婚姻',
+                    title: '结婚彩礼与掏空首付',
+                    desc: '面对订婚买房，需要掏空双方父母“六个钱包”凑首付。',
+                    options: [
+                        { text: '倾尽积蓄买房办婚礼', effectText: '现金-500000(负债), 家庭+20', apply: () => { player.cash -= 500000; player.fam += 20; player.goals++; } },
+                        { text: '选择裸婚裸租', effectText: '节省现金, 面临社会压力', apply: () => { player.pts -= 15; } }
+                    ]
+                }
+            ],
+            30: [ // 30-45 岁：家庭核心期
+                {
+                    stage: '阶段九：30-45岁中年危机',
+                    title: '35岁大厂裁员黑天鹅',
+                    desc: '收到 HR 的约谈通知（N+1 赔偿），房贷月供与孩子学费近在眼前。',
+                    options: [
+                        { text: '拿赔偿跳槽降薪求稳', effectText: '薪资打折, 重塑心态', isSad: true, sadMoodType: 'LOST', sadQuote: '前路茫茫，迷茫本身也是人生的一部分。', apply: () => { player.cash += 20000; player.san -= 15; player.setbacks++; } },
+                        { text: '买车跑网约车/开店创业', effectText: '面临创业风险', apply: () => { player.cash -= 30000; } }
+                    ]
+                },
+                {
+                    stage: '阶段九：30-45岁中年危机',
+                    title: '父母突发重病 ICU 抢救',
+                    desc: '父亲突发脑梗住院，面对自费进口药与 ICU 每天上万元花销。',
+                    options: [
+                        { text: '卖房倾家荡产抢救', effectText: '现金-200000, 家庭+30', apply: () => { player.cash -= 200000; player.fam += 30; } },
+                        { text: '保守治疗与安宁疗护', effectText: '内疚感加剧, 保存家庭实力', isSad: true, sadMoodType: 'SAD', sadQuote: '尽力了便问心无愧，生命自有其归宿。', apply: () => { player.san -= 25; } }
+                    ]
+                }
+            ],
+            45: [ // 45-60 岁：中年后期
+                {
+                    stage: '阶段十：45-60岁更年与慢性病',
+                    title: '慢性病三高爆发',
+                    desc: '体检确诊高血压与高血糖，必须长期服药维持。',
+                    options: [
+                        { text: '积极养生与药物控制', effectText: '现金-5000, 健康+10', apply: () => { player.cash -= 5000; player.hp += 10; } },
+                        { text: '无视医嘱继续饮酒应酬', effectText: '健康-20', apply: () => { player.hp -= 20; } }
+                    ]
+                }
+            ],
+            60: [ // 60-100 岁：老年期
+                {
+                    stage: '阶段十一：60-100岁老年终局',
+                    title: '终极医疗决策与安宁疗护',
+                    desc: '年过七旬面对重疾，选择插管维持还是尊严安宁离世。',
+                    options: [
+                        { text: '选择安宁疗护尊严离开', effectText: '平静接受生命终点', apply: () => { player.san += 20; } },
+                        { text: '有创抢救插管维持', effectText: '消耗巨额资产', apply: () => { player.cash -= 100000; } }
+                    ]
+                }
+            ]
+        };
+
         const minorEventPool = [
-            { text: '今天早上通勤挤地铁，差点迟到', san: -2 },
-            { text: '在路边买了个煎饼果子加双蛋', san: +3, cash: -10 },
-            { text: '深夜熬夜刷手机，顶着黑眼圈', hp: -3, san: +2 },
-            { text: '公司下午茶抢到了车厘子蛋糕', san: +4 },
+            { text: '早上通勤挤地铁，煎饼果子掉地上', san: -2 },
+            { text: '公司下午茶抢到了车厘子蛋糕', san: +4, cash: -10 },
+            { text: '深夜熬夜刷短视频，顶着黑眼圈', hp: -3, san: +2 },
+            { text: '买彩票中了 200 元小奖', cash: +200, san: +5 },
             { text: '周末在家泡茶，享受安静时光', san: +5, hp: +2 }
         ];
 
-        // 预设多种绚彩渐变色方案，让打卡后的星球丰富多彩
-        const vibrantColorPalettes = [
-            ['#38bdf8', '#6366f1'], // 湛蓝 -> 罗兰紫
-            ['#f43f5e', '#fb923c'], // 珊瑚红 -> 暖橙
-            ['#a855f7', '#ec4899'], // 霓虹紫 -> 浪漫粉
-            ['#eab308', '#f97316'], // 琥珀金 -> 耀橙
-            ['#06b6d4', '#3b82f6'], // 蒂夫尼蓝 -> 宝蓝
-            ['#10b981', '#06b6d4'], // 薄荷绿 -> 碧蓝
-            ['#f472b6', '#8b5cf6']  // 樱花粉 -> 魅紫
-        ];
-
-        // 绑定到全局 window 的 startLifeGame 函数，避免 onclick 报 ReferenceError
-        window.startLifeGame = function() {
-            const modalStart = document.getElementById('modal-start');
-            if (modalStart) modalStart.classList.add('hidden');
+        function startLifeGame() {
+            document.getElementById('modal-start').classList.add('hidden');
             
-            player.birthYear = 2026 + Math.floor(Math.random() * 15);
+            player.birthYear = 2026;
             player.daysTotal = isLeapYear(player.birthYear) ? 366 : 365;
             player.daysRemaining = player.daysTotal;
             player.clickSequence = 0;
@@ -372,15 +524,14 @@
 
             updateUI();
             init3DPolyhedronSphere();
-        };
+        }
 
         function isLeapYear(year) {
             return (year % 4 === 0 && year % 100 !== 0) || (year % 400 === 0);
         }
 
         function init3DPolyhedronSphere() {
-            const container = document.getElementById('canvas-target');
-            if (!container) return;
+            const container = document.getElementById('webgl-output');
             container.innerHTML = '';
 
             scene = new THREE.Scene();
@@ -461,7 +612,6 @@
             animate();
         }
 
-        // 动态生成缤纷炫彩打卡纹理
         function createColorTextTexture(text, isFestival) {
             const canvas = document.createElement('canvas');
             canvas.width = 256;
@@ -473,9 +623,9 @@
                 grad.addColorStop(0, '#34d399');
                 grad.addColorStop(1, '#059669');
             } else {
-                const randomPalette = vibrantColorPalettes[Math.floor(Math.random() * vibrantColorPalettes.length)];
-                grad.addColorStop(0, randomPalette[0]);
-                grad.addColorStop(1, randomPalette[1]);
+                const pair = vibrantGradients[Math.floor(Math.random() * vibrantGradients.length)];
+                grad.addColorStop(0, pair[0]);
+                grad.addColorStop(1, pair[1]);
             }
             ctx.fillStyle = grad;
             ctx.fillRect(0, 0, 256, 256);
@@ -499,14 +649,12 @@
                     isAnimatingToFront = false;
                 }
                 const ease = 1 - Math.pow(1 - animationProgress, 3);
-                globeGroup.quaternion.slerpQuaternions(startQuaternion, targetQuaternion, ease);
-            } else if (!isDragging && globeGroup) {
+                globeGroup.quaternion.slerp(targetQuaternion, ease);
+            } else if (!isDragging) {
                 globeGroup.rotation.y += 0.0008;
             }
 
-            if (renderer && scene && camera) {
-                renderer.render(scene, camera);
-            }
+            renderer.render(scene, camera);
         }
 
         function onPointerDown(e) {
@@ -520,15 +668,9 @@
             const deltaX = e.clientX - previousMousePosition.x;
             const deltaY = e.clientY - previousMousePosition.y;
 
-            const deltaRotationQuaternion = new THREE.Quaternion()
-                .setFromEuler(new THREE.Euler(
-                    deltaY * 0.007,
-                    deltaX * 0.007,
-                    0,
-                    'XYZ'
-                ));
-            
-            globeGroup.quaternion.multiplyQuaternions(deltaRotationQuaternion, globeGroup.quaternion);
+            globeGroup.rotation.y += deltaX * 0.007;
+            globeGroup.rotation.x += deltaY * 0.007;
+
             previousMousePosition = { x: e.clientX, y: e.clientY };
         }
 
@@ -536,11 +678,10 @@
             isDragging = false;
         }
 
-        async function onPointerClick(e) {
+        function onPointerClick(e) {
             if (isAnimatingToFront) return;
 
-            const container = document.getElementById('canvas-target');
-            if (!container) return;
+            const container = document.getElementById('webgl-output');
             const rect = container.getBoundingClientRect();
             mouse.x = ((e.clientX - rect.left) / container.clientWidth) * 2 - 1;
             mouse.y = -((e.clientY - rect.top) / container.clientHeight) * 2 + 1;
@@ -552,32 +693,30 @@
                 const clickedMesh = intersects[0].object;
                 if (!clickedMesh.userData.lit) {
                     smoothRotateToBlock(clickedMesh);
-                    await lightUpPolyBlock(clickedMesh);
+                    lightUpPolyBlock(clickedMesh);
                 }
             }
         }
 
         function smoothRotateToBlock(mesh) {
-            startQuaternion.copy(globeGroup.quaternion);
+            const blockNormal = mesh.position.clone().normalize();
+            const targetDir = new THREE.Vector3(0, 0, 1);
+            
+            const deltaQuat = new THREE.Quaternion();
+            deltaQuat.setFromUnitVectors(blockNormal, targetDir);
 
-            const localNormal = mesh.position.clone().normalize();
-            const targetNormal = new THREE.Vector3(0, 0, 1);
-            const rotationQ = new THREE.Quaternion().setFromUnitVectors(localNormal, targetNormal);
-
-            targetQuaternion.copy(rotationQ);
-
+            targetQuaternion.copy(deltaQuat.multiply(globeGroup.quaternion));
             animationProgress = 0;
             isAnimatingToFront = true;
         }
 
-        async function lightUpPolyBlock(mesh) {
+        function lightUpPolyBlock(mesh) {
             mesh.userData.lit = true;
             player.daysRemaining--;
             player.gridClickedCount++;
             player.clickSequence++; 
 
-            const daysRemainingElem = document.getElementById('days-remaining');
-            if (daysRemainingElem) daysRemainingElem.innerText = player.daysRemaining;
+            document.getElementById('days-remaining').innerText = player.daysRemaining;
 
             const dateObj = daySequenceToDateStr(player.clickSequence);
             const term = solarTerms[dateObj.monthDay];
@@ -606,8 +745,8 @@
             }
 
             const rand = Math.random();
-            if (rand < 0.10) {
-                await triggerMajorEvent();
+            if (rand < 0.12) {
+                triggerMajorEvent();
             } else if (rand < 0.30) {
                 triggerMinorEvent();
             }
@@ -615,27 +754,31 @@
             checkAgeOrEnd();
         }
 
-        window.rollDice = async function() {
+        function rollDice() {
             if (isAnimatingToFront) return;
             const btn = document.getElementById('btn-dice');
-            if (btn) btn.disabled = true;
+            btn.disabled = true;
             const steps = Math.floor(Math.random() * 6) + 1;
             showToast(`🎲 命运骰子摇出 ${steps} 步！`);
 
             const unlitBlocks = polyBlocks.filter(m => !m.userData.lit);
+            let count = 0;
 
-            for (let i = 0; i < steps && unlitBlocks.length > 0 && player.daysRemaining > 0; i++) {
-                const randomMesh = unlitBlocks[Math.floor(Math.random() * unlitBlocks.length)];
-                const idx = unlitBlocks.indexOf(randomMesh);
-                if (idx > -1) unlitBlocks.splice(idx, 1);
-                
-                smoothRotateToBlock(randomMesh);
-                await lightUpPolyBlock(randomMesh);
-                await new Promise(res => setTimeout(res, 1200));
-            }
-
-            if (btn) btn.disabled = false;
-        };
+            const interval = setInterval(() => {
+                if (unlitBlocks.length > 0 && count < steps && player.daysRemaining > 0) {
+                    const randomMesh = unlitBlocks[Math.floor(Math.random() * unlitBlocks.length)];
+                    const idx = unlitBlocks.indexOf(randomMesh);
+                    if (idx > -1) unlitBlocks.splice(idx, 1);
+                    
+                    smoothRotateToBlock(randomMesh);
+                    lightUpPolyBlock(randomMesh);
+                    count++;
+                } else {
+                    clearInterval(interval);
+                    btn.disabled = false;
+                }
+            }, 1200);
+        }
 
         function daySequenceToDateStr(seq) {
             let month = Math.ceil(seq / 31);
@@ -654,142 +797,151 @@
         }
 
         function triggerMajorEvent() {
-            return new Promise((resolve) => {
-                player.eventTriggeredCount++;
-                const modal = document.getElementById('modal-event');
-                const title = document.getElementById('event-title');
-                const desc = document.getElementById('event-desc');
-                const optionsBox = document.getElementById('event-options');
-                if (!modal || !optionsBox) return resolve();
-                optionsBox.innerHTML = '';
+            player.eventTriggeredCount++;
+            const modal = document.getElementById('modal-event');
+            const title = document.getElementById('event-title');
+            const desc = document.getElementById('event-desc');
+            const optionsBox = document.getElementById('event-options');
+            optionsBox.innerHTML = '';
 
-                let ev = getEventByAge(player.age);
+            let ev = getEventByAge(player.age);
 
-                document.getElementById('event-stage-tag').innerText = `【${ev.stage}】`;
-                document.getElementById('event-age-tag').innerText = `${player.age} 岁`;
-                title.innerText = ev.title;
-                desc.innerText = ev.desc;
+            document.getElementById('event-stage-tag').innerText = `【${ev.stage}】`;
+            document.getElementById('event-age-tag').innerText = `${player.age} 岁`;
+            title.innerText = ev.title;
+            desc.innerText = ev.desc;
 
-                ev.options.forEach((opt) => {
-                    const b = document.createElement('button');
-                    b.className = 'w-full text-left p-2.5 rounded border border-slate-200 hover:border-emerald-500 hover:bg-emerald-50 text-xs transition flex justify-between items-center bg-white';
-                    b.innerHTML = `<span>${opt.text}</span><span class="text-[10px] text-slate-400 font-mono">${opt.effectText}</span>`;
-                    b.onclick = () => {
-                        opt.apply();
-                        modal.classList.add('hidden');
-                        updateUI();
-                        if (opt.isSad) triggerHealCanvas(opt.sadQuote);
-                        resolve();
-                    };
-                    optionsBox.appendChild(b);
-                });
-
-                modal.classList.remove('hidden');
+            ev.options.forEach((opt) => {
+                const b = document.createElement('button');
+                b.className = 'w-full text-left p-2.5 rounded border border-slate-200 hover:border-emerald-500 hover:bg-emerald-50 text-xs transition flex justify-between items-center bg-white shadow-sm';
+                b.innerHTML = `<span>${opt.text}</span><span class="text-[10px] text-slate-400 font-mono">${opt.effectText}</span>`;
+                b.onclick = () => {
+                    opt.apply();
+                    modal.classList.add('hidden');
+                    updateUI();
+                    if (opt.isSad) {
+                        triggerHealCanvas(opt.sadMoodType || 'SAD', opt.sadQuote);
+                    }
+                };
+                optionsBox.appendChild(b);
             });
+
+            modal.classList.remove('hidden');
         }
 
         function getEventByAge(age) {
-            if (age <= 12) {
-                return {
-                    stage: '阶段一：童年启蒙期', title: '天价早教班与奥数',
-                    desc: '父母是否该花重金报班鸡娃？',
-                    options: [
-                        { text: '报班内卷', effectText: '现金-3万, 智力+10', apply: () => { player.cash -= 30000; player.int += 10; } },
-                        { text: '快乐童年', effectText: '快乐+10', apply: () => { player.san += 10; } }
-                    ]
-                };
-            } else if (age <= 21) {
-                return {
-                    stage: '阶段二：中高考与大学', title: '普职分流与专业选择',
-                    desc: '人生第一次重大方向分水岭。',
-                    options: [
-                        { text: '硬刚高考学计算机', effectText: '智力+15, 快乐-10', apply: () => { player.int += 15; player.san -= 10; } },
-                        { text: '技校学一门手艺', effectText: '声望-15', isSad: true, sadQuote: '星光不问赶路人，条条大路通罗马。', apply: () => { player.pts -= 15; } }
-                    ]
-                };
-            } else if (age <= 35) {
-                return {
-                    stage: '阶段三：职场搏杀期', title: '大厂 996 与 35 岁危机',
-                    desc: '面对高强度加班与大厂优化，你的抉择是？',
-                    options: [
-                        { text: '疯狂加班拿高薪', effectText: '现金+3万, 健康-15', isSad: true, sadQuote: '深夜写字楼的灯光见证了你的努力，照顾好自己。', apply: () => { player.cash += 30000; player.hp -= 15; } },
-                        { text: '准时下班摸鱼', effectText: '健康+5, 边缘化风险', apply: () => { player.hp += 5; } }
-                    ]
-                };
-            } else {
-                return {
-                    stage: '阶段四：中年危机与养老', title: '父母大病与退休养老',
-                    desc: '家庭责任与健康全面爆发的考验。',
-                    options: [
-                        { text: '全力抢救与陪伴', effectText: '现金-20万, 家庭+20', apply: () => { player.cash -= 200000; player.fam += 20; } },
-                        { text: '安宁疗护与保守治疗', effectText: '节省现金, 内疚感加剧', isSad: true, sadQuote: '尽力了便问心无愧，生命自有其归宿。', apply: () => { player.san -= 20; } }
-                    ]
-                };
+            const keys = Object.keys(ageEventDatabase).map(Number).sort((a,b)=>a-b);
+            let matchedKey = keys[0];
+            for (let k of keys) {
+                if (age >= k) matchedKey = k;
             }
+            const pool = ageEventDatabase[matchedKey];
+            return pool[Math.floor(Math.random() * pool.length)];
         }
 
-        window.triggerHealCanvas = function(quote) {
+        // 包含 4 维心理状态捕获与视觉彩蛋
+        function triggerHealCanvas(moodType, quote) {
             const container = document.getElementById('heal-canvas-container');
-            if (!container) return;
-            if (quote) document.getElementById('heal-quote').innerText = `“${quote}”`;
+            const tag = document.getElementById('heal-tag');
+            const subtitle = document.getElementById('heal-subtitle');
+            const quoteEl = document.getElementById('heal-quote');
+
+            if (moodType === 'JOY') {
+                tag.innerText = '── 🌟 系统心境捕获：狂喜/高光时刻 ──';
+                subtitle.innerText = '这一刻的努力，终于有了回响。你想怎么庆祝这来之不易的胜利？';
+                if (quote) quoteEl.innerText = `“${quote}”`;
+                if (typeof confetti === 'function') {
+                    confetti({ particleCount: 100, spread: 80, origin: { y: 0.6 } });
+                }
+            } else if (moodType === 'LOST') {
+                tag.innerText = '── 🧩 系统心境捕获：迷茫/焦虑时刻 ──';
+                subtitle.innerText = '前路茫茫，好像怎么选都有遗憾。要不要听一听风的声音？';
+                quoteEl.innerText = quote ? `“${quote}”` : '“迷茫本身，也是人生的一部分。停下来，不代表后退。”';
+            } else if (moodType === 'ANGRY') {
+                tag.innerText = '── 🔥 系统心境捕获：不甘与奋起 ──';
+                subtitle.innerText = '底层合规异常：这很不公平，对吗？但生活还要继续。';
+                quoteEl.innerText = quote ? `“${quote}”` : '“把不甘化作向前的燃料，黎明终将升起。”';
+            } else { // SAD 悲伤
+                tag.innerText = '── 🌧️ 系统心境捕获：悲伤/挫折时刻 ──';
+                subtitle.innerText = '心像被狠狠揪了一下。要不要暂时逃离这个表格，去看看流星？';
+                quoteEl.innerText = quote ? `“${quote}”` : '“生活有时比 Excel 的公式还要复杂。停下来，夜空一直都在。”';
+            }
+
             container.classList.remove('hidden');
 
             const canvas = document.getElementById('star-canvas');
-            if (!canvas) return;
             const ctx = canvas.getContext('2d');
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
+
+            let stars = Array.from({ length: 150 }, () => ({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                r: Math.random() * 1.5
+            }));
 
             function draw() {
                 ctx.fillStyle = 'rgba(10, 15, 30, 0.3)';
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
                 ctx.fillStyle = '#ffffff';
-                ctx.fillRect(Math.random() * canvas.width, Math.random() * canvas.height, 2, 2);
+                stars.forEach(s => {
+                    ctx.beginPath();
+                    ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+                    ctx.fill();
+                });
+                if (Math.random() < 0.1) {
+                    ctx.strokeStyle = '#38bdf8';
+                    ctx.lineWidth = 2;
+                    ctx.beginPath();
+                    let sx = Math.random() * canvas.width;
+                    ctx.moveTo(sx, 0);
+                    ctx.lineTo(sx - 200, 200);
+                    ctx.stroke();
+                }
                 if (!container.classList.contains('hidden')) requestAnimationFrame(draw);
             }
             draw();
-        };
+        }
 
-        window.closeHealCanvas = function() {
-            const container = document.getElementById('heal-canvas-container');
-            if (container) container.classList.add('hidden');
+        function closeHealCanvas() {
+            document.getElementById('heal-canvas-container').classList.add('hidden');
             player.san = Math.min(100, player.san + 15);
             updateUI();
-        };
+        }
 
-        window.toggleBossKey = function() {
+        function toggleBossKey() {
             isBossKeyActive = !isBossKeyActive;
             const overlay = document.getElementById('boss-key-overlay');
-            if (overlay) {
-                if (isBossKeyActive) overlay.classList.remove('hidden');
-                else overlay.classList.add('hidden');
-            }
-        };
+            if (isBossKeyActive) overlay.classList.remove('hidden');
+            else overlay.classList.add('hidden');
+        }
 
-        document.addEventListener('keydown', (e) => { if (e.key === 'Escape') toggleBossKey(); });
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') toggleBossKey();
+        });
 
         function updateUI() {
-            const setTxt = (id, val) => { const el = document.getElementById(id); if (el) el.innerText = val; };
-            setTxt('val-cash', `￥ ${player.cash.toLocaleString()}`);
-            setTxt('val-hp', `${Math.max(0, player.hp)}/100`);
-            const barHp = document.getElementById('bar-hp'); if (barHp) barHp.style.width = `${Math.max(0, player.hp)}%`;
-            setTxt('val-san', `${Math.max(0, player.san)}%`);
-            const barSan = document.getElementById('bar-san'); if (barSan) barSan.style.width = `${Math.max(0, player.san)}%`;
-            setTxt('val-pts', `${player.pts} PTS`);
-            setTxt('val-int', player.int);
-            setTxt('val-phy', player.phy);
+            document.getElementById('val-cash').innerText = `￥ ${player.cash.toLocaleString()}`;
+            document.getElementById('val-hp').innerText = `${Math.max(0, player.hp)}/100`;
+            document.getElementById('bar-hp').style.width = `${Math.max(0, player.hp)}%`;
+            document.getElementById('val-san').innerText = `${Math.max(0, player.san)}%`;
+            document.getElementById('bar-san').style.width = `${Math.max(0, player.san)}%`;
+            document.getElementById('val-pts').innerText = `${player.pts} PTS`;
+            document.getElementById('val-int').innerText = player.int;
+            document.getElementById('val-fam').innerText = player.fam;
+            document.getElementById('val-goals').innerText = player.goals;
+            document.getElementById('val-setbacks').innerText = player.setbacks;
 
-            setTxt('current-age-badge', `${player.age} 岁`);
-            setTxt('info-birth', `出生地: ${player.location}`);
-            setTxt('info-bg', `家庭: ${player.background}`);
-            setTxt('info-traits', `天赋: ${player.traits.join(', ')}`);
+            document.getElementById('current-age-badge').innerText = `${player.age} 岁`;
+            document.getElementById('info-birth').innerText = `出生地: ${player.location}`;
+            document.getElementById('info-bg').innerText = `家庭: ${player.background}`;
+            document.getElementById('info-traits').innerText = `天赋: ${player.traits.join(', ')}`;
         }
 
         function showToast(text) {
             const container = document.getElementById('toast-container');
-            if (!container) return;
             const toast = document.createElement('div');
-            toast.className = 'bg-[#107c41] text-white text-xs px-3.5 py-2 rounded-xl shadow-xl border border-white/20 backdrop-blur animate-bounce';
+            toast.className = 'bg-white border border-slate-300 text-slate-800 text-xs px-3 py-1.5 rounded shadow-md animate-bounce';
             toast.innerText = text;
             container.appendChild(toast);
             setTimeout(() => toast.remove(), 3000);
@@ -811,8 +963,7 @@
                     player.clickSequence = 0;
                     
                     showToast(`🎂 祝贺你满 ${player.age} 岁了！新的一年星球重置。`);
-                    const yrDisplay = document.getElementById('birth-year-display');
-                    if (yrDisplay) yrDisplay.innerText = `${player.birthYear + player.age}年`;
+                    document.getElementById('birth-year-display').innerText = player.birthYear + player.age;
                     
                     init3DPolyhedronSphere();
                     updateUI();
@@ -821,19 +972,17 @@
         }
 
         function showReport(reason) {
-            const modalRep = document.getElementById('modal-report');
-            if (modalRep) modalRep.classList.remove('hidden');
-            const repAge = document.getElementById('rep-age');
-            if (repAge) repAge.innerText = `${player.age} 岁 (${reason})`;
-            const repDays = document.getElementById('rep-days');
-            if (repDays) repDays.innerText = (player.age * 365 + player.gridClickedCount).toLocaleString();
-            const repCash = document.getElementById('rep-cash');
-            if (repCash) repCash.innerText = `￥ ${player.cash.toLocaleString()}`;
+            document.getElementById('modal-report').classList.remove('hidden');
+            document.getElementById('rep-age').innerText = `${player.age} 岁 (${reason})`;
+            document.getElementById('rep-days').innerText = (player.age * 365 + player.gridClickedCount).toLocaleString();
+            document.getElementById('rep-cash').innerText = `￥ ${player.cash.toLocaleString()}`;
+            document.getElementById('rep-goals').innerText = player.goals;
+            document.getElementById('rep-setbacks').innerText = player.setbacks;
         }
 
         function onWindowResize() {
-            const container = document.getElementById('canvas-target');
-            if (!container || !renderer || !camera) return;
+            const container = document.getElementById('webgl-output');
+            if (!container || !renderer) return;
             camera.aspect = container.clientWidth / container.clientHeight;
             camera.updateProjectionMatrix();
             renderer.setSize(container.clientWidth, container.clientHeight);
