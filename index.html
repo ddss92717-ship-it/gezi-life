@@ -3,783 +3,333 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>人生财务与风险评估表_FY2026.xlsx - 黑白漫画与中国式生存法则完整版</title>
+    <title>掌天道：修仙模拟器 - 沉浸式古风挂机爽游</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Canvas Confetti 烟花库 -->
+    <!-- Canvas Confetti 突破雷劫特效库 -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&family=Noto+Serif+SC:wght@700;900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@400;700;900&display=swap');
         
-        .font-manga-title { font-family: 'ZCOOL KuaiLe', cursive; }
-        .font-manga-body { font-family: 'Noto Serif SC', serif; }
+        .font-xiuxian-title { font-family: 'Ma Shan Zheng', cursive; }
+        .font-xiuxian-body { font-family: 'Noto Serif SC', serif; }
 
-        /* 黑白漫画网点背景 (ScreenTone) */
-        .screentone-bg {
-            background-color: #ffffff;
-            background-image: radial-gradient(#a1a1aa 1.2px, transparent 1.2px);
-            background-size: 8px 8px;
-        }
-
-        /* Excel 结合黑白网格线 */
-        .manga-excel-grid {
-            background-color: #ffffff;
-            background-image: linear-gradient(#000000 1.5px, transparent 1.5px),
-                              linear-gradient(90deg, #000000 1.5px, transparent 1.5px);
-            background-size: 32px 32px;
+        /* 古风宣纸与水墨背景 */
+        .xuan-paper-bg {
+            background-color: #0f172a;
+            background-image: radial-gradient(rgba(56, 189, 248, 0.1) 1px, transparent 1px);
+            background-size: 20px 20px;
         }
 
-        /* 漫画粗手绘边框与粗阴影 */
-        .manga-border {
-            border: 4px solid #000000;
-            box-shadow: 6px 6px 0px #000000;
+        /* 古风仙侠高级边框 */
+        .xiuxian-border {
+            border: 2px solid #38bdf8;
+            box-shadow: 0 0 15px rgba(56, 189, 248, 0.2);
+            background: rgba(15, 23, 42, 0.85);
         }
 
-        /* 漫画对话气泡 */
-        .speech-bubble {
-            position: relative;
-            background: #ffffff;
-            border: 3px solid #000000;
-            border-radius: 12px;
-            box-shadow: 4px 4px 0px #000000;
+        .xiuxian-btn {
+            background: linear-gradient(135deg, #0369a1 0%, #0c4a6e 100%);
+            border: 1px solid #38bdf8;
+            box-shadow: 0 4px 12px rgba(3, 105, 161, 0.4);
+            transition: all 0.2s ease;
         }
-        .speech-bubble::after {
-            content: '';
-            position: absolute;
-            bottom: -16px;
-            left: 30px;
-            border-width: 16px 16px 0;
-            border-style: solid;
-            border-color: #000000 transparent;
-            display: block;
-            width: 0;
+        .xiuxian-btn:hover {
+            background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(56, 189, 248, 0.6);
         }
-
-        /* 漫画冲击速度线 */
-        .speed-lines {
-            background: repeating-conic-gradient(
-                from 0deg,
-                rgba(0,0,0,0.15) 0deg 2deg,
-                transparent 2deg 10deg
-            );
-        }
-
-        .manga-btn {
-            background: #ffffff;
-            border: 3px solid #000000;
-            box-shadow: 3px 3px 0px #000000;
-            transition: all 0.15s ease;
-        }
-        .manga-btn:hover:not(:disabled) {
-            background: #000000;
-            color: #ffffff;
-            transform: translate(-2px, -2px);
-            box-shadow: 5px 5px 0px #000000;
-        }
-        .manga-btn:disabled {
-            background: #e2e8f0;
-            color: #94a3b8;
-            border-color: #94a3b8;
-            box-shadow: none;
-            cursor: not-allowed;
-        }
-
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     </style>
 </head>
-<body class="bg-black text-black font-sans h-screen flex flex-col overflow-hidden select-none">
+<body class="xuan-paper-bg text-slate-100 font-xiuxian-body h-screen flex flex-col overflow-hidden select-none">
 
-    <!-- 顶部 Excel 伪装标题栏 (黑白漫画修饰) -->
-    <header class="bg-black text-white text-xs flex flex-col shrink-0 border-b-4 border-black">
-        <div class="flex items-center justify-between px-4 py-2 bg-white text-black border-b-2 border-black">
-            <div class="flex items-center space-x-3">
-                <i data-lucide="file-spreadsheet" class="w-5 h-5 text-black"></i>
-                <span class="font-manga-title text-base tracking-wider">人生财务与风险评估表_FY2026.xlsx - [黑白漫画中国式人生版]</span>
-                <span class="bg-black text-white text-[10px] px-2 py-0.5 font-bold uppercase">MANGA MODE</span>
-            </div>
-            <div class="flex items-center space-x-3">
-                <button onclick="toggleBossKey()" class="manga-btn px-3 py-1 text-xs font-bold flex items-center space-x-1">
-                    <i data-lucide="eye-off" class="w-3.5 h-3.5"></i>
-                    <span>一键伪装摸鱼 (Esc)</span>
-                </button>
+    <!-- 顶部仙侠状态栏 -->
+    <header class="bg-slate-900/90 border-b border-sky-500/30 px-6 py-3 flex justify-between items-center z-20 backdrop-blur shrink-0">
+        <div class="flex items-center space-x-3">
+            <span class="text-3xl">🧘‍♂️</span>
+            <div>
+                <h1 class="font-xiuxian-title text-2xl tracking-widest text-sky-400 drop-shadow">掌天道 · 修仙模拟器</h1>
+                <p class="text-[10px] text-slate-400 font-mono">当前版本：v1.0.0 仙途纵横版</p>
             </div>
         </div>
-        <div class="bg-slate-100 text-black px-4 py-1 flex items-center space-x-4 border-b-2 border-black text-xs font-mono">
-            <span class="font-bold">A1:VOL_01</span>
-            <span>|</span>
-            <span>按 Enter / Space 或点击按钮推进人生；遭遇悲伤时刻将触发全屏夜空流星雨治愈彩蛋！</span>
+        <div class="flex items-center space-x-6 text-xs font-mono">
+            <div class="bg-slate-800/80 px-3 py-1.5 rounded border border-sky-500/30">
+                <span class="text-slate-400">灵石:</span> <span id="top-spirit" class="text-amber-400 font-bold">1,000</span> 🪨
+            </div>
+            <div class="bg-slate-800/80 px-3 py-1.5 rounded border border-sky-500/30">
+                <span class="text-slate-400">寿元:</span> <span id="top-life" class="text-emerald-400 font-bold">500 年</span> ⏳
+            </div>
         </div>
     </header>
 
-    <!-- 公式栏 -->
-    <div class="bg-white border-b-2 border-black px-3 py-1 flex items-center space-x-2 text-xs text-black shrink-0 font-mono">
-        <span class="font-bold bg-black text-white px-2 py-0.5">MANGA_SCRIPT</span>
-        <span class="italic font-serif">fx</span>
-        <div class="h-4 w-0.5 bg-black"></div>
-        <span class="font-bold" id="formula-text">=SUM(C3:C100) /* 中国式生存法则：8维属性连锁判定、黑白漫画分镜驱动 */</span>
-    </div>
-
-    <!-- 主界面：左侧 8 维属性监控栏 + 右侧黑白漫画分镜展示区 -->
-    <div class="flex-1 flex overflow-hidden screentone-bg">
+    <!-- 主界面：左侧道友面板 + 右侧修仙洞府/宗门大殿 -->
+    <main class="flex-1 flex overflow-hidden p-4 gap-4">
         
-        <!-- 左侧漫画风 8 维数据栏 -->
-        <aside class="w-80 bg-white border-r-4 border-black p-4 flex flex-col justify-between overflow-y-auto shrink-0 text-xs z-10">
+        <!-- 左侧：道友个人档案与境界立绘面板 -->
+        <aside class="w-80 xiuxian-border rounded-xl p-5 flex flex-col justify-between shrink-0 shadow-2xl">
             <div>
-                <div class="font-manga-title text-lg border-b-4 border-black pb-1 mb-3 flex justify-between items-center">
-                    <span>核心属性监控</span>
-                    <span id="manga-age-badge" class="bg-black text-white px-2.5 py-0.5 rounded text-sm">0 岁</span>
+                <!-- 头像与境界卡片 -->
+                <div class="text-center pb-4 border-b border-sky-500/20 relative">
+                    <div class="w-24 h-24 mx-auto rounded-full border-2 border-sky-400 bg-gradient-to-b from-sky-900 to-slate-900 flex items-center justify-center text-4xl shadow-[0_0_20px_rgba(56,189,248,0.3)] mb-3">
+                        ⚡
+                    </div>
+                    <h2 class="font-xiuxian-title text-xl text-sky-300" id="player-name">韩绝 (散修)</h2>
+                    <span id="player-realm" class="inline-block bg-sky-950 text-sky-300 border border-sky-700 text-xs px-3 py-0.5 rounded-full mt-1 font-bold">
+                        炼气期一层
+                    </span>
                 </div>
 
-                <div class="space-y-2.5 font-mono">
-                    <div class="bg-white p-2 border-2 border-black shadow-[2px_2px_0px_#000]">
-                        <div class="flex justify-between font-bold mb-1">
-                            <span>流动资金 (CASH)</span>
-                            <span id="manga-cash" class="text-sm">￥ 0</span>
+                <!-- 核心属性栏 -->
+                <div class="space-y-3 mt-4 text-xs font-mono">
+                    <div>
+                        <div class="flex justify-between text-slate-400 mb-1">
+                            <span>修为进度</span>
+                            <span id="exp-text">0 / 100</span>
+                        </div>
+                        <div class="w-full bg-slate-900 h-2.5 rounded-full overflow-hidden border border-sky-500/30">
+                            <div id="exp-bar" class="bg-gradient-to-r from-sky-500 to-cyan-400 h-full transition-all duration-300" style="width: 0%"></div>
                         </div>
                     </div>
 
-                    <div class="bg-white p-2 border-2 border-black shadow-[2px_2px_0px_#000]">
-                        <div class="flex justify-between font-bold mb-1">
-                            <span>健康度 (HP)</span>
-                            <span id="manga-hp">100/100</span>
+                    <div class="grid grid-cols-2 gap-2 pt-2 border-t border-sky-500/20">
+                        <div class="bg-slate-900/60 p-2 rounded border border-slate-800">
+                            <span class="text-slate-400 block text-[10px]">攻击力</span>
+                            <span id="stat-atk" class="text-rose-400 font-bold text-sm">15</span>
                         </div>
-                        <div class="w-full bg-slate-200 border-2 border-black h-2.5 overflow-hidden">
-                            <div id="manga-bar-hp" class="bg-black h-full transition-all" style="width: 100%"></div>
+                        <div class="bg-slate-900/60 p-2 rounded border border-slate-800">
+                            <span class="text-slate-400 block text-[10px]">防御力</span>
+                            <span id="stat-def" class="text-emerald-400 font-bold text-sm">10</span>
                         </div>
-                    </div>
-
-                    <div class="bg-white p-2 border-2 border-black shadow-[2px_2px_0px_#000]">
-                        <div class="flex justify-between font-bold mb-1">
-                            <span>快乐值 (SAN)</span>
-                            <span id="manga-san">100%</span>
+                        <div class="bg-slate-900/60 p-2 rounded border border-slate-800">
+                            <span class="text-slate-400 block text-[10px]">悟性资质</span>
+                            <span id="stat-int" class="text-amber-400 font-bold text-sm">95 (极品)</span>
                         </div>
-                        <div class="w-full bg-slate-200 border-2 border-black h-2.5 overflow-hidden">
-                            <div id="manga-bar-san" class="bg-black h-full transition-all" style="width: 100%"></div>
-                        </div>
-                    </div>
-
-                    <div class="bg-white p-2 border-2 border-black shadow-[2px_2px_0px_#000]">
-                        <div class="flex justify-between font-bold mb-1">
-                            <span>社会声望 (PTS)</span>
-                            <span id="manga-pts">100 PTS</span>
+                        <div class="bg-slate-900/60 p-2 rounded border border-slate-800">
+                            <span class="text-slate-400 block text-[10px]">宗门职位</span>
+                            <span id="stat-sect" class="text-purple-400 font-bold text-xs">无 (散修)</span>
                         </div>
                     </div>
-
-                    <div class="grid grid-cols-2 gap-1.5 pt-1 border-t-2 border-black font-bold text-[11px]">
-                        <div>智力 (INT): <span id="manga-int">50</span></div>
-                        <div>家庭 (FAM): <span id="manga-fam">60</span></div>
-                        <div>挫折经历: <span id="manga-setbacks" class="text-rose-600">0</span></div>
-                        <div>达成理想: <span id="manga-goals" class="text-emerald-700">0</span></div>
-                    </div>
-                </div>
-
-                <div class="mt-3 p-3 bg-white border-2 border-black shadow-[3px_3px_0px_#000]">
-                    <div class="font-manga-title text-xs mb-1 flex items-center space-x-1">
-                        <i data-lucide="user-check" class="w-3.5 h-3.5"></i>
-                        <span>初始出厂设定</span>
-                    </div>
-                    <p id="info-birth" class="text-[11px]">出生地: 随机抽卡中...</p>
-                    <p id="info-bg" class="text-[11px]">家庭背景: 随机抽卡中...</p>
-                    <p id="info-traits" class="text-[11px] font-bold mt-0.5">天赋词条: 无</p>
                 </div>
             </div>
 
-            <div class="text-[10px] text-slate-500 font-mono mt-2">
-                MANGA ENGINE v2.0 • EXCEL STYLED
+            <!-- 金手指状态 -->
+            <div class="bg-sky-950/40 p-3 rounded-lg border border-sky-500/30 text-[11px] space-y-1">
+                <div class="font-bold text-sky-400 flex items-center space-x-1">
+                    <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
+                    <span>金手指：掌天小瓶 (已激活)</span>
+                </div>
+                <p class="text-slate-300">每秒自动吸纳天地灵气，修炼速度 +200%！</p>
             </div>
         </aside>
 
-        <!-- 右侧：黑白漫画分镜主窗口 -->
-        <main class="flex-1 manga-excel-grid p-6 flex flex-col justify-between overflow-hidden relative">
+        <!-- 右侧：修仙交互大殿与动态剧情区 -->
+        <section class="flex-1 xiuxian-border rounded-xl p-6 flex flex-col justify-between shadow-2xl relative overflow-hidden">
             
-            <!-- 拟声词浮层 (SFX) -->
-            <div id="sfx-overlay" class="absolute inset-0 pointer-events-none z-30 flex items-center justify-center opacity-0 transition-opacity duration-300">
-                <span id="sfx-text" class="font-manga-title text-8xl text-black stroke-white drop-shadow-[6px_6px_0px_#fff] transform -rotate-12">
-                    霸！
-                </span>
+            <!-- 顶部导航切换页签 -->
+            <div class="flex space-x-3 border-b border-sky-500/20 pb-3 z-10">
+                <button onclick="switchTab('cave')" id="tab-btn-cave" class="px-4 py-1.5 rounded-lg text-xs font-bold bg-sky-600 text-white transition flex items-center gap-1.5">
+                    <i data-lucide="home" class="w-4 h-4"></i> 洞府闭关
+                </button>
+                <button onclick="switchTab('adventure')" id="tab-btn-adventure" class="px-4 py-1.5 rounded-lg text-xs font-bold bg-slate-800 text-slate-300 hover:bg-slate-700 transition flex items-center gap-1.5">
+                    <i data-lucide="compass" class="w-4 h-4"></i> 秘境历练
+                </button>
+                <button onclick="switchTab('sect')" id="tab-btn-sect" class="px-4 py-1.5 rounded-lg text-xs font-bold bg-slate-800 text-slate-300 hover:bg-slate-700 transition flex items-center gap-1.5">
+                    <i data-lucide="shield" class="w-4 h-4"></i> 开宗立派
+                </button>
             </div>
 
-            <!-- 主漫画分镜框 (Manga Panel) -->
-            <div class="flex-1 bg-white manga-border relative overflow-hidden flex flex-col justify-between p-6 screentone-bg">
+            <!-- 内容显示区 -->
+            <div class="flex-1 my-4 flex flex-col justify-center items-center relative z-10">
                 
-                <!-- 集中线背景 -->
-                <div id="speed-lines-bg" class="absolute inset-0 speed-lines opacity-15 pointer-events-none"></div>
-
-                <!-- 漫画分镜页眉与章号 -->
-                <div class="flex justify-between items-center border-b-4 border-black pb-3 z-10">
-                    <div class="flex items-center space-x-2">
-                        <span class="bg-black text-white px-3 py-1 font-manga-title text-sm" id="manga-chapter-tag">阶段一：0岁新生儿期</span>
-                        <span class="font-mono text-xs font-bold" id="manga-location-tag">【出生地：一线城市】</span>
-                    </div>
-                    <div class="font-mono text-xs font-bold" id="manga-date">AGE: 00</div>
-                </div>
-
-                <!-- 漫画角色立绘与对话对白 -->
-                <div class="my-auto flex items-center space-x-6 z-10 relative">
-                    <!-- 左侧：角色黑白立绘框 -->
-                    <div class="w-32 h-32 bg-white border-4 border-black shadow-[4px_4px_0px_#000] flex flex-col items-center justify-center shrink-0">
-                        <div class="text-4xl" id="avatar-icon">👶</div>
-                        <span class="font-manga-title text-xs mt-2" id="avatar-name">0 岁新生</span>
-                    </div>
-
-                    <!-- 右侧：漫画对白气泡 -->
-                    <div class="flex-1 speech-bubble p-4">
-                        <div class="font-bold text-xs text-slate-500 mb-1 font-mono" id="speaker-title">【命运之神 / 叙述者】</div>
-                        <p class="font-manga-body text-base font-bold leading-relaxed text-black" id="manga-dialog-text">
-                            欢迎来到《格子人生：中国式生存法则》。即将根据你的随机出厂设置展开一段从 0 岁到 100 岁的人生命运...
-                        </p>
+                <!-- 标签页 1：洞府闭关与突破 -->
+                <div id="tab-content-cave" class="w-full max-w-lg text-center space-y-6">
+                    <div class="p-6 bg-slate-900/80 rounded-xl border border-sky-500/30 shadow-inner">
+                        <h3 class="font-xiuxian-title text-2xl text-sky-300 mb-2">聚灵阵法运转中</h3>
+                        <p class="text-xs text-slate-400 mb-6">吞吐日月精华，凝练周天灵力。点击下方按钮可加速修炼或尝试渡劫突破！</p>
+                        
+                        <div class="flex justify-center gap-4">
+                            <button onclick="manualCultivate()" class="xiuxian-btn px-6 py-3 rounded-xl font-bold text-sm text-white flex items-center gap-2">
+                                ⚡ 纳气修炼 (+修为)
+                            </button>
+                            <button onclick="tryBreakthrough()" id="breakthrough-btn" class="bg-amber-600 hover:bg-amber-500 text-white px-6 py-3 rounded-xl font-bold text-sm shadow-lg transition flex items-center gap-2 border border-amber-400">
+                                🌟 境界突破 (渡劫)
+                            </button>
+                        </div>
                     </div>
                 </div>
 
-                <!-- 底部：漫画选择支 (Choice Buttons) -->
-                <div class="grid grid-cols-2 gap-4 z-10" id="manga-choices-box">
-                    <!-- 动态生成黑白漫画分支按钮 -->
+                <!-- 标签页 2：秘境历练与奇遇 -->
+                <div id="tab-content-adventure" class="w-full max-w-lg text-center space-y-4 hidden">
+                    <div class="p-6 bg-slate-900/80 rounded-xl border border-sky-500/30 space-y-4">
+                        <h3 class="font-xiuxian-title text-xl text-sky-300">上古秘境·落云宗遗迹</h3>
+                        <p class="text-xs text-slate-400">探索未知的上古洞府，寻觅高阶功法与绝世灵草，但须小心妖兽袭击！</p>
+                        <div id="adventure-log" class="bg-slate-950 p-4 rounded-lg text-xs font-mono text-emerald-300 h-32 overflow-y-auto border border-slate-800 text-left">
+                            [系统日志] 进入秘境，四周弥漫着远古灵气...
+                        </div>
+                        <button onclick="startAdventure()" class="xiuxian-btn px-6 py-2.5 rounded-xl font-bold text-xs text-white w-full">
+                            🗺️ 深入秘境探索 (消耗 10 年寿元)
+                        </button>
+                    </div>
                 </div>
-            </div>
-        </main>
-    </div>
 
-    <!-- 首次打开：出厂设置与说明弹窗 -->
-    <div id="modal-start" class="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4">
-        <div class="bg-white border-4 border-black p-6 max-w-lg w-full shadow-[8px_8px_0px_#000] space-y-4">
-            <h3 class="font-manga-title text-xl border-b-4 border-black pb-2 flex justify-between items-center">
-                <span>《格子人生：中国式生存法则》</span>
-                <span class="text-xs font-mono font-normal">黑白漫画版</span>
-            </h3>
-            <div class="text-xs font-mono space-y-2 text-slate-800">
-                <p class="font-bold">【核心机制与设计】</p>
-                <p>• 随机生成初始出厂设置（出生地、家庭阶层、遗传基因与天赋词条）。</p>
-                <p>• 经历 0-100 岁 13 个阶段的中国本土化事件（学区房、中考分流、大厂裁员、父母 ICU 等）。</p>
-                <p>• 动态条件判定：部分高级分支需要足够的智力 (INT) 或健康 (HP) 才能解锁。</p>
-                <p>• 遇到悲伤挫折时刻，将触发全屏绝美夜空流星雨治愈彩蛋。</p>
-            </div>
-            <div class="pt-2 border-t-2 border-black flex justify-end">
-                <button onclick="startLifeGame()" class="manga-btn px-6 py-2 font-bold text-xs">
-                    确认投胎，开启漫画人生 ►
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- 悲伤挫折流星雨治愈彩蛋 Canvas -->
-    <div id="heal-canvas-container" class="fixed inset-0 bg-slate-950 z-50 hidden flex flex-col items-center justify-center text-white cursor-pointer" onclick="closeHealCanvas()">
-        <canvas id="star-canvas" class="absolute inset-0 w-full h-full"></canvas>
-        <div class="relative z-10 text-center px-6 max-w-lg space-y-4 pointer-events-none">
-            <div class="text-emerald-400 text-xs font-mono tracking-widest uppercase" id="heal-tag">── 系统心境捕获 ──</div>
-            <p class="text-sm text-slate-300 italic" id="heal-subtitle">“生活有时比 Excel 的公式还要复杂。别撑着了，我带你去看流星吧。”</p>
-            <p class="text-lg font-serif italic text-sky-200" id="heal-quote">“无论表格里的数字如何起伏，这一刻，夜空和宇宙都在温柔地拥抱着你。”</p>
-            <p class="text-xs text-slate-400 pt-6">点击任意位置返回人生...</p>
-        </div>
-    </div>
-
-    <!-- Boss Key 摸鱼伪装界面 -->
-    <div id="boss-key-overlay" class="fixed inset-0 bg-white z-[100] hidden flex-col overflow-auto text-slate-700 font-sans text-xs">
-        <div class="bg-slate-100 p-2 border-b text-[11px] font-mono text-slate-500 flex justify-between">
-            <span>2026集团财务预算与审计流水汇总表.xlsx [只读]</span>
-            <span>按 Esc 退出伪装</span>
-        </div>
-        <div class="p-6">
-            <h1 class="text-lg font-bold text-slate-800 mb-4">2026年度集团合并资产负债与审计明细</h1>
-            <table class="w-full border-collapse border border-slate-300 text-left text-xs font-mono">
-                <thead>
-                    <tr class="bg-slate-100">
-                        <th class="border border-slate-300 p-2">科目代码</th>
-                        <th class="border border-slate-300 p-2">项目名称</th>
-                        <th class="border border-slate-300 p-2">期初余额 (￥)</th>
-                        <th class="border border-slate-300 p-2">本期发生额 (￥)</th>
-                        <th class="border border-slate-300 p-2">期末结余 (￥)</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr><td class="border border-slate-300 p-2">1001</td><td class="border border-slate-300 p-2">库存现金与流动资金</td><td class="border border-slate-300 p-2">1,250,000.00</td><td class="border border-slate-300 p-2">-120,400.00</td><td class="border border-slate-300 p-2">1,129,600.00</td></tr>
-                    <tr><td class="border border-slate-300 p-2">1002</td><td class="border border-slate-300 p-2">银行存款及风险储备金</td><td class="border border-slate-300 p-2">5,800,000.00</td><td class="border border-slate-300 p-2">+350,000.00</td><td class="border border-slate-300 p-2">6,150,000.00</td></tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-
-    <!-- 终极一生资产与命运审计报告 -->
-    <div id="modal-report" class="fixed inset-0 bg-black/80 z-[60] hidden flex items-center justify-center p-4 overflow-y-auto">
-        <div class="bg-white border-4 border-black p-6 max-w-lg w-full shadow-[8px_8px_0px_#fff] space-y-4 font-mono text-xs">
-            <div class="bg-black text-white p-3 text-center">
-                <h2 class="text-base font-bold font-manga-title">2026 终极人生档案与资产清算审计报告</h2>
-                <p class="text-[10px] opacity-80">========================================</p>
-            </div>
-            <div class="space-y-2 text-slate-800">
-                <div class="border-2 border-black p-3 bg-slate-50 space-y-1">
-                    <p>【受审人档案】：<span id="rep-name" class="font-bold">中国式玩家</span></p>
-                    <p>【终局年龄】：<span id="rep-age" class="font-bold text-rose-600">100 岁</span></p>
-                    <p>【人生评级】：<span id="rep-rank" class="font-bold text-emerald-700">A+ (击败生活的勇士)</span></p>
+                <!-- 标签页 3：开宗立派 -->
+                <div id="tab-content-sect" class="w-full max-w-lg text-center space-y-4 hidden">
+                    <div class="p-6 bg-slate-900/80 rounded-xl border border-sky-500/30 space-y-4">
+                        <h3 class="font-xiuxian-title text-xl text-sky-300">创建专属修仙宗门</h3>
+                        <p class="text-xs text-slate-400">广收门徒，让他们为你每日搜刮灵石和稀有矿石！</p>
+                        <div class="bg-slate-950 p-4 rounded-lg text-xs font-mono text-slate-300 border border-slate-800">
+                            <p>当前宗门名称：<span id="sect-name" class="text-amber-400 font-bold">尚未创立</span></p>
+                            <p class="mt-1">麾下弟子数量：<span id="disciple-count" class="text-sky-400 font-bold">0</span> 人</p>
+                        </div>
+                        <button onclick="foundSect()" id="found-sect-btn" class="xiuxian-btn px-6 py-2.5 rounded-xl font-bold text-xs text-white w-full">
+                            🏛️ 创立宗门 (消耗 5,000 灵石)
+                        </button>
+                    </div>
                 </div>
-                <div class="space-y-1 border-t border-black pt-2">
-                    <p>• 最终积累现金：<span id="rep-cash" class="font-bold text-emerald-700">￥ 0</span></p>
-                    <p>• 达成理想成就数：<span id="rep-goals" class="font-bold text-blue-700">0</span> 次</p>
-                    <p>• 经历重大挫折数：<span id="rep-setbacks" class="font-bold text-rose-600">0</span> 次</p>
-                </div>
-                <div class="border border-black p-3 bg-amber-50 leading-relaxed font-manga-body">
-                    <p class="font-bold mb-1">【人生回忆录寄语】：</p>
-                    <p id="rep-memo">你在每一个艰难的岔路口都挺了过来。你没有成为首富，也没有名扬天下，但你在黑白分镜的网格间打赢了属于你自己的生活之仗。</p>
-                </div>
-            </div>
-            <div class="pt-2 border-t-2 border-black flex justify-center">
-                <button onclick="location.reload()" class="manga-btn px-6 py-2 font-bold text-xs">
-                    重新投胎 (开启新一卷)
-                </button>
-            </div>
-        </div>
-    </div>
 
-    <!-- JavaScript 全局游戏逻辑控制 -->
+            </div>
+
+            <!-- 底部实时修仙日志流 -->
+            <div class="bg-slate-950/90 p-3 rounded-lg border border-sky-500/20 text-xs font-mono text-slate-300 h-24 overflow-y-auto shrink-0 z-10" id="game-logs">
+                <p class="text-sky-400">【仙界公告】欢迎来到掌天道修仙世界。你的传奇一生由此开始...</p>
+            </div>
+        </section>
+    </main>
+
     <script>
         lucide.createIcons();
 
+        // 玩家核心修仙数据
         let player = {
-            age: 0,
-            cash: 0,
-            hp: 100,
-            san: 100,
-            pts: 100,
-            int: 50,
-            fam: 60,
-            goals: 0,
-            setbacks: 0,
-            location: '',
-            background: '',
-            traits: []
+            name: "韩绝",
+            spirit: 1000,
+            life: 500,
+            exp: 0,
+            maxExp: 100,
+            realmIndex: 0,
+            atk: 15,
+            def: 10,
+            int: 95,
+            sectName: null,
+            disciples: 0
         };
 
-        let isBossKeyActive = false;
+        const realms = [
+            "炼气期一层", "炼气期中期", "炼气期大圆满",
+            "筑基期前期", "筑基期后期", "金丹期真人",
+            "元婴期老祖", "化神期大能", "渡劫飞升成仙"
+        ];
 
-        // 涵盖 0 - 100 岁完整阶段的本土化事件库（包含条件解锁与动态判定）
-        const ageEventDatabase = {
-            0: [
-                {
-                    stage: '阶段一：0岁新生儿期',
-                    title: '生理性黄疸照蓝光',
-                    desc: '刚出生一周，医生告知宝宝黄疸指标偏高，需住院照蓝光治疗。',
-                    speaker: '【医生与父母】',
-                    avatar: '👶',
-                    sfx: '啪！',
-                    options: [
-                        { text: '听从医嘱住院照蓝光', effectText: '现金-2000, 健康+10', sfx: '叮！', apply: () => { player.cash -= 2000; player.hp += 10; }, nextAge: 3 }
-                    ]
-                }
-            ],
-            3: [
-                {
-                    stage: '阶段三：3-6岁学龄前',
-                    title: '公立普惠园 vs 私立双语园',
-                    desc: '面临入园报名，私立双语园每年学费昂贵主打外教，公立园离家近但名额紧张。',
-                    speaker: '【父母抉择】',
-                    avatar: '🏫',
-                    sfx: '当—！',
-                    options: [
-                        { text: '咬牙读私立双语园', effectText: '现金-60000, 智力+15', sfx: '唰！', apply: () => { player.cash -= 60000; player.int += 15; }, nextAge: 6 },
-                        { text: '读公立普惠园', effectText: '现金-6000, 快乐+10', sfx: '咔！', apply: () => { player.cash -= 6000; player.san += 10; }, nextAge: 6 }
-                    ]
-                }
-            ],
-            6: [
-                {
-                    stage: '阶段四：6-12岁小学阶段',
-                    title: '小升初“学区房”抉择',
-                    desc: '面临公办摇号与民办择校，父母盘算是否卖掉老破小，换套名校学区房。',
-                    speaker: '【班主任与家长】',
-                    avatar: '🎒',
-                    sfx: '轰—！',
-                    options: [
-                        { text: '动用六个钱包置换学区房', effectText: '现金-300000(负债), 声望+20', sfx: '砰！', apply: () => { player.cash -= 300000; player.pts += 20; player.goals++; }, nextAge: 13 },
-                        { text: '选择摇号快乐成长', effectText: '快乐+20, 节省资金', sfx: '呼...', apply: () => { player.san += 20; }, nextAge: 13 }
-                    ]
-                }
-            ],
-            13: [
-                {
-                    stage: '阶段五：13-17岁青春期',
-                    title: '15岁中考“普职分流”',
-                    desc: '中考成绩公布，模考成绩悬在普高录取线边缘。',
-                    speaker: '【中考分流处】',
-                    avatar: '📐',
-                    sfx: '咔嚓！',
-                    options: [
-                        { 
-                            text: '拼命熬夜刷题冲刺普高', 
-                            effectText: '智力+15, 健康-10', 
-                            sfx: '唰！', 
-                            apply: () => { player.int += 15; player.hp -= 10; }, 
-                            nextAge: 18 
-                        },
-                        { 
-                            text: '选择读中专/职高', 
-                            effectText: '声望-20, 提前接触社会', 
-                            sfx: '叹...', 
-                            isSad: true, 
-                            sadQuote: '星光不问赶路人，条条大路通罗马。', 
-                            apply: () => { player.pts -= 20; player.setbacks++; }, 
-                            nextAge: 18 
-                        }
-                    ]
-                }
-            ],
-            18: [
-                {
-                    stage: '阶段六：18-21岁大学象牙塔',
-                    title: '18岁高考志愿填报 (命运转折点)',
-                    desc: '高考分数出来！根据你前期积累的智力/技能 (INT) 值判定可报考的大学层级：',
-                    speaker: '【志愿填报专家】',
-                    avatar: '🎓',
-                    sfx: '当—！',
-                    options: [
-                        { 
-                            text: '冲击顶尖 985/211 计算机专业', 
-                            reqField: 'int', 
-                            reqVal: 70, 
-                            lockMsg: '智力(INT)不足70，未达到录取线', 
-                            effectText: '智力+20, 理想+1', 
-                            sfx: '锵！', 
-                            apply: () => { player.int += 20; player.goals++; }, 
-                            nextAge: 22 
-                        },
-                        { 
-                            text: '报读公费师范 / 定向医学生', 
-                            effectText: '保障稳定编制, 现金+10000', 
-                            sfx: '叮！', 
-                            apply: () => { player.cash += 10000; player.pts += 10; }, 
-                            nextAge: 22 
-                        }
-                    ]
-                }
-            ],
-            22: [
-                {
-                    stage: '阶段七：22-25岁初入社会',
-                    title: '大厂 996 内卷与租房踩坑',
-                    desc: '租房遭遇无良二房东押金不退，且部门主管暗示全员无偿加班。',
-                    speaker: '【部门主管与二房东】',
-                    avatar: '💼',
-                    sfx: '哒哒哒！',
-                    options: [
-                        { 
-                            text: '疯狂加班拼命攒钱', 
-                            effectText: '现金+40000, 健康-15, 快乐-15', 
-                            sfx: '熬！', 
-                            isSad: true, 
-                            sadQuote: '深夜写字楼的灯光见证了努力，但也请照顾好身体。', 
-                            apply: () => { player.cash += 40000; player.hp -= 15; player.san -= 15; player.setbacks++; }, 
-                            nextAge: 28 
-                        },
-                        { 
-                            text: '拒绝内卷准时下班', 
-                            effectText: '健康+10, 声望-10', 
-                            sfx: '呼...', 
-                            apply: () => { player.hp += 10; player.pts -= 10; }, 
-                            nextAge: 28 
-                        }
-                    ]
-                }
-            ],
-            28: [
-                {
-                    stage: '阶段八：26-35岁成家与房贷',
-                    title: '结婚彩礼与掏空首付',
-                    desc: '面对订婚买房，需要掏空双方父母“六个钱包”凑首付背上30年房贷。',
-                    speaker: '【房产中介与亲友】',
-                    avatar: '🏠',
-                    sfx: '轰—！',
-                    options: [
-                        { 
-                            text: '掏空钱包办婚礼买房', 
-                            effectText: '现金-500000(负债), 家庭+20', 
-                            sfx: '咚！', 
-                            apply: () => { player.cash -= 500000; player.fam += 20; player.goals++; }, 
-                            nextAge: 35 
-                        },
-                        { 
-                            text: '选择裸婚 / 裸租', 
-                            effectText: '节省现金, 面临社会压力', 
-                            sfx: '咔！', 
-                            apply: () => { player.pts -= 15; }, 
-                            nextAge: 35 
-                        }
-                    ]
-                }
-            ],
-            35: [
-                {
-                    stage: '阶段九：35-50岁中年危机',
-                    title: '35岁互联网/私企“优化”黑天鹅',
-                    desc: '体检发现颈椎病与高血脂，同时收到公司 HR 的裁员约谈（N+1赔偿）。',
-                    speaker: '【HR 约谈】',
-                    avatar: '⚠️',
-                    sfx: '啪！',
-                    options: [
-                        { 
-                            text: '拿赔偿降薪跳槽求稳', 
-                            effectText: '现金+30000, 快乐-15', 
-                            sfx: '叹...', 
-                            isSad: true, 
-                            sadQuote: '迷茫本身，也是人生的一部分。停下来，不代表后退。', 
-                            apply: () => { player.cash += 30000; player.san -= 15; player.setbacks++; }, 
-                            nextAge: 45 
-                        },
-                        { 
-                            text: '裸辞开店 / 创业投理财', 
-                            reqField: 'hp', 
-                            reqVal: 50, 
-                            lockMsg: '健康值(HP)低于50，体力崩溃无法创业', 
-                            effectText: '创业风险很大, 现金-50000', 
-                            sfx: '轰！', 
-                            apply: () => { player.cash -= 50000; player.setbacks++; }, 
-                            nextAge: 45 
-                        }
-                    ]
-                }
-            ],
-            45: [
-                {
-                    stage: '阶段十：45-60岁中年重担',
-                    title: '父母突发脑梗大病 ICU 抢救',
-                    desc: '父亲突发脑梗住院，面对自费进口药与 ICU 每日上万元花销。',
-                    speaker: '【主治医生】',
-                    avatar: '🏥',
-                    sfx: '滴——！',
-                    options: [
-                        { 
-                            text: '倾家荡产进 ICU 抢救', 
-                            effectText: '现金-200000, 家庭+30', 
-                            sfx: '重！', 
-                            apply: () => { player.cash -= 200000; player.fam += 30; }, 
-                            nextAge: 60 
-                        },
-                        { 
-                            text: '保守治疗与安宁疗护', 
-                            effectText: '内疚感加剧, 保存实力', 
-                            sfx: '泪...', 
-                            isSad: true, 
-                            sadQuote: '生活有时比公式还要复杂，别撑着了，看一眼夜空吧。', 
-                            apply: () => { player.san -= 30; player.setbacks++; }, 
-                            nextAge: 60 
-                        }
-                    ]
-                }
-            ],
-            60: [
-                {
-                    stage: '阶段十一：61-100岁晚年与终局',
-                    title: '正式退休与终极安宁疗护',
-                    desc: '年过七旬，享受隔代带娃或全国旅游，面对生命的终点。',
-                    speaker: '【老年的自己】',
-                    avatar: '👵',
-                    sfx: '刷——',
-                    options: [
-                        { 
-                            text: '选择安宁疗护尊严离世', 
-                            effectText: '平静接受生命终点', 
-                            sfx: '完！', 
-                            apply: () => { player.san += 20; }, 
-                            nextAge: 100 
-                        }
-                    ]
-                }
-            ]
-        };
+        // 自动挂机修炼（掌天小瓶每秒自动加经验）
+        setInterval(() => {
+            player.exp += 5;
+            checkExpOverflow();
+            updateUI();
+        }, 1000);
 
-        function startLifeGame() {
-            document.getElementById('modal-start').classList.add('hidden');
-            
-            // 出厂设置随机抽卡
-            const locs = ['一线城市 (京沪深)', '新一线城市 (杭州/成都)', '三四线县城', '偏远乡村'];
-            player.location = locs[Math.floor(Math.random() * locs.length)];
+        function manualCultivate() {
+            player.exp += 15;
+            logMessage("✨ 你运转大周天，吸收天地灵气，修为获得显著提升！");
+            checkExpOverflow();
+            updateUI();
+        }
 
-            const bgs = [
-                { name: '富贵家庭', cash: 300000, pts: 120 },
-                { name: '小康家庭', cash: 50000, pts: 100 },
-                { name: '工薪家庭', cash: 10000, pts: 90 },
-                { name: '困难家庭 (逆风翻盘)', cash: -5000, pts: 80 }
+        function checkExpOverflow() {
+            if (player.exp >= player.maxExp) {
+                player.exp = player.maxExp;
+                logMessage("⚡ 【系统提示】修为已满！可以点击【境界突破】尝试渡劫晋升了！");
+            }
+        }
+
+        function tryBreakthrough() {
+            if (player.exp < player.maxExp) {
+                logMessage("❌ 修为尚未圆满，强行突破恐有走火入魔之险！");
+                return;
+            }
+
+            // 突破成功率判定
+            let successChance = 0.85;
+            if (Math.random() < successChance) {
+                player.realmIndex++;
+                if (player.realmIndex >= realms.length) player.realmIndex = realms.length - 1;
+                
+                player.exp = 0;
+                player.maxExp = Math.floor(player.maxExp * 2.5);
+                player.atk += 25;
+                player.def += 20;
+                player.life += 150;
+
+                // 释放全屏雷劫/突破烟花特效
+                confetti({ particleCount: 100, spread: 80, origin: { y: 0.6 } });
+                logMessage(`🎉 【雷劫大吉】轰隆！九天雷劫过后，你成功突破至【${realms[player.realmIndex]}】！`);
+            } else {
+                player.life -= 20;
+                logMessage("💥 【渡劫失败】遭遇心魔反噬，气血受损，寿元 -20 年！");
+            }
+            updateUI();
+        }
+
+        function startAdventure() {
+            player.life -= 10;
+            const events = [
+                "在灵气泉眼旁打坐，意外获得【千年灵乳】，灵石 +500！",
+                "遭遇高阶妖兽【碧眼金睛兽】袭击，历经苦战将其斩杀，获得妖丹！",
+                "在一处上古洞府前破解阵法，领悟了残缺剑意，攻击力微幅上升！",
+                "遭遇敌对宗门长老偷袭，身负轻伤，仓皇逃回洞府。"
             ];
-            const bg = bgs[Math.floor(Math.random() * bgs.length)];
-            player.background = bg.name;
-            player.cash = bg.cash;
-            player.pts = bg.pts;
-
-            const traitsList = ['【小镇做题家】(智力+20)', '【社交牛逼症】(声望+30)', '【身体倍儿棒】(健康+10)'];
-            player.traits = [traitsList[Math.floor(Math.random() * traitsList.length)]];
-
-            updateUI();
-            loadMangaNode(0);
-        }
-
-        function loadMangaNode(age) {
-            player.age = age;
-            updateUI();
-
-            if (player.hp <= 0) {
-                showReport("英年早逝 (健康度归零)");
-                return;
-            }
-            if (player.age >= 100) {
-                showReport("寿终正寝 (100岁圆满终局)");
-                return;
-            }
-
-            const keys = Object.keys(ageEventDatabase).map(Number).sort((a,b)=>a-b);
-            let matchedKey = keys[0];
-            for (let k of keys) {
-                if (age >= k) matchedKey = k;
-            }
-
-            const pool = ageEventDatabase[matchedKey];
-            const ev = pool[Math.floor(Math.random() * pool.length)];
-
-            document.getElementById('manga-chapter-tag').innerText = ev.stage;
-            document.getElementById('manga-location-tag').innerText = `【地点：${player.location}】`;
-            document.getElementById('manga-date').innerText = `AGE: ${player.age}`;
-            document.getElementById('speaker-title').innerText = ev.speaker;
-            document.getElementById('avatar-icon').innerText = ev.avatar;
-            document.getElementById('manga-dialog-text').innerText = ev.desc;
-            document.getElementById('formula-text').innerText = `=RENDER_MANGA_PANEL("${ev.stage}")`;
-
-            triggerSFX(ev.sfx);
-
-            const choicesBox = document.getElementById('manga-choices-box');
-            choicesBox.innerHTML = '';
-
-            ev.options.forEach((opt) => {
-                let isLocked = false;
-                if (opt.reqField && player[opt.reqField] < opt.reqVal) {
-                    isLocked = true;
-                }
-
-                const btn = document.createElement('button');
-                btn.className = 'manga-btn p-3 text-left font-bold text-xs flex flex-col justify-between';
-                if (isLocked) {
-                    btn.disabled = true;
-                    btn.innerHTML = `
-                        <span class="font-manga-title text-sm opacity-50">🔒 ${opt.text}</span>
-                        <span class="text-[10px] text-rose-600 font-mono mt-1">未解锁: ${opt.lockMsg}</span>
-                    `;
-                } else {
-                    btn.innerHTML = `
-                        <span class="font-manga-title text-sm">${opt.text}</span>
-                        <span class="text-[10px] opacity-75 font-mono mt-1">影响: ${opt.effectText}</span>
-                    `;
-                    btn.onclick = () => {
-                        opt.apply();
-                        updateUI();
-                        triggerSFX(opt.sfx);
-                        if (opt.isSad) {
-                            triggerHealCanvas(opt.sadQuote);
-                        }
-                        loadMangaNode(opt.nextAge);
-                    };
-                }
-                choicesBox.appendChild(btn);
-            });
-        }
-
-        // 漫画拟声词特效
-        function triggerSFX(sfxText) {
-            const overlay = document.getElementById('sfx-overlay');
-            const textEl = document.getElementById('sfx-text');
-            textEl.innerText = sfxText || '霸！';
+            const randomEvent = events[Math.floor(Math.random() * events.length)];
+            if (randomEvent.includes("灵乳")) player.spirit += 500;
             
-            overlay.classList.remove('opacity-0');
-            overlay.classList.add('opacity-100');
-            setTimeout(() => {
-                overlay.classList.remove('opacity-100');
-                overlay.classList.add('opacity-0');
-            }, 500);
-        }
-
-        // 全屏绝美流星雨治愈彩蛋
-        function triggerHealCanvas(quote) {
-            const container = document.getElementById('heal-canvas-container');
-            if (quote) document.getElementById('heal-quote').innerText = `“${quote}”`;
-            container.classList.remove('hidden');
-
-            const canvas = document.getElementById('star-canvas');
-            const ctx = canvas.getContext('2d');
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-
-            let stars = Array.from({ length: 150 }, () => ({
-                x: Math.random() * canvas.width,
-                y: Math.random() * canvas.height,
-                r: Math.random() * 1.5
-            }));
-
-            function draw() {
-                ctx.fillStyle = 'rgba(10, 15, 30, 0.3)';
-                ctx.fillRect(0, 0, canvas.width, canvas.height);
-                ctx.fillStyle = '#ffffff';
-                stars.forEach(s => {
-                    ctx.beginPath();
-                    ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
-                    ctx.fill();
-                });
-                if (Math.random() < 0.12) {
-                    ctx.strokeStyle = '#38bdf8';
-                    ctx.lineWidth = 2;
-                    ctx.beginPath();
-                    let sx = Math.random() * canvas.width;
-                    ctx.moveTo(sx, 0);
-                    ctx.lineTo(sx - 200, 200);
-                    ctx.stroke();
-                }
-                if (!container.classList.contains('hidden')) requestAnimationFrame(draw);
-            }
-            draw();
-        }
-
-        function closeHealCanvas() {
-            document.getElementById('heal-canvas-container').classList.add('hidden');
-            player.san = Math.min(100, player.san + 15);
+            const logBox = document.getElementById('adventure-log');
+            logBox.innerHTML += `<p class="mt-1">${randomEvent}</p>`;
+            logBox.scrollTop = logBox.scrollHeight;
+            logMessage(`🗺️ 【秘境探索】${randomEvent}`);
             updateUI();
         }
 
-        function toggleBossKey() {
-            isBossKeyActive = !isBossKeyActive;
-            const overlay = document.getElementById('boss-key-overlay');
-            if (isBossKeyActive) overlay.classList.remove('hidden');
-            else overlay.classList.add('hidden');
+        function foundSect() {
+            if (player.spirit < 5000) {
+                logMessage("❌ 创立宗门至少需要 5000 灵石作为启动资金！");
+                return;
+            }
+            player.spirit -= 5000;
+            player.sectName = "青云剑宗";
+            player.disciples = 5;
+            document.getElementById('sect-name').innerText = player.sectName;
+            document.getElementById('disciple-count').innerText = player.disciples;
+            logMessage("🏛️ 【开宗立派】大典成功！『青云剑宗』正式成立，首批招收 5 名根骨上佳的弟子！");
+            updateUI();
         }
 
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') toggleBossKey();
-        });
+        function switchTab(tabName) {
+            ['cave', 'adventure', 'sect'].forEach(t => {
+                document.getElementById(`tab-content-${t}`).classList.add('hidden');
+                document.getElementById(`tab-btn-${t}`).className = "px-4 py-1.5 rounded-lg text-xs font-bold bg-slate-800 text-slate-300 hover:bg-slate-700 transition flex items-center gap-1.5";
+            });
+            document.getElementById(`tab-content-${tabName}`).classList.remove('hidden');
+            document.getElementById(`tab-btn-${tabName}`).className = "px-4 py-1.5 rounded-lg text-xs font-bold bg-sky-600 text-white transition flex items-center gap-1.5";
+            lucide.createIcons();
+        }
+
+        function logMessage(text) {
+            const logs = document.getElementById('game-logs');
+            logs.innerHTML += `<p class="mt-1">${text}</p>`;
+            logs.scrollTop = logs.scrollHeight;
+        }
 
         function updateUI() {
-            document.getElementById('manga-cash').innerText = `￥ ${player.cash.toLocaleString()}`;
-            document.getElementById('manga-hp').innerText = `${Math.max(0, player.hp)}/100`;
-            document.getElementById('manga-bar-hp').style.width = `${Math.max(0, player.hp)}%`;
-            document.getElementById('manga-san').innerText = `${Math.max(0, player.san)}%`;
-            document.getElementById('manga-bar-san').style.width = `${Math.max(0, player.san)}%`;
-            document.getElementById('manga-pts').innerText = `${player.pts} PTS`;
-            document.getElementById('manga-int').innerText = player.int;
-            document.getElementById('manga-fam').innerText = player.fam;
-            document.getElementById('manga-setbacks').innerText = player.setbacks;
-            document.getElementById('manga-goals').innerText = player.goals;
-
-            document.getElementById('manga-age-badge').innerText = `${player.age} 岁`;
-            document.getElementById('info-birth').innerText = `出生地: ${player.location}`;
-            document.getElementById('info-bg').innerText = `家庭背景: ${player.background}`;
-            document.getElementById('info-traits').innerText = `天赋词条: ${player.traits.join(', ')}`;
+            document.getElementById('top-spirit').innerText = player.spirit.toLocaleString();
+            document.getElementById('top-life').innerText = player.life + " 年";
+            document.getElementById('player-realm').innerText = realms[player.realmIndex];
+            document.getElementById('exp-text').innerText = `${player.exp} / ${player.maxExp}`;
+            document.getElementById('exp-bar').style.width = `${Math.min(100, (player.exp / player.maxExp) * 100)}%`;
+            document.getElementById('stat-atk').innerText = player.atk;
+            document.getElementById('stat-def').innerText = player.def;
+            document.getElementById('stat-int').innerText = player.int + " (极品)";
+            document.getElementById('stat-sect').innerText = player.sectName ? player.sectName : "无 (散修)";
         }
-
-        function showReport(reason) {
-            document.getElementById('modal-report').classList.remove('hidden');
-            document.getElementById('rep-age').innerText = `${player.age} 岁 (${reason})`;
-            document.getElementById('rep-cash').innerText = `￥ ${player.cash.toLocaleString()}`;
-            document.getElementById('rep-goals').innerText = player.goals;
-            document.getElementById('rep-setbacks').innerText = player.setbacks;
-        }
-
-        window.onload = () => {
-            updateUI();
-        };
     </script>
 </body>
 </html>
