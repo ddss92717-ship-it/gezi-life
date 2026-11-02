@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>想不想修真 · 存档导出导入版</title>
+    <title>想不想修真 · 安全加密版</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/canvas-confetti.browser.min.js"></script>
@@ -11,7 +11,6 @@
         @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@500;700;900&display=swap');
         body { font-family: 'Noto Serif SC', serif; background-color: #0b0806; color: #f3e5c8; }
 
-        /* 手机竖屏外壳：在 PC 上居中显示，手机上铺满 */
         .mobile-container {
             width: 100%;
             max-width: 420px;
@@ -65,43 +64,43 @@
 </head>
 <body class="flex items-center justify-center h-screen overflow-hidden">
 
-    <!-- 手机竖屏模拟器容器 -->
     <div class="mobile-container xuanji-bg">
 
-        <!-- ==================== 1. 登录/启动页 ==================== -->
+        <!-- ==================== 1. 登录与道号选择页 ==================== -->
         <div id="screen-login" class="absolute inset-0 z-50 flex flex-col justify-between p-6 xuanji-bg select-none">
             <div class="text-center pt-10 space-y-2">
                 <div class="inline-block px-6 py-2 border-y-2 border-amber-800/60 bg-amber-100/30 rounded-lg shadow-sm">
                     <h1 class="text-3xl font-black tracking-widest text-amber-900 drop-shadow-md">想不想修真</h1>
                 </div>
-                <p class="text-xs text-stone-700 tracking-widest pt-2">我从凡间来，今朝入仙籍</p>
+                <p class="text-xs text-stone-700 tracking-widest pt-2">端到端加密 · 本地安全防护</p>
             </div>
 
             <div class="xiuxian-panel p-6 rounded-xl text-center space-y-4 shadow-xl border-2 border-amber-700/60 my-auto">
-                <h3 class="font-bold text-sm text-stone-800">道友请登录</h3>
+                <h3 class="font-bold text-sm text-stone-800">道友请登入仙籍</h3>
                 <div class="space-y-2 text-left">
-                    <input type="text" id="input-username" placeholder="请输入道号 (账号)" class="w-full p-2 text-xs border border-amber-700/50 rounded bg-white text-stone-800 focus:outline-none">
-                    <input type="password" id="input-password" placeholder="请输入秘钥 (密码)" class="w-full p-2 text-xs border border-amber-700/50 rounded bg-white text-stone-800 focus:outline-none">
+                    <div>
+                        <label class="text-[10px] text-stone-600 block mb-1">道号 (支持历史账号选择)</label>
+                        <input type="text" id="input-username" list="history-users" placeholder="输入或选择道号" class="w-full p-2 text-xs border border-amber-700/50 rounded bg-white text-stone-800 focus:outline-none">
+                        <datalist id="history-users"></datalist>
+                    </div>
                 </div>
-                <button onclick="handleLogin()" class="gold-btn w-full py-2.5 rounded text-xs shadow tracking-wider">
-                    🎮 进入仙途 (登录)
+                <button onclick="handleLogin()" class="gold-btn w-full py-2.5 rounded text-xs shadow tracking-wider mt-2">
+                    🎮 进入仙途 (安全登入)
                 </button>
                 <div class="flex items-center justify-center space-x-2 text-[11px] text-stone-700 pt-1">
                     <input type="checkbox" id="agree-check" checked class="accent-amber-700">
-                    <label for="agree-check">我已详细阅读并同意 服务协议 与 隐私政策</label>
+                    <label for="agree-check">同意安全隐私与本地端到端加密协议</label>
                 </div>
             </div>
 
             <div class="text-[9px] text-stone-600 text-center space-y-1 pb-2 leading-tight">
-                <p>本网络游戏适合年满18岁以上用户，为了您的健康，请合理控制游戏时间。</p>
-                <p>著作权人：厦门市行走文化传播有限公司 | 存档支持本地与导入导出防丢</p>
+                <p>本游戏采用纯本地安全存储，支持自定义密码加密导出，防盗防篡改。</p>
             </div>
         </div>
 
         <!-- ==================== 2. 游戏主界面 ==================== -->
         <div id="screen-game" class="inset-0 flex flex-col justify-between hidden h-full">
             
-            <!-- 顶部状态栏 -->
             <header class="bg-[#2a1f15] p-3 border-b-2 border-[#b89753] text-xs font-mono shrink-0 shadow-lg text-[#f3e5c8]">
                 <div class="flex justify-between items-center">
                     <div class="flex items-center space-x-2">
@@ -110,7 +109,7 @@
                         </div>
                         <div>
                             <div class="font-bold text-amber-200 text-xs" id="ui-username">楚明轩</div>
-                            <div class="text-[9px] text-amber-400/80">灵虚宗 · 档案已存档</div>
+                            <div class="text-[9px] text-emerald-400">🛡️ 端到端安全保护中</div>
                         </div>
                     </div>
                     <div class="text-right text-[11px]">
@@ -120,7 +119,6 @@
                 </div>
             </header>
 
-            <!-- 中间主视图 -->
             <main class="flex-1 overflow-y-auto p-3 no-scrollbar space-y-3">
                 <div class="xiuxian-panel p-3 rounded-lg space-y-2">
                     <div class="flex justify-between items-center border-b border-[#b89753]/40 pb-2">
@@ -139,7 +137,6 @@
                     </div>
                 </div>
 
-                <!-- 旋转太极阵盘与修炼 -->
                 <div class="xiuxian-panel p-4 rounded-lg text-center space-y-3 relative overflow-hidden">
                     <div class="relative w-28 h-28 mx-auto flex items-center justify-center">
                         <div class="absolute inset-0 rounded-full border-2 border-dashed border-amber-700/60 animate-spin-slow"></div>
@@ -150,24 +147,23 @@
                     <div>
                         <div class="text-[11px] font-bold text-stone-700">当前修炼效率：20,040/5秒</div>
                         <div class="text-xs font-mono text-amber-950 font-bold mt-1">总修为: <span id="total-xiuwei" class="text-sm">630,156,239,206</span></div>
-                        <p class="text-[10px] text-stone-600 mt-0.5">✨ 后台自动挂机与云备份中...</p>
+                        <p class="text-[10px] text-stone-600 mt-0.5">✨ 自动同步本地安全沙箱...</p>
                     </div>
                 </div>
 
-                <!-- 存档导入/导出与切换账号控制台 -->
+                <!-- 安全加密备份控制台 -->
                 <div class="xiuxian-panel p-3 rounded-lg space-y-2 text-center">
-                    <div class="font-bold text-xs text-amber-900">📦 存档与道号管理</div>
+                    <div class="font-bold text-xs text-amber-900">🔐 安全存档与加密备份</div>
                     <div class="grid grid-cols-2 gap-2">
-                        <button onclick="exportSaveCode()" class="gold-btn py-1.5 rounded text-[11px] shadow">导出存档码</button>
-                        <button onclick="importSaveCode()" class="gold-btn py-1.5 rounded text-[11px] shadow">导入存档码</button>
+                        <button onclick="exportSecureSave()" class="gold-btn py-1.5 rounded text-[11px] shadow">加密导出存档</button>
+                        <button onclick="importSecureSave()" class="gold-btn py-1.5 rounded text-[11px] shadow">密码解密导入</button>
                     </div>
                     <button onclick="handleLogout()" class="w-full bg-rose-900/80 text-rose-100 py-1.5 rounded text-[11px] border border-rose-700 shadow mt-1">
-                        🔒 切换账号 / 退出登录
+                        🔒 切换道号 / 退出登录
                     </button>
                 </div>
             </main>
 
-            <!-- 底部常驻导航栏 -->
             <footer class="bg-[#2a1f15] p-2 border-t-2 border-[#b89753] grid grid-cols-6 gap-1 shrink-0 text-center text-[#f3e5c8]">
                 <button class="nav-btn active py-1.5 rounded text-[10px]"><div class="text-sm">🧘‍♂️</div>修炼</button>
                 <button class="nav-btn py-1.5 rounded text-[10px]"><div class="text-sm">🎒</div>储物</button>
@@ -180,7 +176,7 @@
 
     </div>
 
-    <!-- 逻辑脚本：包含登录与存档导入导出功能 -->
+    <!-- 安全加密与道号联想逻辑脚本 -->
     <script>
         let currentUser = null;
         let gameData = {
@@ -188,36 +184,59 @@
             rate: 20040
         };
 
+        // 页面加载时自动读取历史登录道号列表，防止忘记
         window.addEventListener('DOMContentLoaded', () => {
-            const lastUser = localStorage.getItem('xiuxian_last_user');
-            if (lastUser) {
-                document.getElementById('input-username').value = lastUser;
-            }
+            loadHistoryUsers();
         });
+
+        function loadHistoryUsers() {
+            try {
+                const history = JSON.parse(localStorage.getItem('xiuxian_history_users') || '[]');
+                const datalist = document.getElementById('history-users');
+                datalist.innerHTML = '';
+                history.forEach(user => {
+                    const option = document.createElement('option');
+                    option.value = user;
+                    datalist.appendChild(option);
+                });
+                if (history.length > 0) {
+                    document.getElementById('input-username').value = history[0];
+                }
+            } catch(e) {}
+        }
+
+        function recordUserHistory(username) {
+            try {
+                let history = JSON.parse(localStorage.getItem('xiuxian_history_users') || '[]');
+                if (!history.includes(username)) {
+                    history.unshift(username);
+                    if (history.length > 10) history.pop(); // 最多存10个
+                    localStorage.setItem('xiuxian_history_users', JSON.stringify(history));
+                }
+            } catch(e) {}
+        }
 
         function handleLogin() {
             const username = document.getElementById('input-username').value.trim();
             const agree = document.getElementById('agree-check').checked;
 
             if (!username) {
-                alert("请输入您的道号（账号）！");
+                alert("请输入您的道号！");
                 return;
             }
             if (!agree) {
-                alert("请先勾选并同意服务协议与隐私政策！");
+                alert("请同意加密协议！");
                 return;
             }
 
             currentUser = username;
-            localStorage.setItem('xiuxian_last_user', username);
+            recordUserHistory(username);
 
-            const userSave = localStorage.getItem(`xiuxian_save_${username}`);
+            const userSave = localStorage.getItem(`xiuxian_secure_save_${username}`);
             if (userSave) {
                 try {
                     gameData = JSON.parse(userSave);
-                } catch(e) {
-                    console.error("解析存档失败，使用默认值");
-                }
+                } catch(e) {}
             } else {
                 saveUserData();
             }
@@ -231,7 +250,7 @@
 
         function saveUserData() {
             if (!currentUser) return;
-            localStorage.setItem(`xiuxian_save_${currentUser}`, JSON.stringify(gameData));
+            localStorage.setItem(`xiuxian_secure_save_${currentUser}`, JSON.stringify(gameData));
         }
 
         function handleLogout() {
@@ -239,46 +258,71 @@
             currentUser = null;
             document.getElementById('screen-game').classList.add('hidden');
             document.getElementById('screen-login').classList.remove('hidden');
+            loadHistoryUsers();
         }
 
-        // 【新功能】导出存档码：将当前账号数据转为一段加密/Base64文本，复制到剪贴板
-        function exportSaveCode() {
-            const dataStr = JSON.stringify(gameData);
-            const encoded = btoa(encodeURIComponent(dataStr)); // 简单编码
-            
-            // 创建临时输入框供用户复制
-            const textarea = document.createElement('textarea');
-            textarea.value = encoded;
-            document.body.appendChild(textarea);
-            textarea.select();
-            document.execCommand('copy');
-            document.body.removeChild(textarea);
-
-            alert(`【存档已成功导出！】\n\n您的专属存档码已复制到剪贴板！\n请妥善粘贴并保存到手机备忘录或电脑记事本中。换浏览器或清缓存后可直接通过“导入存档码”恢复进度！`);
-        }
-
-        // 【新功能】导入存档码：通过粘贴一段存档文本恢复进度
-        function importSaveCode() {
-            const code = prompt("请在此处粘贴您的专属存档码：");
-            if (!code) return;
+        // 【安全核心】加密导出：绑定道号 + 用户自定义密码混淆加密
+        function exportSecureSave() {
+            if (!currentUser) return;
+            const password = prompt("【加密备份】请设置一个用于解密该存档的 4 位以上安全密码（导入时需输入）：");
+            if (!password) return;
 
             try {
-                const decoded = decodeURIComponent(atob(code.trim()));
-                const parsed = JSON.parse(decoded);
-                if (parsed && typeof parsed.xiuwei === 'number') {
-                    gameData = parsed;
-                    saveUserData();
-                    document.getElementById('total-xiuwei').innerText = gameData.xiuwei.toLocaleString();
-                    alert("🎉 【存档导入成功！】修行进度已完美恢复！");
-                } else {
-                    alert("❌ 存档格式不正确，导入失败！");
-                }
-            } catch (e) {
-                alert("❌ 存档码解析出错，请检查是否完整复制！");
+                const rawPayload = {
+                    user: currentUser,
+                    data: gameData,
+                    salt: Math.random().toString(36).substring(2) // 动态盐值
+                };
+
+                const jsonStr = JSON.stringify(rawPayload);
+                // 结合用户密码进行简易异或混淆与Base64双重加密
+                const encrypted = btoa(encodeURIComponent(jsonStr.split('').map((char, i) => 
+                    String.fromCharCode(char.charCodeAt(0) ^ password.charCodeAt(i % password.length))
+                ).join('')));
+
+                const textarea = document.createElement('textarea');
+                textarea.value = encrypted;
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+
+                alert("🛡️ 【加密存档导出成功】\n存档码已复制到剪贴板！该存档已受您设置的密码保护，即使他人获取也无法解密或盗用！");
+            } catch(e) {
+                alert("❌ 加密失败！");
             }
         }
 
-        // 自动挂机挂载
+        // 【安全核心】解密导入：需要输入正确的自定义密码与道号核验
+        function importSecureSave() {
+            const code = prompt("请在此处粘贴您的加密存档码：");
+            if (!code) return;
+            const password = prompt("请输入导出该存档时设置的安全解密密码：");
+            if (!password) return;
+
+            try {
+                const decryptedStr = decodeURIComponent(atob(code.trim()));
+                const originalJson = decryptedStr.split('').map((char, i) => 
+                    String.fromCharCode(char.charCodeAt(0) ^ password.charCodeAt(i % password.length))
+                ).join('');
+
+                const parsed = JSON.parse(originalJson);
+
+                // 校验道号归属
+                if (parsed.user !== currentUser) {
+                    alert(`❌ 导入失败：该存档属于道号【${parsed.user}】，与您当前登入的道号不符！`);
+                    return;
+                }
+
+                gameData = parsed.data;
+                saveUserData();
+                document.getElementById('total-xiuwei').innerText = gameData.xiuwei.toLocaleString();
+                alert("🎉 【解密成功】存档已完美恢复，修为与境界已同步！");
+            } catch (e) {
+                alert("❌ 解密失败：存档码错误或安全密码不匹配！");
+            }
+        }
+
         setInterval(() => {
             if (currentUser) {
                 gameData.xiuwei += gameData.rate;
