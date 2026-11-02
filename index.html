@@ -3,235 +3,221 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>掌天道：修仙模拟器 - 沉浸式古风挂机爽游</title>
+    <title>想不想修真·文字挂机复刻版 - 洞府与推图</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Canvas Confetti 突破雷劫特效库 -->
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@400;700;900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&family=Noto+Serif+SC:wght@700;900&display=swap');
         
-        .font-xiuxian-title { font-family: 'Ma Shan Zheng', cursive; }
-        .font-xiuxian-body { font-family: 'Noto Serif SC', serif; }
+        .font-manga-title { font-family: 'ZCOOL KuaiLe', cursive; }
+        .font-manga-body { font-family: 'Noto Serif SC', serif; }
 
-        /* 古风宣纸与水墨背景 */
+        /* 古风宣纸/网点背景 */
         .xuan-paper-bg {
-            background-color: #0f172a;
-            background-image: radial-gradient(rgba(56, 189, 248, 0.1) 1px, transparent 1px);
-            background-size: 20px 20px;
+            background-color: #f8fafc;
+            background-image: radial-gradient(#cbd5e1 1px, transparent 1px);
+            background-size: 12px 12px;
         }
 
-        /* 古风仙侠高级边框 */
-        .xiuxian-border {
-            border: 2px solid #38bdf8;
-            box-shadow: 0 0 15px rgba(56, 189, 248, 0.2);
-            background: rgba(15, 23, 42, 0.85);
+        /* 经典修真黑白/宣纸粗边框 */
+        .xiuxian-box {
+            border: 3px solid #0f172a;
+            box-shadow: 4px 4px 0px #0f172a;
+            background: #ffffff;
         }
 
-        .xiuxian-btn {
-            background: linear-gradient(135deg, #0369a1 0%, #0c4a6e 100%);
-            border: 1px solid #38bdf8;
-            box-shadow: 0 4px 12px rgba(3, 105, 161, 0.4);
-            transition: all 0.2s ease;
+        .x-btn {
+            background: #ffffff;
+            border: 2px solid #0f172a;
+            box-shadow: 2px 2px 0px #0f172a;
+            transition: all 0.1s ease;
         }
-        .xiuxian-btn:hover {
-            background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(56, 189, 248, 0.6);
+        .x-btn:hover:not(:disabled) {
+            background: #0f172a;
+            color: #ffffff;
+            transform: translate(-1px, -1px);
+            box-shadow: 3px 3px 0px #0f172a;
         }
+        .x-btn:disabled {
+            background: #e2e8f0;
+            color: #94a3b8;
+            border-color: #cbd5e1;
+            box-shadow: none;
+            cursor: not-allowed;
+        }
+
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     </style>
 </head>
-<body class="xuan-paper-bg text-slate-100 font-xiuxian-body h-screen flex flex-col overflow-hidden select-none">
+<body class="xuan-paper-bg text-slate-900 font-manga-body h-screen flex flex-col overflow-hidden select-none">
 
-    <!-- 顶部仙侠状态栏 -->
-    <header class="bg-slate-900/90 border-b border-sky-500/30 px-6 py-3 flex justify-between items-center z-20 backdrop-blur shrink-0">
+    <!-- 顶部修真状态栏 -->
+    <header class="bg-slate-900 text-white px-4 py-2.5 flex justify-between items-center shrink-0 border-b-2 border-black">
         <div class="flex items-center space-x-3">
-            <span class="text-3xl">🧘‍♂️</span>
-            <div>
-                <h1 class="font-xiuxian-title text-2xl tracking-widest text-sky-400 drop-shadow">掌天道 · 修仙模拟器</h1>
-                <p class="text-[10px] text-slate-400 font-mono">当前版本：v1.0.0 仙途纵横版</p>
-            </div>
+            <span class="text-xl">🧘‍♂️</span>
+            <h1 class="font-manga-title text-lg tracking-wider text-amber-400">想不想修真 · 文字挂机复刻版</h1>
         </div>
         <div class="flex items-center space-x-6 text-xs font-mono">
-            <div class="bg-slate-800/80 px-3 py-1.5 rounded border border-sky-500/30">
-                <span class="text-slate-400">灵石:</span> <span id="top-spirit" class="text-amber-400 font-bold">1,000</span> 🪨
-            </div>
-            <div class="bg-slate-800/80 px-3 py-1.5 rounded border border-sky-500/30">
-                <span class="text-slate-400">寿元:</span> <span id="top-life" class="text-emerald-400 font-bold">500 年</span> ⏳
-            </div>
+            <div>灵石: <span id="top-spirit" class="text-amber-400 font-bold">5,000</span> 🪨</div>
+            <div>声望: <span id="top-reputation" class="text-sky-400 font-bold">100</span> PTS</div>
+            <div>寿元: <span id="top-life" class="text-emerald-400 font-bold">500 年</span> ⏳</div>
         </div>
     </header>
 
-    <!-- 主界面：左侧道友面板 + 右侧修仙洞府/宗门大殿 -->
+    <!-- 主界面：左侧个人修为与洞府 + 右侧功能大殿与推图 -->
     <main class="flex-1 flex overflow-hidden p-4 gap-4">
         
-        <!-- 左侧：道友个人档案与境界立绘面板 -->
-        <aside class="w-80 xiuxian-border rounded-xl p-5 flex flex-col justify-between shrink-0 shadow-2xl">
+        <!-- 左侧：道友档案与洞府经营 -->
+        <aside class="w-80 xiuxian-border rounded-xl p-4 flex flex-col justify-between shrink-0 overflow-y-auto no-scrollbar">
             <div>
-                <!-- 头像与境界卡片 -->
-                <div class="text-center pb-4 border-b border-sky-500/20 relative">
-                    <div class="w-24 h-24 mx-auto rounded-full border-2 border-sky-400 bg-gradient-to-b from-sky-900 to-slate-900 flex items-center justify-center text-4xl shadow-[0_0_20px_rgba(56,189,248,0.3)] mb-3">
-                        ⚡
-                    </div>
-                    <h2 class="font-xiuxian-title text-xl text-sky-300" id="player-name">韩绝 (散修)</h2>
-                    <span id="player-realm" class="inline-block bg-sky-950 text-sky-300 border border-sky-700 text-xs px-3 py-0.5 rounded-full mt-1 font-bold">
+                <!-- 个人信息卡片 -->
+                <div class="text-center pb-3 border-b-2 border-slate-900 mb-3">
+                    <div class="text-3xl mb-1">⚡</div>
+                    <h2 class="font-bold text-base" id="player-name">韩跑跑 (散修)</h2>
+                    <span id="player-realm" class="inline-block bg-slate-900 text-white text-xs px-3 py-0.5 rounded-full mt-1 font-mono font-bold">
                         炼气期一层
                     </span>
                 </div>
 
-                <!-- 核心属性栏 -->
-                <div class="space-y-3 mt-4 text-xs font-mono">
+                <!-- 修为与灵气核心数值 -->
+                <div class="space-y-3 text-xs font-mono">
                     <div>
-                        <div class="flex justify-between text-slate-400 mb-1">
+                        <div class="flex justify-between text-slate-600 mb-1">
                             <span>修为进度</span>
                             <span id="exp-text">0 / 100</span>
                         </div>
-                        <div class="w-full bg-slate-900 h-2.5 rounded-full overflow-hidden border border-sky-500/30">
-                            <div id="exp-bar" class="bg-gradient-to-r from-sky-500 to-cyan-400 h-full transition-all duration-300" style="width: 0%"></div>
+                        <div class="w-full bg-slate-200 border-2 border-slate-900 h-3 rounded-none overflow-hidden">
+                            <div id="exp-bar" class="bg-slate-900 h-full transition-all duration-300" style="width: 0%"></div>
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-2 gap-2 pt-2 border-t border-sky-500/20">
-                        <div class="bg-slate-900/60 p-2 rounded border border-slate-800">
-                            <span class="text-slate-400 block text-[10px]">攻击力</span>
-                            <span id="stat-atk" class="text-rose-400 font-bold text-sm">15</span>
+                    <div class="grid grid-cols-2 gap-2 pt-2 border-t-2 border-slate-900">
+                        <div class="bg-slate-50 p-2 border border-slate-900">
+                            <span class="text-slate-500 block text-[10px]">攻击力</span>
+                            <span id="stat-atk" class="font-bold text-sm">20</span>
                         </div>
-                        <div class="bg-slate-900/60 p-2 rounded border border-slate-800">
-                            <span class="text-slate-400 block text-[10px]">防御力</span>
-                            <span id="stat-def" class="text-emerald-400 font-bold text-sm">10</span>
+                        <div class="bg-slate-50 p-2 border border-slate-900">
+                            <span class="text-slate-500 block text-[10px]">防御力</span>
+                            <span id="stat-def" class="font-bold text-sm">15</span>
                         </div>
-                        <div class="bg-slate-900/60 p-2 rounded border border-slate-800">
-                            <span class="text-slate-400 block text-[10px]">悟性资质</span>
-                            <span id="stat-int" class="text-amber-400 font-bold text-sm">95 (极品)</span>
+                    </div>
+
+                    <!-- 洞府聚灵阵管理 -->
+                    <div class="pt-2 border-t-2 border-slate-900 space-y-2">
+                        <div class="font-bold flex justify-between items-center text-xs">
+                            <span>🏡 洞府聚灵阵</span>
+                            <span id="spiritual-root" class="text-amber-700">凡品灵根</span>
                         </div>
-                        <div class="bg-slate-900/60 p-2 rounded border border-slate-800">
-                            <span class="text-slate-400 block text-[10px]">宗门职位</span>
-                            <span id="stat-sect" class="text-purple-400 font-bold text-xs">无 (散修)</span>
+                        <div class="flex justify-between items-center text-[11px] bg-slate-50 p-2 border border-slate-900">
+                            <span>聚灵阵等级: <strong id="阵法等级">1级</strong> (+10修为/秒)</span>
+                            <button onclick="upgradeLingMai()" class="x-btn px-2 py-1 text-[10px] font-bold">升级 (1k灵石)</button>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- 金手指状态 -->
-            <div class="bg-sky-950/40 p-3 rounded-lg border border-sky-500/30 text-[11px] space-y-1">
-                <div class="font-bold text-sky-400 flex items-center space-x-1">
-                    <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
-                    <span>金手指：掌天小瓶 (已激活)</span>
-                </div>
-                <p class="text-slate-300">每秒自动吸纳天地灵气，修炼速度 +200%！</p>
+            <div class="mt-4 pt-2 border-t-2 border-slate-900">
+                <button onclick="tryBreakthrough()" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-2 rounded text-xs shadow transition border border-black">
+                    🌟 尝试境界突破 (渡劫)
+                </button>
             </div>
         </aside>
 
-        <!-- 右侧：修仙交互大殿与动态剧情区 -->
-        <section class="flex-1 xiuxian-border rounded-xl p-6 flex flex-col justify-between shadow-2xl relative overflow-hidden">
+        <!-- 右侧：功能切换与推图大殿 -->
+        <section class="flex-1 xiuxian-border rounded-xl p-5 flex flex-col justify-between overflow-hidden">
             
-            <!-- 顶部导航切换页签 -->
-            <div class="flex space-x-3 border-b border-sky-500/20 pb-3 z-10">
-                <button onclick="switchTab('cave')" id="tab-btn-cave" class="px-4 py-1.5 rounded-lg text-xs font-bold bg-sky-600 text-white transition flex items-center gap-1.5">
-                    <i data-lucide="home" class="w-4 h-4"></i> 洞府闭关
-                </button>
-                <button onclick="switchTab('adventure')" id="tab-btn-adventure" class="px-4 py-1.5 rounded-lg text-xs font-bold bg-slate-800 text-slate-300 hover:bg-slate-700 transition flex items-center gap-1.5">
-                    <i data-lucide="compass" class="w-4 h-4"></i> 秘境历练
-                </button>
-                <button onclick="switchTab('sect')" id="tab-btn-sect" class="px-4 py-1.5 rounded-lg text-xs font-bold bg-slate-800 text-slate-300 hover:bg-slate-700 transition flex items-center gap-1.5">
-                    <i data-lucide="shield" class="w-4 h-4"></i> 开宗立派
-                </button>
+            <!-- 顶部功能标签切换 -->
+            <div class="flex space-x-2 border-b-2 border-slate-900 pb-3 shrink-0">
+                <button onclick="switchTab('cultivate')" id="tab-btn-cultivate" class="x-btn px-4 py-1.5 text-xs font-bold bg-slate-900 text-white">修炼大殿</button>
+                <button onclick="switchTab('map')" id="tab-btn-map" class="x-btn px-4 py-1.5 text-xs font-bold">历练推图 (刷图)</button>
+                <button onclick="switchTab('sect')" id="tab-btn-sect" class="x-btn px-4 py-1.5 text-xs font-bold">门派功法</button>
             </div>
 
-            <!-- 内容显示区 -->
-            <div class="flex-1 my-4 flex flex-col justify-center items-center relative z-10">
+            <!-- 中间内容视图区 -->
+            <div class="flex-1 my-3 overflow-y-auto relative flex flex-col justify-center items-center">
                 
-                <!-- 标签页 1：洞府闭关与突破 -->
-                <div id="tab-content-cave" class="w-full max-w-lg text-center space-y-6">
-                    <div class="p-6 bg-slate-900/80 rounded-xl border border-sky-500/30 shadow-inner">
-                        <h3 class="font-xiuxian-title text-2xl text-sky-300 mb-2">聚灵阵法运转中</h3>
-                        <p class="text-xs text-slate-400 mb-6">吞吐日月精华，凝练周天灵力。点击下方按钮可加速修炼或尝试渡劫突破！</p>
-                        
-                        <div class="flex justify-center gap-4">
-                            <button onclick="manualCultivate()" class="xiuxian-btn px-6 py-3 rounded-xl font-bold text-sm text-white flex items-center gap-2">
-                                ⚡ 纳气修炼 (+修为)
-                            </button>
-                            <button onclick="tryBreakthrough()" id="breakthrough-btn" class="bg-amber-600 hover:bg-amber-500 text-white px-6 py-3 rounded-xl font-bold text-sm shadow-lg transition flex items-center gap-2 border border-amber-400">
-                                🌟 境界突破 (渡劫)
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 标签页 2：秘境历练与奇遇 -->
-                <div id="tab-content-adventure" class="w-full max-w-lg text-center space-y-4 hidden">
-                    <div class="p-6 bg-slate-900/80 rounded-xl border border-sky-500/30 space-y-4">
-                        <h3 class="font-xiuxian-title text-xl text-sky-300">上古秘境·落云宗遗迹</h3>
-                        <p class="text-xs text-slate-400">探索未知的上古洞府，寻觅高阶功法与绝世灵草，但须小心妖兽袭击！</p>
-                        <div id="adventure-log" class="bg-slate-950 p-4 rounded-lg text-xs font-mono text-emerald-300 h-32 overflow-y-auto border border-slate-800 text-left">
-                            [系统日志] 进入秘境，四周弥漫着远古灵气...
-                        </div>
-                        <button onclick="startAdventure()" class="xiuxian-btn px-6 py-2.5 rounded-xl font-bold text-xs text-white w-full">
-                            🗺️ 深入秘境探索 (消耗 10 年寿元)
+                <!-- 视图 1：修炼大殿 -->
+                <div id="tab-content-cultivate" class="w-full max-w-md text-center space-y-4">
+                    <div class="p-6 border-2 border-slate-900 bg-slate-50 shadow-[4px_4px_0px_#000] space-y-3">
+                        <h3 class="font-bold text-base">聚气修炼中...</h3>
+                        <p class="text-xs text-slate-600">天地灵气源源不断汇入气海。您可以选择挂机自动获取修为，或者手动打坐加速。</p>
+                        <button onclick="manualCultivate()" class="x-btn px-6 py-2.5 font-bold text-xs bg-white">
+                            ⚡ 手动纳气 (+50修为)
                         </button>
                     </div>
                 </div>
 
-                <!-- 标签页 3：开宗立派 -->
+                <!-- 视图 2：历练推图（类似想不想修真刷图） -->
+                <div id="tab-content-map" class="w-full max-w-lg text-center space-y-4 hidden">
+                    <div class="p-5 border-2 border-slate-900 bg-slate-50 shadow-[4px_4px_0px_#000] space-y-3">
+                        <h3 class="font-bold text-base">凡间地图：图一 · 昆仑山</h3>
+                        <p class="text-xs text-slate-600">消耗 5 年寿元探索图一，击败守关妖兽，搜刮基础炼器石与灵石！</p>
+                        <div id="map-log" class="bg-white p-3 border-2 border-slate-900 h-28 overflow-y-auto text-left text-xs font-mono space-y-1">
+                            <p class="text-slate-500">[提示] 点击下方按钮开始探索图一...</p>
+                        </div>
+                        <button onclick="exploreMap()" class="x-btn px-6 py-2.5 font-bold text-xs bg-slate-900 text-white w-full">
+                            🗺️ 开始探索图一 (消耗5年寿元)
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 视图 3：门派大殿 -->
                 <div id="tab-content-sect" class="w-full max-w-lg text-center space-y-4 hidden">
-                    <div class="p-6 bg-slate-900/80 rounded-xl border border-sky-500/30 space-y-4">
-                        <h3 class="font-xiuxian-title text-xl text-sky-300">创建专属修仙宗门</h3>
-                        <p class="text-xs text-slate-400">广收门徒，让他们为你每日搜刮灵石和稀有矿石！</p>
-                        <div class="bg-slate-950 p-4 rounded-lg text-xs font-mono text-slate-300 border border-slate-800">
-                            <p>当前宗门名称：<span id="sect-name" class="text-amber-400 font-bold">尚未创立</span></p>
-                            <p class="mt-1">麾下弟子数量：<span id="disciple-count" class="text-sky-400 font-bold">0</span> 人</p>
+                    <div class="p-5 border-2 border-slate-900 bg-slate-50 shadow-[4px_4px_0px_#000] space-y-3">
+                        <h3 class="font-bold text-base">加入门派：太乙剑宗</h3>
+                        <p class="text-xs text-slate-600">加入门派可每日请安获取贡献，并在藏经阁学习提升攻击力的《太乙剑诀》！</p>
+                        <div class="flex justify-center gap-3 pt-2">
+                            <button onclick="learnSkill()" class="x-btn px-4 py-2 font-bold text-xs">
+                                📜 学习镇派绝学 (消耗50声望)
+                            </button>
                         </div>
-                        <button onclick="foundSect()" id="found-sect-btn" class="xiuxian-btn px-6 py-2.5 rounded-xl font-bold text-xs text-white w-full">
-                            🏛️ 创立宗门 (消耗 5,000 灵石)
-                        </button>
                     </div>
                 </div>
 
             </div>
 
-            <!-- 底部实时修仙日志流 -->
-            <div class="bg-slate-950/90 p-3 rounded-lg border border-sky-500/20 text-xs font-mono text-slate-300 h-24 overflow-y-auto shrink-0 z-10" id="game-logs">
-                <p class="text-sky-400">【仙界公告】欢迎来到掌天道修仙世界。你的传奇一生由此开始...</p>
+            <!-- 底部实时游戏滚动日志 -->
+            <div class="bg-slate-900 text-slate-100 p-2.5 border-2 border-black text-xs font-mono h-24 overflow-y-auto shrink-0" id="game-logs">
+                <p class="text-amber-400">【公告】欢迎道友来到《想不想修真》复刻版世界。闭关修炼，早日飞升三十三天！</p>
             </div>
         </section>
     </main>
 
+    <!-- JS 核心逻辑 -->
     <script>
         lucide.createIcons();
 
-        // 玩家核心修仙数据
         let player = {
-            name: "韩绝",
-            spirit: 1000,
+            spirit: 5000,
+            reputation: 100,
             life: 500,
             exp: 0,
             maxExp: 100,
             realmIndex: 0,
-            atk: 15,
-            def: 10,
-            int: 95,
-            sectName: null,
-            disciples: 0
+            atk: 20,
+            def: 15,
+            level: 1, // 聚灵阵等级
         };
 
         const realms = [
             "炼气期一层", "炼气期中期", "炼气期大圆满",
             "筑基期前期", "筑基期后期", "金丹期真人",
-            "元婴期老祖", "化神期大能", "渡劫飞升成仙"
+            "元婴期老祖", "化神期大能", "渡劫飞升"
         ];
 
-        // 自动挂机修炼（掌天小瓶每秒自动加经验）
+        // 挂机自动增长修为（每秒根据聚灵阵等级增加）
         setInterval(() => {
-            player.exp += 5;
+            player.exp += player.level * 2;
             checkExpOverflow();
             updateUI();
         }, 1000);
 
         function manualCultivate() {
-            player.exp += 15;
-            logMessage("✨ 你运转大周天，吸收天地灵气，修为获得显著提升！");
+            player.exp += 50;
+            logMessage("✨ 你盘膝打坐，纳气凝神，修为获得大幅增长。");
             checkExpOverflow();
             updateUI();
         }
@@ -239,78 +225,74 @@
         function checkExpOverflow() {
             if (player.exp >= player.maxExp) {
                 player.exp = player.maxExp;
-                logMessage("⚡ 【系统提示】修为已满！可以点击【境界突破】尝试渡劫晋升了！");
             }
         }
 
         function tryBreakthrough() {
             if (player.exp < player.maxExp) {
-                logMessage("❌ 修为尚未圆满，强行突破恐有走火入魔之险！");
+                logMessage("❌ 修为不足，无法进行境界突破！");
                 return;
             }
 
-            // 突破成功率判定
-            let successChance = 0.85;
-            if (Math.random() < successChance) {
+            if (Math.random() < 0.8) {
                 player.realmIndex++;
                 if (player.realmIndex >= realms.length) player.realmIndex = realms.length - 1;
                 
                 player.exp = 0;
-                player.maxExp = Math.floor(player.maxExp * 2.5);
-                player.atk += 25;
+                player.maxExp = Math.floor(player.maxExp * 2.2);
+                player.atk += 30;
                 player.def += 20;
-                player.life += 150;
 
-                // 释放全屏雷劫/突破烟花特效
-                confetti({ particleCount: 100, spread: 80, origin: { y: 0.6 } });
-                logMessage(`🎉 【雷劫大吉】轰隆！九天雷劫过后，你成功突破至【${realms[player.realmIndex]}】！`);
+                logMessage(`🎉 【突破成功】天雷滚滚而过，你成功晋升至【${realms[player.realmIndex]}】！`);
             } else {
-                player.life -= 20;
-                logMessage("💥 【渡劫失败】遭遇心魔反噬，气血受损，寿元 -20 年！");
+                player.life -= 15;
+                logMessage("💥 【渡劫失败】遭遇心魔反噬，气血不稳，寿元 -15 年！");
             }
             updateUI();
         }
 
-        function startAdventure() {
-            player.life -= 10;
-            const events = [
-                "在灵气泉眼旁打坐，意外获得【千年灵乳】，灵石 +500！",
-                "遭遇高阶妖兽【碧眼金睛兽】袭击，历经苦战将其斩杀，获得妖丹！",
-                "在一处上古洞府前破解阵法，领悟了残缺剑意，攻击力微幅上升！",
-                "遭遇敌对宗门长老偷袭，身负轻伤，仓皇逃回洞府。"
-            ];
-            const randomEvent = events[Math.floor(Math.random() * events.length)];
-            if (randomEvent.includes("灵乳")) player.spirit += 500;
-            
-            const logBox = document.getElementById('adventure-log');
-            logBox.innerHTML += `<p class="mt-1">${randomEvent}</p>`;
-            logBox.scrollTop = logBox.scrollHeight;
-            logMessage(`🗺️ 【秘境探索】${randomEvent}`);
-            updateUI();
-        }
-
-        function foundSect() {
-            if (player.spirit < 5000) {
-                logMessage("❌ 创立宗门至少需要 5000 灵石作为启动资金！");
+        function upgradeLingMai() {
+            if (player.spirit < 1000) {
+                logMessage("❌ 灵石不足 1,000，无法升级聚灵阵！");
                 return;
             }
-            player.spirit -= 5000;
-            player.sectName = "青云剑宗";
-            player.disciples = 5;
-            document.getElementById('sect-name').innerText = player.sectName;
-            document.getElementById('disciple-count').innerText = player.disciples;
-            logMessage("🏛️ 【开宗立派】大典成功！『青云剑宗』正式成立，首批招收 5 名根骨上佳的弟子！");
+            player.spirit -= 1000;
+            player.level++;
+            document.getElementById('阵法等级').innerText = player.level + "级";
+            logMessage(`🏡 【聚灵阵升级】成功升级至 ${player.level} 级，每秒聚灵效率大增！`);
+            updateUI();
+        }
+
+        function exploreMap() {
+            player.life -= 5;
+            const dropSpirit = Math.floor(Math.random() * 200) + 100;
+            player.spirit += dropSpirit;
+
+            const logBox = document.getElementById('map-log');
+            logBox.innerHTML += `<p>• 击败图一守卫，获得灵石 +${dropSpirit}，历练圆满返回。</p>`;
+            logBox.scrollTop = logBox.scrollHeight;
+            logMessage(`🗺️ 【推图成功】探索图一昆仑山，搜刮获得灵石 +${dropSpirit}！`);
+            updateUI();
+        }
+
+        function learnSkill() {
+            if (player.reputation < 50) {
+                logMessage("❌ 门派声望不足 50，无法参悟镇派绝学！");
+                return;
+            }
+            player.reputation -= 50;
+            player.atk += 50;
+            logMessage("📜 【参悟成功】你在藏经阁学会《太乙剑诀》，攻击力大幅飙升 (+50)！");
             updateUI();
         }
 
         function switchTab(tabName) {
-            ['cave', 'adventure', 'sect'].forEach(t => {
+            ['cultivate', 'map', 'sect'].forEach(t => {
                 document.getElementById(`tab-content-${t}`).classList.add('hidden');
-                document.getElementById(`tab-btn-${t}`).className = "px-4 py-1.5 rounded-lg text-xs font-bold bg-slate-800 text-slate-300 hover:bg-slate-700 transition flex items-center gap-1.5";
+                document.getElementById(`tab-btn-${t}`).className = "x-btn px-4 py-1.5 text-xs font-bold";
             });
             document.getElementById(`tab-content-${tabName}`).classList.remove('hidden');
-            document.getElementById(`tab-btn-${tabName}`).className = "px-4 py-1.5 rounded-lg text-xs font-bold bg-sky-600 text-white transition flex items-center gap-1.5";
-            lucide.createIcons();
+            document.getElementById(`tab-btn-${tabName}`).className = "x-btn px-4 py-1.5 text-xs font-bold bg-slate-900 text-white";
         }
 
         function logMessage(text) {
@@ -321,14 +303,13 @@
 
         function updateUI() {
             document.getElementById('top-spirit').innerText = player.spirit.toLocaleString();
+            document.getElementById('top-reputation').innerText = player.reputation;
             document.getElementById('top-life').innerText = player.life + " 年";
             document.getElementById('player-realm').innerText = realms[player.realmIndex];
             document.getElementById('exp-text').innerText = `${player.exp} / ${player.maxExp}`;
             document.getElementById('exp-bar').style.width = `${Math.min(100, (player.exp / player.maxExp) * 100)}%`;
             document.getElementById('stat-atk').innerText = player.atk;
             document.getElementById('stat-def').innerText = player.def;
-            document.getElementById('stat-int').innerText = player.int + " (极品)";
-            document.getElementById('stat-sect').innerText = player.sectName ? player.sectName : "无 (散修)";
         }
     </script>
 </body>
