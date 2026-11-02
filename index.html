@@ -3,204 +3,92 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>想不想修真 · 纯代码纯UI高精复刻版</title>
+    <title>想不想修真 · 模块化开源版</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@500;700;900&display=swap');
-        
-        body { font-family: 'Noto Serif SC', serif; background-color: #1a120b; color: #f3e5c8; }
-
-        /* 纯代码画出的古风宣纸/玉石渐变面板 */
-        .xiuxian-panel {
-            background: linear-gradient(135deg, #f7f2e4 0%, #e5dac0 100%);
-            border: 2px solid #b89753;
-            color: #362917;
-            box-shadow: inset 0 0 15px rgba(184, 151, 83, 0.3), 0 4px 6px rgba(0,0,0,0.4);
-        }
-
-        /* 纯代码画出的金边渐变按钮 */
-        .gold-btn {
-            background: linear-gradient(180deg, #fbe6a2 0%, #d49f37 100%);
-            border: 1px solid #8b6b23;
-            color: #3d2800;
-            font-weight: 700;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.3);
-            transition: all 0.1s ease;
-        }
-        .gold-btn:hover {
-            background: linear-gradient(180deg, #fff2c4 0%, #e2b048 100%);
-            transform: translateY(-1px);
-        }
-
-        /* 底部常驻导航按钮 */
-        .nav-btn {
-            background: linear-gradient(180deg, #4a3b2c 0%, #2a1f15 100%);
-            border: 1px solid #8b6b23;
-            color: #e8dec3;
-        }
-        .nav-btn.active {
-            background: linear-gradient(180deg, #b89753 0%, #785a22 100%);
-            color: #ffffff;
-            font-weight: bold;
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.4);
-        }
-
-        /* 纯代码实现的太极阵盘无限旋转动画 */
-        @keyframes spin-slow {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-        .animate-spin-slow {
-            animation: spin-slow 25s linear infinite;
-        }
-
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-    </style>
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body class="h-screen flex flex-col justify-between overflow-hidden select-none max-w-md mx-auto border-x-2 border-[#b89753]">
 
-    <!-- 1. 顶部角色状态栏 -->
+    <!-- 顶部状态栏 -->
     <header class="bg-[#2a1f15] p-3 border-b-2 border-[#b89753] text-xs font-mono space-y-1.5 shrink-0 shadow-lg">
         <div class="flex justify-between items-center">
             <div class="flex items-center space-x-2.5">
-                <!-- 纯代码画的角色头像框 -->
                 <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-amber-600 to-amber-300 border-2 border-amber-200 flex items-center justify-center text-lg shadow">
                     🧘
                 </div>
                 <div>
-                    <div class="font-bold text-amber-200 text-sm tracking-wide">楚明轩</div>
-                    <div class="text-[10px] text-amber-400/80">灵虚宗 · 暂无官职</div>
+                    <div class="font-bold text-amber-200 text-sm tracking-wide" id="player-name">楚明轩</div>
+                    <div class="text-[10px] text-amber-400/80" id="player-sect">灵虚宗 · 暂无官职</div>
                 </div>
             </div>
             <div class="grid grid-cols-2 gap-x-4 gap-y-0.5 text-right">
-                <div>灵石: <span class="text-amber-300 font-bold">37,395</span></div>
-                <div>声望: <span class="text-sky-300 font-bold">5,664,219</span></div>
-                <div>修炼: <span class="text-emerald-300 font-bold">243,326 年</span></div>
-                <div>效率: <span class="text-purple-300 font-bold">20,040/5秒</span></div>
+                <div>灵石: <span id="top-spirit" class="text-amber-300 font-bold">37,395</span></div>
+                <div>声望: <span id="top-reputation" class="text-sky-300 font-bold">5,664,219</span></div>
+                <div>修炼: <span id="top-year" class="text-emerald-300 font-bold">243,326 年</span></div>
+                <div>效率: <span id="top-rate" class="text-purple-300 font-bold">20,040/5秒</span></div>
             </div>
         </div>
     </header>
 
-    <!-- 2. 中间动态主大殿 -->
+    <!-- 中间主视图 -->
     <main class="flex-1 overflow-y-auto p-3 no-scrollbar relative flex flex-col justify-between space-y-3">
-        
-        <!-- 修炼大殿主界面 -->
+        <!-- 修炼大殿板块 -->
         <div id="tab-xiuxian" class="space-y-3">
-            <!-- 境界与肉身双成长线面板 -->
             <div class="xiuxian-panel p-3 rounded-lg space-y-2.5">
                 <div class="flex justify-between items-center border-b border-[#b89753]/40 pb-2">
                     <div>
                         <span class="text-xs font-bold text-amber-900">⛩️ 境界</span>
-                        <span class="ml-2 font-bold text-sm text-stone-900">地仙 10阶</span>
+                        <span class="ml-2 font-bold text-sm text-stone-900" id="realm-text">地仙 10阶</span>
                     </div>
-                    <div class="text-[11px] font-mono text-stone-700">7,568,177,400 修为</div>
                     <button onclick="tryBreakthrough('realm')" class="gold-btn px-3 py-1 text-xs rounded shadow">渡劫</button>
                 </div>
                 <div class="flex justify-between items-center pt-0.5">
                     <div>
                         <span class="text-xs font-bold text-amber-900">💪 肉身</span>
-                        <span class="ml-2 font-bold text-sm text-stone-900">玄仙之躯 1阶</span>
+                        <span class="ml-2 font-bold text-sm text-stone-900" id="body-text">玄仙之躯 1阶</span>
                     </div>
-                    <div class="text-[11px] font-mono text-stone-700">683,409,863,838 修为</div>
                     <button onclick="tryBreakthrough('body')" class="gold-btn px-3 py-1 text-xs rounded shadow">升级</button>
                 </div>
             </div>
 
-            <!-- 纯代码绘制的动态旋转太极阵盘与自动修炼 -->
+            <!-- 太极旋转盘与修为 -->
             <div class="xiuxian-panel p-4 rounded-lg text-center space-y-3 relative overflow-hidden">
                 <div class="relative w-32 h-32 mx-auto flex items-center justify-center">
-                    <!-- 旋转的太极外环线条 -->
                     <div class="absolute inset-0 rounded-full border-2 border-dashed border-amber-700/60 animate-spin-slow"></div>
-                    <!-- 中心太极图标 -->
                     <div class="w-24 h-24 rounded-full border-2 border-[#b89753] flex items-center justify-center text-4xl bg-gradient-to-b from-amber-100 to-amber-300 shadow-inner">
                         ☯️
                     </div>
                 </div>
                 <div>
-                    <div class="text-xs font-bold text-stone-700">当前修炼效率：(12340~20040)/5秒</div>
+                    <div class="text-xs font-bold text-stone-700">当前修炼效率：20,040/5秒</div>
                     <div class="text-xs font-mono text-amber-950 font-bold mt-1">总修为: <span id="total-xiuwei" class="text-sm">630,156,239,206</span></div>
-                    <p class="text-[10px] text-stone-600 mt-0.5">✨ 永无休止的自动修炼中...</p>
                 </div>
-            </div>
-
-            <!-- 动态探索日志 -->
-            <div class="xiuxian-panel p-3 rounded-lg text-xs font-mono h-28 overflow-y-auto space-y-1 shadow-inner">
-                <p class="text-amber-950">【243326年】楚明轩在废弃药田探索时，发现灵草丛，采摘后发现这是10棵灵药。</p>
-                <p class="text-amber-950">【243326年】楚明轩在废弃药田探索时，发现一片优质的树林，采集后得到11份木材。</p>
-                <p class="text-amber-950">【243326年】聚灵阵自动运转，炼化天地灵气，修为微幅增长。</p>
             </div>
         </div>
 
-        <!-- 洞府大阵界面 (预留切换) -->
+        <!-- 洞府大殿板块 (初始隐藏) -->
         <div id="tab-dongfu" class="space-y-3 hidden">
             <div class="xiuxian-panel p-3 rounded-lg text-center font-bold text-sm">
                 🏛️ 洞府大阵与聚灵法器
             </div>
-            <div class="grid grid-cols-2 gap-2 text-xs">
-                <div class="xiuxian-panel p-3 rounded text-center space-y-1">
-                    <div class="font-bold text-amber-950">五行聚灵阵</div>
-                    <div class="text-[10px] text-stone-600">聚灵效率 +50%</div>
-                    <button onclick="alert('建造成功！')" class="gold-btn px-3 py-1 rounded text-[10px] mt-1">建造</button>
-                </div>
-                <div class="xiuxian-panel p-3 rounded text-center space-y-1">
-                    <div class="font-bold text-amber-950">金光阵</div>
-                    <div class="text-[10px] text-stone-600">防御加成 +100</div>
-                    <button class="gold-btn px-3 py-1 rounded text-[10px] mt-1 opacity-50" disabled>未解锁</button>
-                </div>
-            </div>
         </div>
-
     </main>
 
-    <!-- 3. 底部原版常驻六大导航栏 -->
+    <!-- 底部常驻导航栏 -->
     <footer class="bg-[#2a1f15] p-2 border-t-2 border-[#b89753] grid grid-cols-6 gap-1 shrink-0 text-center">
-        <button onclick="switchTab('xiuxian')" id="nav-xiuxian" class="nav-btn active py-2 rounded text-[11px]">
-            <div class="text-base">🧘‍♂️</div>修炼
-        </button>
-        <button onclick="switchTab('chuwu')" id="nav-chuwu" class="nav-btn py-2 rounded text-[11px]">
-            <div class="text-base">🎒</div>储物
-        </button>
-        <button onclick="switchTab('linggen')" id="nav-linggen" class="nav-btn py-2 rounded text-[11px]">
-            <div class="text-base">☯️</div>灵根
-        </button>
-        <button onclick="switchTab('gongfa')" id="nav-gongfa" class="nav-btn py-2 rounded text-[11px]">
-            <div class="text-base">📜</div>功法
-        </button>
-        <button onclick="switchTab('dongfu')" id="nav-dongfu" class="nav-btn py-2 rounded text-[11px]">
-            <div class="text-base">🏛️</div>洞府
-        </button>
-        <button onclick="switchTab('baoku')" id="nav-baoku" class="nav-btn py-2 rounded text-[11px]">
-            <div class="text-base">🏺</div>宝库
-        </button>
+        <button onclick="switchTab('xiuxian')" id="nav-xiuxian" class="nav-btn active py-2 rounded text-[11px]"><div class="text-base">🧘‍♂️</div>修炼</button>
+        <button onclick="switchTab('chuwu')" id="nav-chuwu" class="nav-btn py-2 rounded text-[11px]"><div class="text-base">🎒</div>储物</button>
+        <button onclick="switchTab('linggen')" id="nav-linggen" class="nav-btn py-2 rounded text-[11px]"><div class="text-base">☯️</div>灵根</button>
+        <button onclick="switchTab('gongfa')" id="nav-gongfa" class="nav-btn py-2 rounded text-[11px]"><div class="text-base">📜</div>功法</button>
+        <button onclick="switchTab('dongfu')" id="nav-dongfu" class="nav-btn py-2 rounded text-[11px]"><div class="text-base">🏛️</div>洞府</button>
+        <button onclick="switchTab('baoku')" id="nav-baoku" class="nav-btn py-2 rounded text-[11px]"><div class="text-base">🏺</div>宝库</button>
     </footer>
 
-    <!-- JS 核心动态逻辑 -->
-    <script>
-        let xiuwei = 630156239206;
-        setInterval(() => {
-            xiuwei += 20040;
-            document.getElementById('total-xiuwei').innerText = xiuwei.toLocaleString();
-        }, 5000);
-
-        function switchTab(tabName) {
-            ['xiuxian', 'dongfu'].forEach(t => {
-                const el = document.getElementById(`tab-${t}`);
-                const nav = document.getElementById(`nav-${t}`);
-                if (el) el.classList.add('hidden');
-                if (nav) nav.classList.remove('active');
-            });
-            const target = document.getElementById(`tab-${tabName}`);
-            const targetNav = document.getElementById(`nav-${tabName}`);
-            if (target) target.classList.remove('hidden');
-            if (targetNav) targetNav.classList.add('active');
-        }
-
-        function tryBreakthrough(type) {
-            confetti({ particleCount: 80, spread: 70, origin: { y: 0.6 } });
-            alert(type === 'realm' ? "【渡劫成功】金光贯体，成功晋升！" : "【肉身升级】气血爆棚，肉身突破！");
-        }
-    </script>
+    <!-- 引入拆分后的 JS 脚本 -->
+    <script src="js/data.js"></script>
+    <script src="js/player.js"></script>
+    <script src="js/ui.js"></script>
 </body>
 </html>
