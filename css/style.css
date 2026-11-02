@@ -48,3 +48,24 @@ body {
 }
 
 .no-scrollbar::-webkit-scrollbar { display: none; }
+
+/* ==================== 新增：水墨登录页全屏背景适配 ==================== */
+.cover-background {
+    background-color: #d6caaf;
+    background-image: 
+        linear-gradient(180deg, rgba(184, 199, 224, 0.4) 0%, rgba(247, 243, 238, 0.6) 100%),
+        url('images/cover.png'); /* 👈 对应你刚刚上传到仓库里的路径 */
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+}
+
+/* 登录面板的磨砂玻璃半透明质感，保证在水墨背景上文字清晰可见 */
+.glass-panel {
+    background: rgba(247, 243, 232, 0.92);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 2px solid #b89753;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+    color: #362917;
+}
