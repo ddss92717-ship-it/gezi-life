@@ -26,18 +26,18 @@
             background: #f7f3e8;
         }
 
-        /* 修复：增加安全的渐变色兜底，避免图片加载失败时全屏空白 */
+        /* 水墨封面背景 (已切换至本地仓库路径 images/cover.png) */
         .cover-background {
             background-color: #d6caaf;
             background-image: 
-                linear-gradient(180deg, rgba(184, 199, 224, 0.4) 0%, rgba(247, 243, 238, 0.6) 100%),
-                url('https://github.com/user-attachments/assets/c3e3a5dc-2406-4980-acb5-379097b35094');
+                linear-gradient(180deg, rgba(184, 199, 224, 0.3) 0%, rgba(247, 243, 238, 0.5) 100%),
+                url('images/cover.png');
             background-size: cover;
             background-position: center center;
             background-repeat: no-repeat;
         }
 
-        /* 悬浮面板 */
+        /* 悬浮面板 (磨砂效果) */
         .glass-panel {
             background: rgba(247, 243, 232, 0.92);
             backdrop-filter: blur(8px);
@@ -207,7 +207,7 @@
 
     </div>
 
-    <!-- 逻辑脚本 (增加防报错安全保护) -->
+    <!-- 逻辑脚本 -->
     <script>
         let currentUser = null;
         let gameData = {
