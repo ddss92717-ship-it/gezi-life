@@ -84,6 +84,11 @@
         <button onclick="switchTab('gongfa')" id="nav-gongfa" class="nav-btn py-2 rounded text-[11px]"><div class="text-base">📜</div>功法</button>
         <button onclick="switchTab('dongfu')" id="nav-dongfu" class="nav-btn py-2 rounded text-[11px]"><div class="text-base">🏛️</div>洞府</button>
         <button onclick="switchTab('baoku')" id="nav-baoku" class="nav-btn py-2 rounded text-[11px]"><div class="text-base">🏺</div>宝库</button>
+        <!-- 在 index.html 适当位置加入手动存档和重置按钮 -->
+        <div class="flex gap-2 mt-2">
+            <button onclick="saveGame()" class="gold-btn px-3 py-1 text-xs rounded shadow">手动存档</button>
+            <button onclick="resetGame()" class="bg-rose-900 text-rose-200 border border-rose-700 px-3 py-1 text-xs rounded shadow">轮回重修</button>
+        </div>
     </footer>
 
     <!-- 引入拆分后的 JS 脚本 -->
