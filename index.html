@@ -1,12 +1,12 @@
-<!DOCTYPE html>
+code = '''<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>想不想修真 · 正统复刻版</title>
+    <title>想不想修真 · 完整放置修仙版</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Canvas Confetti 渡劫雷劫特效库 -->
+    <!-- Canvas Confetti 渡劫特效 -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
@@ -41,7 +41,7 @@
             transition: all 0.15s ease;
         }
         .xiuxian-btn:hover:not(:disabled) {
-            background: linear-gradient(180deg, #faeed45 0%, #e2c27e 100%);
+            background: linear-gradient(180deg, #faeed4 0%, #e2c27e 100%);
             transform: translateY(-1px);
             box-shadow: 0 4px 8px rgba(139, 107, 35, 0.2);
         }
@@ -59,10 +59,10 @@
 <body class="xiuxian-bg text-stone-800 h-screen flex flex-col overflow-hidden select-none">
 
     <!-- 顶部修真状态栏 -->
-    <header class="bg-[#2c2416] text-[#f3e5c8] px-5 py-3 flex justify-between items-center shadow-md shrink-0 border-b-2 border-[#b89753]">
+    <header class="bg-[#2c2416] text-[#f3e5c8] px-5 py-2.5 flex justify-between items-center shadow-md shrink-0 border-b-2 border-[#b89753]">
         <div class="flex items-center space-x-3">
             <span class="text-xl">⛩️</span>
-            <h1 class="font-bold text-lg tracking-widest text-[#f9e9c4]">想不想修真 · 正统复刻版</h1>
+            <h1 class="font-bold text-lg tracking-widest text-[#f9e9c4]">想不想修真 · 完整版</h1>
         </div>
         <div class="flex items-center space-x-6 text-xs font-mono">
             <div>灵石: <span id="top-spirit" class="text-amber-300 font-bold">5,000</span> 🪨</div>
@@ -86,7 +86,7 @@
                     </span>
                 </div>
 
-                <!-- 修为与核心数值 -->
+                <!-- 装备栏与属性 -->
                 <div class="space-y-3 text-xs font-mono">
                     <div>
                         <div class="flex justify-between text-stone-600 mb-1">
@@ -98,94 +98,163 @@
                         </div>
                     </div>
 
+                    <!-- 属性与装备 -->
                     <div class="grid grid-cols-2 gap-2 pt-2 border-t border-[#d4b26f]">
                         <div class="bg-[#fcf9f0] p-2 border border-[#d4b26f] rounded">
-                            <span class="text-stone-500 block text-[10px]">攻击力</span>
-                            <span id="stat-atk" class="font-bold text-sm text-stone-800">20</span>
+                            <span class="text-stone-500 block text-[10px]">基础攻击 / 装备</span>
+                            <span id="stat-atk" class="font-bold text-sm text-stone-800">20 (+0)</span>
                         </div>
                         <div class="bg-[#fcf9f0] p-2 border border-[#d4b26f] rounded">
-                            <span class="text-stone-500 block text-[10px]">防御力</span>
-                            <span id="stat-def" class="font-bold text-sm text-stone-800">15</span>
+                            <span class="text-stone-500 block text-[10px]">基础防御 / 装备</span>
+                            <span id="stat-def" class="font-bold text-sm text-stone-800">15 (+0)</span>
                         </div>
                     </div>
 
-                    <!-- 洞府聚灵阵管理 -->
+                    <!-- 穿戴槽 -->
+                    <div class="bg-[#fcf9f0] p-2 border border-[#d4b26f] rounded space-y-1">
+                        <div class="font-bold text-stone-800 border-b border-[#e5dbc5] pb-1 flex justify-between">
+                            <span>🗡️ 已穿戴装备</span>
+                        </div>
+                        <div class="flex justify-between text-[11px]">
+                            <span>武器: <strong id="eq-weapon-name" class="text-amber-800">无</strong></span>
+                            <span id="eq-weapon-val" class="text-stone-500">+0 攻</span>
+                        </div>
+                        <div class="flex justify-between text-[11px]">
+                            <span>宝胎/法袍: <strong id="eq-armor-name" class="text-emerald-800">无</strong></span>
+                            <span id="eq-armor-val" class="text-stone-500">+0 防</span>
+                        </div>
+                    </div>
+
+                    <!-- 洞府聚灵阵与四大资源 -->
                     <div class="pt-2 border-t border-[#d4b26f] space-y-2">
                         <div class="font-bold flex justify-between items-center text-xs text-stone-800">
-                            <span>🏡 洞府聚灵阵</span>
+                            <span>🏡 洞府资源产出</span>
                             <span id="spiritual-root" class="text-amber-700">凡品灵根</span>
                         </div>
+                        <div class="grid grid-cols-3 gap-1 text-[10px] bg-[#fcf9f0] p-1.5 border border-[#d4b26f] rounded text-center">
+                            <div>🪵 灵木: <strong id="res-wood">0</strong></div>
+                            <div>🌿 药材: <strong id="res-herb">0</strong></div>
+                            <div>🪨 陨铁: <strong id="res-iron">0</strong></div>
+                        </div>
                         <div class="flex justify-between items-center text-[11px] bg-[#fcf9f0] p-2 border border-[#d4b26f] rounded">
-                            <span>聚灵阵等级: <strong id="阵法等级">1级</strong> (+10修为/秒)</span>
+                            <span>聚灵阵: <strong id="阵法等级">1级</strong> (+10修为/秒)</span>
                             <button onclick="upgradeLingMai()" class="xiuxian-btn px-2 py-1 text-[10px]">升级 (1k灵石)</button>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="mt-4 pt-2 border-t border-[#d4b26f]">
+            <div class="mt-3 pt-2 border-t border-[#d4b26f]">
                 <button onclick="tryBreakthrough()" class="w-full xiuxian-btn py-2 rounded text-xs shadow transition">
                     🌟 尝试境界突破 (渡劫)
                 </button>
             </div>
         </aside>
 
-        <!-- 右侧：功能切换与推图大殿 -->
+        <!-- 右侧：功能切换与大殿 -->
         <section class="flex-1 xiuxian-card rounded-xl p-5 flex flex-col justify-between overflow-hidden">
             
-            <!-- 顶部功能标签切换 -->
+            <!-- 顶部功能标签页 -->
             <div class="flex space-x-2 border-b border-[#d4b26f] pb-3 shrink-0">
-                <button onclick="switchTab('cultivate')" id="tab-btn-cultivate" class="xiuxian-btn px-4 py-1.5 text-xs font-bold shadow-none" style="background:#2c2416; color:#f3e5c8;">修炼大殿</button>
-                <button onclick="switchTab('map')" id="tab-btn-map" class="xiuxian-btn px-4 py-1.5 text-xs font-bold">历练推图 (刷图)</button>
-                <button onclick="switchTab('sect')" id="tab-btn-sect" class="xiuxian-btn px-4 py-1.5 text-xs font-bold">门派功法</button>
+                <button onclick="switchTab('cultivate')" id="tab-btn-cultivate" class="xiuxian-btn px-3 py-1.5 text-xs font-bold" style="background:#2c2416; color:#f3e5c8;">修炼大殿</button>
+                <button onclick="switchTab('map')" id="tab-btn-map" class="xiuxian-btn px-3 py-1.5 text-xs font-bold">历练地图 (图1-5)</button>
+                <button onclick="switchTab('bag')" id="tab-btn-bag" class="xiuxian-btn px-3 py-1.5 text-xs font-bold">储物袋 (背包)</button>
+                <button onclick="switchTab('alchemy')" id="tab-btn-alchemy" class="xiuxian-btn px-3 py-1.5 text-xs font-bold">炼丹房</button>
+                <button onclick="switchTab('sect')" id="tab-btn-sect" class="xiuxian-btn px-3 py-1.5 text-xs font-bold">门派功法</button>
             </div>
 
             <!-- 中间内容视图区 -->
-            <div class="flex-1 my-3 overflow-y-auto relative flex flex-col justify-center items-center">
+            <div class="flex-1 my-3 overflow-y-auto relative flex flex-col justify-center items-center no-scrollbar">
                 
                 <!-- 视图 1：修炼大殿 -->
                 <div id="tab-content-cultivate" class="w-full max-w-md text-center space-y-4">
                     <div class="p-6 border border-[#b89753] bg-[#fcf9f0] rounded-lg shadow-sm space-y-3">
                         <h3 class="font-bold text-base text-stone-900">聚气修炼中...</h3>
-                        <p class="text-xs text-stone-600">天地灵气源源不断汇入气海。您可以选择挂机自动获取修为，或者手动纳气加速。</p>
+                        <p class="text-xs text-stone-600">天地灵气源源不断汇入气海。您可自动挂机获取修为与洞府资源，或手动纳气加速。</p>
                         <button onclick="manualCultivate()" class="xiuxian-btn px-6 py-2.5 text-xs rounded">
                             ⚡ 手动纳气 (+50修为)
                         </button>
                     </div>
                 </div>
 
-                <!-- 视图 2：历练推图 -->
-                <div id="tab-content-map" class="w-full max-w-lg text-center space-y-4 hidden">
-                    <div class="p-5 border border-[#b89753] bg-[#fcf9f0] rounded-lg shadow-sm space-y-3">
-                        <h3 class="font-bold text-base text-stone-900">凡间地图：图一 · 昆仑山</h3>
-                        <p class="text-xs text-stone-600">消耗 5 年寿元探索图一，击败守关妖兽，搜刮基础炼器石与灵石！</p>
-                        <div id="map-log" class="bg-white p-3 border border-[#b89753] rounded h-28 overflow-y-auto text-left text-xs font-mono space-y-1">
-                            <p class="text-stone-400">[提示] 点击下方按钮开始探索图一...</p>
+                <!-- 视图 2：多级历练推图（图1 - 图5） -->
+                <div id="tab-content-map" class="w-full max-w-lg text-center space-y-3 hidden">
+                    <div class="p-4 border border-[#b89753] bg-[#fcf9f0] rounded-lg shadow-sm space-y-2">
+                        <div class="flex justify-between items-center border-b border-[#d4b26f] pb-2">
+                            <h3 class="font-bold text-sm text-stone-900" id="current-map-title">凡间地图：图一 · 昆仑山</h3>
+                            <select id="map-select" onchange="changeMap()" class="bg-white border border-[#b89753] text-xs p-1 rounded font-bold">
+                                <option value="1">图一 · 昆仑山 (推荐攻击 20)</option>
+                                <option value="2">图二 · 蜀山古道 (推荐攻击 60)</option>
+                                <option value="3">图三 · 蓬莱仙岛 (推荐攻击 120)</option>
+                                <option value="4">图四 · 阴曹地府 (推荐攻击 220)</option>
+                                <option value="5">图五 · 梵天仙界 (推荐攻击 400)</option>
+                            </select>
                         </div>
-                        <button onclick="exploreMap()" class="w-full xiuxian-btn py-2.5 text-xs rounded">
-                            🗺️ 开始探索图一 (消耗5年寿元)
+                        <p class="text-xs text-stone-600">消耗 5 年寿元，进入地图猎杀守关妖兽，搜刮装备、灵石与珍稀药材！</p>
+                        <div id="map-log" class="bg-white p-2.5 border border-[#b89753] rounded h-32 overflow-y-auto text-left text-xs font-mono space-y-1">
+                            <p class="text-stone-400">[提示] 选择地图并点击下方按钮开始探索...</p>
+                        </div>
+                        <button onclick="exploreMap()" class="w-full xiuxian-btn py-2 text-xs rounded">
+                            🗺️ 开始探索历练 (消耗5年寿元)
                         </button>
                     </div>
                 </div>
 
-                <!-- 视图 3：门派大殿 -->
-                <div id="tab-content-sect" class="w-full max-w-lg text-center space-y-4 hidden">
-                    <div class="p-5 border border-[#b89753] bg-[#fcf9f0] rounded-lg shadow-sm space-y-3">
-                        <h3 class="font-bold text-base text-stone-900">加入门派：太乙剑宗</h3>
-                        <p class="text-xs text-stone-600">加入门派可每日请安获取贡献，并在藏经阁学习提升攻击力的《太乙剑诀》！</p>
-                        <div class="flex justify-center gap-3 pt-2">
-                            <button onclick="learnSkill()" class="xiuxian-btn px-4 py-2 text-xs rounded">
-                                📜 学习镇派绝学 (消耗50声望)
-                            </button>
+                <!-- 视图 3：储物袋 (背包与装备使用) -->
+                <div id="tab-content-bag" class="w-full max-w-lg text-center space-y-3 hidden">
+                    <div class="p-4 border border-[#b89753] bg-[#fcf9f0] rounded-lg shadow-sm space-y-3">
+                        <h3 class="font-bold text-sm text-stone-900">🎒 储物袋 (背包)</h3>
+                        <div id="bag-list" class="grid grid-cols-2 gap-2 max-h-48 overflow-y-auto p-1 text-left">
+                            <p class="col-span-2 text-stone-400 text-xs text-center">背包空空如也，快去历练推图或炼丹吧！</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 视图 4：炼丹房 -->
+                <div id="tab-content-alchemy" class="w-full max-w-lg text-center space-y-3 hidden">
+                    <div class="p-4 border border-[#b89753] bg-[#fcf9f0] rounded-lg shadow-sm space-y-3">
+                        <h3 class="font-bold text-sm text-stone-900">⚱️ 炼丹房</h3>
+                        <p class="text-xs text-stone-600">消耗洞府采摘的药材炼制丹药，服用可永久增加属性！</p>
+                        <div class="grid grid-cols-2 gap-3 text-left">
+                            <div class="bg-white p-2.5 border border-[#b89753] rounded space-y-1">
+                                <div class="font-bold text-xs">一品洗髓丹 (+20攻击)</div>
+                                <div class="text-[10px] text-stone-500">配方: 药材 x50</div>
+                                <button onclick="craftPill('attack')" class="xiuxian-btn w-full py-1 text-[10px] rounded mt-1">开炉炼制</button>
+                            </div>
+                            <div class="bg-white p-2.5 border border-[#b89753] rounded space-y-1">
+                                <div class="font-bold text-xs">一品浑天丹 (+15防御)</div>
+                                <div class="text-[10px] text-stone-500">配方: 药材 x50</div>
+                                <button onclick="craftPill('defense')" class="xiuxian-btn w-full py-1 text-[10px] rounded mt-1">开炉炼制</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 视图 5：门派大殿 -->
+                <div id="tab-content-sect" class="w-full max-w-lg text-center space-y-3 hidden">
+                    <div class="p-4 border border-[#b89753] bg-[#fcf9f0] rounded-lg shadow-sm space-y-3">
+                        <h3 class="font-bold text-sm text-stone-900">加入门派：太乙剑宗</h3>
+                        <p class="text-xs text-stone-600">参悟镇派绝学或心法，大幅提升攻击与防御绝学！</p>
+                        <div class="grid grid-cols-2 gap-3 text-left">
+                            <div class="bg-white p-2.5 border border-[#b89753] rounded space-y-1">
+                                <div class="font-bold text-xs">《太乙剑诀》 (+50攻击)</div>
+                                <div class="text-[10px] text-stone-500">消耗: 50 声望</div>
+                                <button onclick="learnSkill('atk')" class="xiuxian-btn w-full py-1 text-[10px] rounded mt-1">参悟绝学</button>
+                            </div>
+                            <div class="bg-white p-2.5 border border-[#b89753] rounded space-y-1">
+                                <div class="font-bold text-xs">《太乙心法》 (+40防御)</div>
+                                <div class="text-[10px] text-stone-500">消耗: 50 声望</div>
+                                <button onclick="learnSkill('def')" class="xiuxian-btn w-full py-1 text-[10px] rounded mt-1">参悟心法</button>
+                            </div>
                         </div>
                     </div>
                 </div>
 
             </div>
 
-            <!-- 底部实时游戏滚动日志 -->
-            <div class="bg-[#2c2416] text-[#f3e5c8] p-3 rounded border border-[#b89753] text-xs font-mono h-24 overflow-y-auto shrink-0 shadow-inner" id="game-logs">
-                <p class="text-amber-300">【仙界公告】欢迎道友来到《想不想修真》正统复刻世界。闭关修炼，早日飞升三十三天！</p>
+            <!-- 底部实时游戏日志 -->
+            <div class="bg-[#2c2416] text-[#f3e5c8] p-2.5 rounded border border-[#b89753] text-xs font-mono h-24 overflow-y-auto shrink-0 shadow-inner" id="game-logs">
+                <p class="text-amber-300">【仙界公告】欢迎道友来到《想不想修真》完整挂机世界！储物袋、炼丹房、五大历练地图已开启！</p>
             </div>
         </section>
     </main>
@@ -201,9 +270,26 @@
             exp: 0,
             maxExp: 100,
             realmIndex: 0,
-            atk: 20,
-            def: 15,
+            baseAtk: 20,
+            baseDef: 15,
             level: 1, // 聚灵阵等级
+            // 四大资源
+            wood: 100,
+            herb: 100,
+            iron: 100,
+            // 穿戴装备
+            eqWeapon: null,
+            eqArmor: null,
+            // 背包
+            bag: []
+        };
+
+        const mapConfigs = {
+            1: { name: "图一 · 昆仑山", reqAtk: 20, enemyAtk: 15, dropRange: [100, 200], lootWeapon: { name: "木剑", atk: 15 }, lootArmor: { name: "布衣", def: 10 } },
+            2: { name: "图二 · 蜀山古道", reqAtk: 60, enemyAtk: 45, dropRange: [300, 500], lootWeapon: { name: "青锋剑", atk: 45 }, lootArmor: { name: "玄铁铠", def: 35 } },
+            3: { name: "图三 · 蓬莱仙岛", reqAtk: 120, enemyAtk: 90, dropRange: [800, 1200], lootWeapon: { name: "紫电剑", atk: 90 }, lootArmor: { name: "赤血宝衣", def: 75 } },
+            4: { name: "图四 · 阴曹地府", reqAtk: 220, enemyAtk: 180, dropRange: [1800, 2500], lootWeapon: { name: "幽冥鬼爪", atk: 170 }, lootArmor: { name: "九幽仙袍", def: 140 } },
+            5: { name: "图五 · 梵天仙界", reqAtk: 400, enemyAtk: 350, dropRange: [4000, 6000], lootWeapon: { name: "诛仙剑", atk: 350 }, lootArmor: { name: "太极仙甲", def: 300 } }
         };
 
         const realms = [
@@ -212,12 +298,25 @@
             "元婴期老祖", "化神期大能", "渡劫飞升"
         ];
 
-        // 挂机自动增长修为
+        // 挂机自动产出（修为与洞府资源）
         setInterval(() => {
             player.exp += player.level * 2;
+            player.wood += player.level * 2;
+            player.herb += player.level * 2;
+            player.iron += player.level * 1;
             checkExpOverflow();
             updateUI();
         }, 1000);
+
+        function getTotalAtk() {
+            let eqAtk = player.eqWeapon ? player.eqWeapon.atk : 0;
+            return player.baseAtk + eqAtk;
+        }
+
+        function getTotalDef() {
+            let eqDef = player.eqArmor ? player.eqArmor.def : 0;
+            return player.baseDef + eqDef;
+        }
 
         function manualCultivate() {
             player.exp += 50;
@@ -244,10 +343,9 @@
                 
                 player.exp = 0;
                 player.maxExp = Math.floor(player.maxExp * 2.2);
-                player.atk += 30;
-                player.def += 20;
+                player.baseAtk += 30;
+                player.baseDef += 20;
 
-                // 渡劫成功全屏烟花彩带
                 confetti({ particleCount: 80, spread: 70, origin: { y: 0.6 } });
                 logMessage(`🎉 【突破成功】天雷滚滚而过，你成功晋升至【${realms[player.realmIndex]}】！`);
             } else {
@@ -265,35 +363,118 @@
             player.spirit -= 1000;
             player.level++;
             document.getElementById('阵法等级').innerText = player.level + "级";
-            logMessage(`🏡 【聚灵阵升级】成功升级至 ${player.level} 级，每秒聚灵效率大增！`);
+            logMessage(`🏡 【聚灵阵升级】升级至 ${player.level} 级，修为与洞府资源产出翻倍！`);
             updateUI();
+        }
+
+        function changeMap() {
+            const mapId = document.getElementById('map-select').value;
+            const cfg = mapConfigs[mapId];
+            document.getElementById('current-map-title').innerText = `凡间地图：${cfg.name}`;
         }
 
         function exploreMap() {
             player.life -= 5;
-            const dropSpirit = Math.floor(Math.random() * 200) + 100;
-            player.spirit += dropSpirit;
+            const mapId = document.getElementById('map-select').value;
+            const cfg = mapConfigs[mapId];
+            const currentAtk = getTotalAtk();
 
             const logBox = document.getElementById('map-log');
-            logBox.innerHTML += `<p>• 击败图一守卫，获得灵石 +${dropSpirit}，历练圆满返回。</p>`;
+
+            if (currentAtk < cfg.reqAtk) {
+                logMessage(`💥 【刷图失败】在 ${cfg.name} 遭遇守关妖兽，攻击力不足 (${currentAtk}/${cfg.reqAtk})，溃败而归！`);
+                logBox.innerHTML += `<p class="text-rose-600">• 攻击力不足，探索失败退回！</p>`;
+            } else {
+                const dropSpirit = Math.floor(Math.random() * (cfg.dropRange[1] - cfg.dropRange[0])) + cfg.dropRange[0];
+                player.spirit += dropSpirit;
+
+                let lootText = `获得灵石 +${dropSpirit}`;
+                // 50% 概率战利品掉落装备
+                if (Math.random() < 0.5) {
+                    const isWeapon = Math.random() < 0.5;
+                    const item = isWeapon ? { ...cfg.lootWeapon, type: 'weapon' } : { ...cfg.lootArmor, type: 'armor' };
+                    player.bag.push(item);
+                    lootText += `，掉落战利品【${item.name}】！`;
+                }
+
+                logBox.innerHTML += `<p class="text-emerald-700">• 斩杀守关妖兽，${lootText}</p>`;
+                logMessage(`🗺️ 【推图大捷】探索 ${cfg.name} 胜利，${lootText}`);
+            }
             logBox.scrollTop = logBox.scrollHeight;
-            logMessage(`🗺️ 【推图成功】探索图一昆仑山，搜刮获得灵石 +${dropSpirit}！`);
+            updateBagUI();
             updateUI();
         }
 
-        function learnSkill() {
+        function craftPill(pillType) {
+            if (player.herb < 50) {
+                logMessage("❌ 药材不足 50，无法开炉炼丹！");
+                return;
+            }
+            player.herb -= 50;
+            if (pillType === 'attack') {
+                player.baseAtk += 20;
+                logMessage("⚱️ 【炼丹成功】服用一品洗髓丹，攻击力永久 +20！");
+            } else {
+                player.baseDef += 15;
+                logMessage("⚱️ 【炼丹成功】服用一品浑天丹，防御力永久 +15！");
+            }
+            updateUI();
+        }
+
+        function equipItem(index) {
+            const item = player.bag[index];
+            if (!item) return;
+
+            if (item.type === 'weapon') {
+                player.eqWeapon = item;
+                logMessage(`🗡️ 【装备穿戴】装备武器【${item.name}】，攻击力 +${item.atk}！`);
+            } else {
+                player.eqArmor = item;
+                logMessage(`🛡️ 【装备穿戴】穿戴法袍【${item.name}】，防御力 +${item.def}！`);
+            }
+            updateUI();
+        }
+
+        function updateBagUI() {
+            const list = document.getElementById('bag-list');
+            if (player.bag.length === 0) {
+                list.innerHTML = `<p class="col-span-2 text-stone-400 text-xs text-center">背包空空如也，快去历练推图吧！</p>`;
+                return;
+            }
+            list.innerHTML = '';
+            player.bag.forEach((item, idx) => {
+                const div = document.createElement('div');
+                div.className = "bg-white p-2 border border-[#b89753] rounded flex justify-between items-center text-xs";
+                const valText = item.type === 'weapon' ? `+${item.atk} 攻` : `+${item.def} 防`;
+                div.innerHTML = `
+                    <div>
+                        <strong class="block">${item.name}</strong>
+                        <span class="text-[10px] text-stone-500">${valText}</span>
+                    </div>
+                    <button onclick="equipItem(${idx})" class="xiuxian-btn px-2 py-0.5 text-[10px] rounded">穿戴</button>
+                `;
+                list.appendChild(div);
+            });
+        }
+
+        function learnSkill(type) {
             if (player.reputation < 50) {
-                logMessage("❌ 门派声望不足 50，无法参悟镇派绝学！");
+                logMessage("❌ 门派声望不足 50，无法参悟绝学！");
                 return;
             }
             player.reputation -= 50;
-            player.atk += 50;
-            logMessage("📜 【参悟成功】你在藏经阁学会《太乙剑诀》，攻击力大幅飙升 (+50)！");
+            if (type === 'atk') {
+                player.baseAtk += 50;
+                logMessage("📜 【参悟绝学】在藏经阁学会《太乙剑诀》，攻击力大幅增加 (+50)！");
+            } else {
+                player.baseDef += 40;
+                logMessage("📜 【参悟心法】在藏经阁学会《太乙心法》，防御力大幅增加 (+40)！");
+            }
             updateUI();
         }
 
         function switchTab(tabName) {
-            ['cultivate', 'map', 'sect'].forEach(t => {
+            ['cultivate', 'map', 'bag', 'alchemy', 'sect'].forEach(t => {
                 document.getElementById(`tab-content-${t}`).classList.add('hidden');
                 document.getElementById(`tab-btn-${t}`).style.background = "";
                 document.getElementById(`tab-btn-${t}`).style.color = "";
@@ -316,9 +497,23 @@
             document.getElementById('player-realm').innerText = realms[player.realmIndex];
             document.getElementById('exp-text').innerText = `${player.exp} / ${player.maxExp}`;
             document.getElementById('exp-bar').style.width = `${Math.min(100, (player.exp / player.maxExp) * 100)}%`;
-            document.getElementById('stat-atk').innerText = player.atk;
-            document.getElementById('stat-def').innerText = player.def;
+            
+            document.getElementById('stat-atk').innerText = `${getTotalAtk()} (+${player.eqWeapon ? player.eqWeapon.atk : 0})`;
+            document.getElementById('stat-def').innerText = `${getTotalDef()} (+${player.eqArmor ? player.eqArmor.def : 0})`;
+
+            document.getElementById('res-wood').innerText = player.wood;
+            document.getElementById('res-herb').innerText = player.herb;
+            document.getElementById('res-iron').innerText = player.iron;
+
+            document.getElementById('eq-weapon-name').innerText = player.eqWeapon ? player.eqWeapon.name : "无";
+            document.getElementById('eq-weapon-val').innerText = player.eqWeapon ? `+${player.eqWeapon.atk} 攻` : "+0 攻";
+            document.getElementById('eq-armor-name').innerText = player.eqArmor ? player.eqArmor.name : "无";
+            document.getElementById('eq-armor-val').innerText = player.eqArmor ? `+${player.eqArmor.def} 防` : "+0 防";
         }
     </script>
 </body>
 </html>
+'''
+with open("index.html", "w", encoding="utf-8") as f:
+    f.write(code)
+print("index.html generated successfully!")
