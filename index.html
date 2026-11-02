@@ -23,27 +23,30 @@
             display: flex;
             flex-direction: column;
             overflow: hidden;
-            background: #f7f3e8; /* 游戏主界面备用背景 */
+            background: #f7f3e8;
         }
 
-        /* ==================== 水墨封面登录页专用样式 ==================== */
+        /* 修复：增加安全的渐变色兜底，避免图片加载失败时全屏空白 */
         .cover-background {
-            background-image: url('https://github.com/user-attachments/assets/c3e3a5dc-2406-4980-acb5-379097b35094');
-            background-size: cover; /* 保证图片覆盖全屏且不拉伸 */
+            background-color: #d6caaf;
+            background-image: 
+                linear-gradient(180deg, rgba(184, 199, 224, 0.4) 0%, rgba(247, 243, 238, 0.6) 100%),
+                url('https://github.com/user-attachments/assets/c3e3a5dc-2406-4980-acb5-379097b35094');
+            background-size: cover;
             background-position: center center;
             background-repeat: no-repeat;
         }
 
-        /* 让登录卡片有一种轻微的悬浮磨砂质感 */
+        /* 悬浮面板 */
         .glass-panel {
-            background: rgba(247, 243, 232, 0.85); /* 提升亮度，半透明备用背景 */
-            backdrop-filter: blur(8px); /* 磨砂玻璃效果，高雅、清晰 */
+            background: rgba(247, 243, 232, 0.92);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
             border: 2px solid #b89753;
             box-shadow: 0 10px 25px rgba(0,0,0,0.4);
             color: #362917;
         }
 
-        /* 游戏主界面通用面板 */
         .xiuxian-panel {
             background: linear-gradient(135deg, #f7f2e4 0%, #e5dac0 100%);
             border: 2px solid #b89753;
@@ -80,25 +83,22 @@
 
     <div class="mobile-container">
 
-        <!-- ==================== 1. 登录页 (应用水墨封面 + 磨砂卡片适配) ==================== -->
+        <!-- ==================== 1. 登录页 ==================== -->
         <div id="screen-login" class="absolute inset-0 z-50 flex flex-col justify-between p-6 cover-background select-none">
             
-            <!-- 顶部标题区，调整布局不遮挡封面关键元素 -->
             <div class="text-center pt-8 space-y-1">
-                <div class="inline-block px-6 py-1.5 border-y-2 border-amber-800/60 bg-amber-100/30 rounded-lg shadow-sm">
+                <div class="inline-block px-6 py-1.5 border-y-2 border-amber-800/60 bg-amber-100/40 rounded-lg shadow-sm">
                     <h1 class="text-2xl font-black tracking-widest text-amber-900 drop-shadow-md">想不想修真</h1>
                 </div>
-                <p class="text-[11px] text-stone-700 tracking-widest pt-1">我从凡间来，今朝入仙籍</p>
+                <p class="text-[11px] text-stone-800 tracking-widest pt-1 font-bold">我从凡间来，今朝入仙籍</p>
             </div>
 
-            <!-- 登录表单卡片：应用磨砂玻璃效果，保证在复杂背景上清晰可见 -->
             <div class="glass-panel p-5 rounded-xl text-center space-y-3 shadow-xl border-2 border-amber-700/60 my-auto">
                 <h3 class="font-bold text-xs text-stone-800">道友请登入仙籍</h3>
                 
                 <div class="space-y-2 text-left">
                     <div>
                         <label class="text-[10px] text-stone-600 block mb-0.5">道号 (支持历史账号联想)</label>
-                        <!-- 底色稍微加亮，提升文字对比度 -->
                         <input type="text" id="input-username" list="history-users" placeholder="请输入道号" class="w-full p-2 text-xs border border-amber-700/50 rounded bg-amber-50 text-stone-800 focus:outline-none focus:ring-1 focus:ring-amber-600">
                         <datalist id="history-users"></datalist>
                     </div>
@@ -112,8 +112,7 @@
                     <button onclick="handleLogin()" class="gold-btn w-full py-2 rounded text-xs shadow tracking-wider">
                         🎮 进入仙途 (安全登入)
                     </button>
-                    <!-- 登录页直接提供导入存档功能，防止换设备或清缓存进不去 -->
-                    <button onclick="importSecureSave()" class="w-full bg-[#362917]/90 text-amber-200 border border-amber-700/60 py-1.5 rounded text-[11px] shadow hover:bg-[#4a3b2c]">
+                    <button onclick="importSecureSave()" class="w-full bg-[#362917] text-amber-200 border border-amber-700/60 py-1.5 rounded text-[11px] shadow hover:bg-[#4a3b2c]">
                         📦 使用加密存档码恢复进度
                     </button>
                 </div>
@@ -124,15 +123,14 @@
                 </div>
             </div>
 
-            <!-- 底部原版防沉迷及版权声明 (对应截图一中的小字) -->
-            <div class="text-[8px] text-stone-800 text-center space-y-0.5 pb-2 leading-tight">
+            <div class="text-[8px] text-stone-800 text-center space-y-0.5 pb-2 leading-tight font-medium">
                 <p>本网络游戏适合年满18岁以上用户，为了您的健康，请合理控制游戏时间。</p>
                 <p>抵制不良游戏，拒绝盗版游戏。注意自我保护，谨防受骗上当。</p>
                 <p>著作权人：厦门市行走文化传播有限公司 | 出版单位：河北冠林数字出版有限公司</p>
             </div>
         </div>
 
-        <!-- ==================== 2. 游戏主界面 (保持原样) ==================== -->
+        <!-- ==================== 2. 游戏主界面 ==================== -->
         <div id="screen-game" class="inset-0 flex flex-col justify-between hidden h-full bg-[#f7f3e8]">
             
             <header class="bg-[#2a1f15] p-3 border-b-2 border-[#b89753] text-xs font-mono shrink-0 shadow-lg text-[#f3e5c8]">
@@ -185,7 +183,6 @@
                     </div>
                 </div>
 
-                <!-- 安全加密备份控制台 -->
                 <div class="xiuxian-panel p-3 rounded-lg space-y-2 text-center">
                     <div class="font-bold text-xs text-amber-900">🔐 安全存档与加密备份</div>
                     <div class="grid grid-cols-2 gap-2">
@@ -210,7 +207,7 @@
 
     </div>
 
-    <!-- 逻辑脚本 -->
+    <!-- 逻辑脚本 (增加防报错安全保护) -->
     <script>
         let currentUser = null;
         let gameData = {
@@ -226,21 +223,26 @@
             try {
                 const history = JSON.parse(localStorage.getItem('xiuxian_history_users') || '[]');
                 const datalist = document.getElementById('history-users');
-                datalist.innerHTML = '';
-                history.forEach(user => {
-                    const option = document.createElement('option');
-                    option.value = user;
-                    datalist.appendChild(option);
-                });
+                if (datalist) {
+                    datalist.innerHTML = '';
+                    history.forEach(user => {
+                        const option = document.createElement('option');
+                        option.value = user;
+                        datalist.appendChild(option);
+                    });
+                }
                 if (history.length > 0) {
-                    document.getElementById('input-username').value = history[0];
-                    // 自动填充该账号上次保存的密码提示（如果有）
+                    const userInput = document.getElementById('input-username');
+                    if (userInput) userInput.value = history[0];
                     const savedPwd = localStorage.getItem(`xiuxian_pwd_${history[0]}`);
-                    if (savedPwd) {
-                        document.getElementById('input-password').value = savedPwd;
+                    const pwdInput = document.getElementById('input-password');
+                    if (savedPwd && pwdInput) {
+                        pwdInput.value = savedPwd;
                     }
                 }
-            } catch(e) {}
+            } catch(e) {
+                console.error("加载历史数据异常:", e);
+            }
         }
 
         function recordUserHistory(username, pwd) {
@@ -256,9 +258,13 @@
         }
 
         function handleLogin() {
-            const username = document.getElementById('input-username').value.trim();
-            const password = document.getElementById('input-password').value.trim();
-            const agree = document.getElementById('agree-check').checked;
+            const usernameInput = document.getElementById('input-username');
+            const passwordInput = document.getElementById('input-password');
+            const agreeCheck = document.getElementById('agree-check');
+
+            const username = usernameInput ? usernameInput.value.trim() : '';
+            const password = passwordInput ? passwordInput.value.trim() : '';
+            const agree = agreeCheck ? agreeCheck.checked : false;
 
             if (!username) {
                 alert("请输入您的道号！");
@@ -273,7 +279,6 @@
                 return;
             }
 
-            // 校验本地密码（如果该账号已有存档且存了密码）
             const savedPwd = localStorage.getItem(`xiuxian_pwd_${username}`);
             if (savedPwd && savedPwd !== password) {
                 alert("❌ 秘钥（密码）错误，请核对后重试！");
@@ -296,7 +301,9 @@
             document.getElementById('screen-game').classList.remove('hidden');
             document.getElementById('ui-username').innerText = username;
 
-            confetti({ particleCount: 60, spread: 60, origin: { y: 0.5 } });
+            if (typeof confetti === 'function') {
+                confetti({ particleCount: 60, spread: 60, origin: { y: 0.5 } });
+            }
         }
 
         function saveUserData() {
@@ -364,7 +371,6 @@
                     return;
                 }
 
-                // 自动以存档中的道号恢复
                 currentUser = parsed.user;
                 gameData = parsed.data;
                 saveUserData();
@@ -391,7 +397,9 @@
         }, 5000);
 
         function tryBreakthrough(type) {
-            confetti({ particleCount: 80, spread: 70, origin: { y: 0.6 } });
+            if (typeof confetti === 'function') {
+                confetti({ particleCount: 80, spread: 70, origin: { y: 0.6 } });
+            }
             alert(type === 'realm' ? "【渡劫成功】金光贯体，成功突破！" : "【肉身升级】气血爆棚，肉身突破！");
         }
     </script>
