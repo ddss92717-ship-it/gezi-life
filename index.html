@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>想不想修真</title>
+    <title>想不想修真 · 存档导出导入版</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/canvas-confetti.browser.min.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@500;700;900&display=swap');
         body { font-family: 'Noto Serif SC', serif; background-color: #0b0806; color: #f3e5c8; }
 
-        /* 模拟手机竖屏外壳：在 PC 上居中显示精致竖屏，在手机上 100% 铺满 */
+        /* 手机竖屏外壳：在 PC 上居中显示，手机上铺满 */
         .mobile-container {
             width: 100%;
             max-width: 420px;
@@ -27,7 +27,6 @@
             background: #f7f3e8;
         }
 
-        /* 原版仙山意境背景渐变 */
         .xuanji-bg {
             background: linear-gradient(180deg, #b8c7e0 0%, #e8dec3 40%, #f7f3e8 100%);
         }
@@ -66,20 +65,18 @@
 </head>
 <body class="flex items-center justify-center h-screen overflow-hidden">
 
-    <!-- 手机竖屏容器模拟器 -->
+    <!-- 手机竖屏模拟器容器 -->
     <div class="mobile-container xuanji-bg">
 
-        <!-- ==================== 1. 登录/启动页 (对应截图 1 & 2) ==================== -->
+        <!-- ==================== 1. 登录/启动页 ==================== -->
         <div id="screen-login" class="absolute inset-0 z-50 flex flex-col justify-between p-6 xuanji-bg select-none">
-            <!-- 顶部游戏 LOGO -->
             <div class="text-center pt-10 space-y-2">
                 <div class="inline-block px-6 py-2 border-y-2 border-amber-800/60 bg-amber-100/30 rounded-lg shadow-sm">
-                    <h1 class="text-3xl font-black tracking-widest text-amber-900 drop-shadow-md" style="font-family: serif;">想不想修真</h1>
+                    <h1 class="text-3xl font-black tracking-widest text-amber-900 drop-shadow-md">想不想修真</h1>
                 </div>
                 <p class="text-xs text-stone-700 tracking-widest pt-2">我从凡间来，今朝入仙籍</p>
             </div>
 
-            <!-- 中间登录卡片 (复刻截图二) -->
             <div class="xiuxian-panel p-6 rounded-xl text-center space-y-4 shadow-xl border-2 border-amber-700/60 my-auto">
                 <h3 class="font-bold text-sm text-stone-800">道友请登录</h3>
                 <div class="space-y-2 text-left">
@@ -87,7 +84,7 @@
                     <input type="password" id="input-password" placeholder="请输入秘钥 (密码)" class="w-full p-2 text-xs border border-amber-700/50 rounded bg-white text-stone-800 focus:outline-none">
                 </div>
                 <button onclick="handleLogin()" class="gold-btn w-full py-2.5 rounded text-xs shadow tracking-wider">
-                    🎮 进入仙途 (登录/注册)
+                    🎮 进入仙途 (登录)
                 </button>
                 <div class="flex items-center justify-center space-x-2 text-[11px] text-stone-700 pt-1">
                     <input type="checkbox" id="agree-check" checked class="accent-amber-700">
@@ -95,15 +92,13 @@
                 </div>
             </div>
 
-            <!-- 底部防沉迷与版权信息 (复刻原版截图) -->
             <div class="text-[9px] text-stone-600 text-center space-y-1 pb-2 leading-tight">
                 <p>本网络游戏适合年满18岁以上用户，为了您的健康，请合理控制游戏时间。</p>
-                <p>抵制不良游戏，拒绝盗版游戏。注意自我保护，谨防受骗上当。</p>
-                <p>著作权人：厦门市行走文化传播有限公司 | 出版单位：河北冠林数字出版有限公司</p>
+                <p>著作权人：厦门市行走文化传播有限公司 | 存档支持本地与导入导出防丢</p>
             </div>
         </div>
 
-        <!-- ==================== 2. 游戏主界面 (登录后进入) ==================== -->
+        <!-- ==================== 2. 游戏主界面 ==================== -->
         <div id="screen-game" class="inset-0 flex flex-col justify-between hidden h-full">
             
             <!-- 顶部状态栏 -->
@@ -125,9 +120,8 @@
                 </div>
             </header>
 
-            <!-- 中间主大殿视图 -->
+            <!-- 中间主视图 -->
             <main class="flex-1 overflow-y-auto p-3 no-scrollbar space-y-3">
-                <!-- 境界与肉身双成长线 -->
                 <div class="xiuxian-panel p-3 rounded-lg space-y-2">
                     <div class="flex justify-between items-center border-b border-[#b89753]/40 pb-2">
                         <div>
@@ -145,7 +139,7 @@
                     </div>
                 </div>
 
-                <!-- 动态旋转太极阵盘与自动修炼 -->
+                <!-- 旋转太极阵盘与修炼 -->
                 <div class="xiuxian-panel p-4 rounded-lg text-center space-y-3 relative overflow-hidden">
                     <div class="relative w-28 h-28 mx-auto flex items-center justify-center">
                         <div class="absolute inset-0 rounded-full border-2 border-dashed border-amber-700/60 animate-spin-slow"></div>
@@ -156,13 +150,18 @@
                     <div>
                         <div class="text-[11px] font-bold text-stone-700">当前修炼效率：20,040/5秒</div>
                         <div class="text-xs font-mono text-amber-950 font-bold mt-1">总修为: <span id="total-xiuwei" class="text-sm">630,156,239,206</span></div>
-                        <p class="text-[10px] text-stone-600 mt-0.5">✨ 账号存档已绑定，挂机数据实时云同步...</p>
+                        <p class="text-[10px] text-stone-600 mt-0.5">✨ 后台自动挂机与云备份中...</p>
                     </div>
                 </div>
 
-                <!-- 账号操作与登出 -->
-                <div class="text-center pt-2">
-                    <button onclick="handleLogout()" class="bg-rose-900/80 text-rose-100 px-4 py-1.5 rounded text-[11px] border border-rose-700 shadow">
+                <!-- 存档导入/导出与切换账号控制台 -->
+                <div class="xiuxian-panel p-3 rounded-lg space-y-2 text-center">
+                    <div class="font-bold text-xs text-amber-900">📦 存档与道号管理</div>
+                    <div class="grid grid-cols-2 gap-2">
+                        <button onclick="exportSaveCode()" class="gold-btn py-1.5 rounded text-[11px] shadow">导出存档码</button>
+                        <button onclick="importSaveCode()" class="gold-btn py-1.5 rounded text-[11px] shadow">导入存档码</button>
+                    </div>
+                    <button onclick="handleLogout()" class="w-full bg-rose-900/80 text-rose-100 py-1.5 rounded text-[11px] border border-rose-700 shadow mt-1">
                         🔒 切换账号 / 退出登录
                     </button>
                 </div>
@@ -181,7 +180,7 @@
 
     </div>
 
-    <!-- 登录与存档核心逻辑脚本 -->
+    <!-- 逻辑脚本：包含登录与存档导入导出功能 -->
     <script>
         let currentUser = null;
         let gameData = {
@@ -189,7 +188,6 @@
             rate: 20040
         };
 
-        // 检查本地是否有上次登录的账号
         window.addEventListener('DOMContentLoaded', () => {
             const lastUser = localStorage.getItem('xiuxian_last_user');
             if (lastUser) {
@@ -197,7 +195,6 @@
             }
         });
 
-        // 登录/注册逻辑（账号存档核心）
         function handleLogin() {
             const username = document.getElementById('input-username').value.trim();
             const agree = document.getElementById('agree-check').checked;
@@ -214,16 +211,17 @@
             currentUser = username;
             localStorage.setItem('xiuxian_last_user', username);
 
-            // 读取该账号的专属存档
             const userSave = localStorage.getItem(`xiuxian_save_${username}`);
             if (userSave) {
-                gameData = JSON.parse(userSave);
+                try {
+                    gameData = JSON.parse(userSave);
+                } catch(e) {
+                    console.error("解析存档失败，使用默认值");
+                }
             } else {
-                // 新账号初始化
                 saveUserData();
             }
 
-            // 切换到游戏主界面
             document.getElementById('screen-login').classList.add('hidden');
             document.getElementById('screen-game').classList.remove('hidden');
             document.getElementById('ui-username').innerText = username;
@@ -231,13 +229,11 @@
             confetti({ particleCount: 60, spread: 60, origin: { y: 0.5 } });
         }
 
-        // 保存当前账号数据
         function saveUserData() {
             if (!currentUser) return;
             localStorage.setItem(`xiuxian_save_${currentUser}`, JSON.stringify(gameData));
         }
 
-        // 退出登录
         function handleLogout() {
             saveUserData();
             currentUser = null;
@@ -245,14 +241,49 @@
             document.getElementById('screen-login').classList.remove('hidden');
         }
 
-        // 自动修炼计时器（自动绑定当前账号存档）
+        // 【新功能】导出存档码：将当前账号数据转为一段加密/Base64文本，复制到剪贴板
+        function exportSaveCode() {
+            const dataStr = JSON.stringify(gameData);
+            const encoded = btoa(encodeURIComponent(dataStr)); // 简单编码
+            
+            // 创建临时输入框供用户复制
+            const textarea = document.createElement('textarea');
+            textarea.value = encoded;
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+
+            alert(`【存档已成功导出！】\n\n您的专属存档码已复制到剪贴板！\n请妥善粘贴并保存到手机备忘录或电脑记事本中。换浏览器或清缓存后可直接通过“导入存档码”恢复进度！`);
+        }
+
+        // 【新功能】导入存档码：通过粘贴一段存档文本恢复进度
+        function importSaveCode() {
+            const code = prompt("请在此处粘贴您的专属存档码：");
+            if (!code) return;
+
+            try {
+                const decoded = decodeURIComponent(atob(code.trim()));
+                const parsed = JSON.parse(decoded);
+                if (parsed && typeof parsed.xiuwei === 'number') {
+                    gameData = parsed;
+                    saveUserData();
+                    document.getElementById('total-xiuwei').innerText = gameData.xiuwei.toLocaleString();
+                    alert("🎉 【存档导入成功！】修行进度已完美恢复！");
+                } else {
+                    alert("❌ 存档格式不正确，导入失败！");
+                }
+            } catch (e) {
+                alert("❌ 存档码解析出错，请检查是否完整复制！");
+            }
+        }
+
+        // 自动挂机挂载
         setInterval(() => {
             if (currentUser) {
                 gameData.xiuwei += gameData.rate;
                 const xiuweiEl = document.getElementById('total-xiuwei');
                 if (xiuweiEl) xiuweiEl.innerText = gameData.xiuwei.toLocaleString();
-                
-                // 每 10 秒自动为该账号保存一次存档
                 saveUserData();
             }
         }, 5000);
