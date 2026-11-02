@@ -1,7 +1,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@500;700;900&display=swap');
 
-body { font-family: 'Noto Serif SC', serif; background-color: #1a120b; color: #f3e5c8; }
+body { 
+    font-family: 'Noto Serif SC', serif; 
+    background-color: #1a120b; 
+    color: #f3e5c8; 
+}
 
+/* 古风宣纸/玉石渐变面板 */
 .xiuxian-panel {
     background: linear-gradient(135deg, #f7f2e4 0%, #e5dac0 100%);
     border: 2px solid #b89753;
