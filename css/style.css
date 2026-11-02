@@ -1,1 +1,45 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@500;700;900&display=swap');
 
+body { font-family: 'Noto Serif SC', serif; background-color: #1a120b; color: #f3e5c8; }
+
+.xiuxian-panel {
+    background: linear-gradient(135deg, #f7f2e4 0%, #e5dac0 100%);
+    border: 2px solid #b89753;
+    color: #362917;
+    box-shadow: inset 0 0 15px rgba(184, 151, 83, 0.3), 0 4px 6px rgba(0,0,0,0.4);
+}
+
+.gold-btn {
+    background: linear-gradient(180deg, #fbe6a2 0%, #d49f37 100%);
+    border: 1px solid #8b6b23;
+    color: #3d2800;
+    font-weight: 700;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    transition: all 0.1s ease;
+}
+.gold-btn:hover {
+    background: linear-gradient(180deg, #fff2c4 0%, #e2b048 100%);
+    transform: translateY(-1px);
+}
+
+.nav-btn {
+    background: linear-gradient(180deg, #4a3b2c 0%, #2a1f15 100%);
+    border: 1px solid #8b6b23;
+    color: #e8dec3;
+}
+.nav-btn.active {
+    background: linear-gradient(180deg, #b89753 0%, #785a22 100%);
+    color: #ffffff;
+    font-weight: bold;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.4);
+}
+
+@keyframes spin-slow {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+.animate-spin-slow {
+    animation: spin-slow 25s linear infinite;
+}
+
+.no-scrollbar::-webkit-scrollbar { display: none; }
