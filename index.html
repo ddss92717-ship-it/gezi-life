@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>想不想修真 · 水墨登仙</title>
+    <title>想不想修真 · 复刻版</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/canvas-confetti.browser.min.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@500;700;900&display=swap');
-        body { font-family: 'Noto Serif SC', serif; background-color: #0b0806; color: #f3e5c8; margin: 0; padding: 0; }
+        body { font-family: 'Noto Serif SC', serif; background-color: #0b0806; color: #362917; margin: 0; padding: 0; }
 
         .mobile-container {
             width: 100%;
@@ -17,16 +17,16 @@
             height: 100vh;
             margin: 0 auto;
             position: relative;
-            box-shadow: 0 0 30px rgba(0,0,0,0.8);
+            box-shadow: 0 0 30px rgba(0,0,0,0.9);
             border-left: 1px solid rgba(139, 107, 35, 0.4);
             border-right: 1px solid rgba(139, 107, 35, 0.4);
             display: flex;
             flex-direction: column;
             overflow: hidden;
-            background: #f7f3e8;
+            background: #ede6d6;
         }
 
-        /* 水墨封面背景 (已切换至本地仓库路径 images/cover.png) */
+        /* 1. 登录页水墨背景 */
         .cover-background {
             background-color: #d6caaf;
             background-image: 
@@ -37,7 +37,7 @@
             background-repeat: no-repeat;
         }
 
-        /* 悬浮面板 (磨砂效果) */
+        /* 登录悬浮面板 */
         .glass-panel {
             background: rgba(247, 243, 232, 0.92);
             backdrop-filter: blur(8px);
@@ -47,35 +47,69 @@
             color: #362917;
         }
 
-        .xiuxian-panel {
-            background: linear-gradient(135deg, #f7f2e4 0%, #e5dac0 100%);
-            border: 2px solid #b89753;
-            color: #362917;
-            box-shadow: inset 0 0 15px rgba(184, 151, 83, 0.3);
+        /* 2. 游戏主界面：模仿《想不想修真》原版黄色玉石与卷轴质感 */
+        .game-bg {
+            background: #eadeca;
+            background-image: radial-gradient(#dfd0b5 15%, transparent 16%);
+            background-size: 16px 16px;
         }
 
+        /* 顶部玩家属性玉石小条 */
+        .attr-pill {
+            background: linear-gradient(180deg, #fbf7ee 0%, #e3d5be 100%);
+            border: 1px solid #b89753;
+            box-shadow: inset 0 1px 2px rgba(255,255,255,0.8), 0 1px 2px rgba(0,0,0,0.15);
+        }
+
+        /* 境界/肉身操作面板 */
+        .panel-row {
+            background: linear-gradient(180deg, #f7f1e3 0%, #ebdcc1 100%);
+            border: 1px solid #be9d5c;
+            box-shadow: inset 0 0 4px rgba(255,255,255,0.6);
+        }
+
+        /* 金黄金灿按钮 */
         .gold-btn {
-            background: linear-gradient(180deg, #fbe6a2 0%, #d49f37 100%);
-            border: 1px solid #8b6b23;
-            color: #3d2800;
+            background: linear-gradient(180deg, #fceaa9 0%, #d9a43a 100%);
+            border: 1px solid #8b6212;
+            color: #362100;
             font-weight: 700;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.25);
+            transition: all 0.1s ease;
         }
-        .gold-btn:hover { background: linear-gradient(180deg, #fff2c4 0%, #e2b048 100%); }
+        .gold-btn:active { transform: scale(0.96); }
 
-        .nav-btn {
-            background: linear-gradient(180deg, #4a3b2c 0%, #2a1f15 100%);
-            border: 1px solid #8b6b23;
-            color: #e8dec3;
+        /* 右侧/挂饰挂牌 */
+        .hanging-tag {
+            background: linear-gradient(180deg, #fff7d6 0%, #e0bd6f 100%);
+            border: 1px solid #8b6826;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
         }
-        .nav-btn.active {
-            background: linear-gradient(180deg, #b89753 0%, #785a22 100%);
-            color: #ffffff;
+
+        /* 底部导航图标容器 */
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            color: #d1c0a5;
+            transition: all 0.2s;
+        }
+        .nav-item.active {
+            color: #ffd885;
             font-weight: bold;
         }
 
+        @keyframes pulse-gold {
+            0%, 100% { box-shadow: 0 0 15px rgba(234, 179, 8, 0.6); }
+            50% { box-shadow: 0 0 30px rgba(234, 179, 8, 0.9); }
+        }
+        .gold-glow { animation: pulse-gold 3s infinite; }
+
         @keyframes spin-slow { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-        .animate-spin-slow { animation: spin-slow 25s linear infinite; }
+        .animate-spin-slow { animation: spin-slow 20s linear infinite; }
+
         .no-scrollbar::-webkit-scrollbar { display: none; }
     </style>
 </head>
@@ -85,7 +119,6 @@
 
         <!-- ==================== 1. 登录页 ==================== -->
         <div id="screen-login" class="absolute inset-0 z-50 flex flex-col justify-between p-6 cover-background select-none">
-            
             <div class="text-center pt-8 space-y-1">
                 <div class="inline-block px-6 py-1.5 border-y-2 border-amber-800/60 bg-amber-100/40 rounded-lg shadow-sm">
                     <h1 class="text-2xl font-black tracking-widest text-amber-900 drop-shadow-md">想不想修真</h1>
@@ -95,7 +128,6 @@
 
             <div class="glass-panel p-5 rounded-xl text-center space-y-3 shadow-xl border-2 border-amber-700/60 my-auto">
                 <h3 class="font-bold text-xs text-stone-800">道友请登入仙籍</h3>
-                
                 <div class="space-y-2 text-left">
                     <div>
                         <label class="text-[10px] text-stone-600 block mb-0.5">道号 (支持历史账号联想)</label>
@@ -130,78 +162,172 @@
             </div>
         </div>
 
-        <!-- ==================== 2. 游戏主界面 ==================== -->
-        <div id="screen-game" class="inset-0 flex flex-col justify-between hidden h-full bg-[#f7f3e8]">
+        <!-- ==================== 2. 游戏主界面 (1:1 还原截图版) ==================== -->
+        <div id="screen-game" class="inset-0 flex flex-col justify-between hidden h-full game-bg select-none">
             
-            <header class="bg-[#2a1f15] p-3 border-b-2 border-[#b89753] text-xs font-mono shrink-0 shadow-lg text-[#f3e5c8]">
-                <div class="flex justify-between items-center">
-                    <div class="flex items-center space-x-2">
-                        <div class="w-9 h-9 rounded-full bg-gradient-to-tr from-amber-600 to-amber-300 border border-amber-200 flex items-center justify-center text-sm shadow">
-                            🧘
+            <!-- 2.1 顶部角色信息与资源网络 -->
+            <header class="p-2 border-b border-[#b89753]/60 bg-[#ebdcc1]/80 relative shrink-0 shadow-sm">
+                <div class="flex items-center justify-between">
+                    <!-- 左侧：头像 + 境界 -->
+                    <div class="relative flex flex-col items-center mr-2">
+                        <div class="w-14 h-14 rounded-full border-2 border-amber-700 bg-amber-100 flex items-center justify-center overflow-hidden shadow-md">
+                            <span class="text-2xl">🧘‍♀️</span>
                         </div>
-                        <div>
-                            <div class="font-bold text-amber-200 text-xs" id="ui-username">楚明轩</div>
-                            <div class="text-[9px] text-emerald-400">🛡️ 端到端安全加密保护中</div>
+                        <span id="ui-avatar-realm" class="absolute -bottom-1 bg-amber-900 text-amber-100 text-[9px] px-1.5 py-0.2 rounded-full border border-amber-500 scale-90 whitespace-nowrap">分神1阶</span>
+                    </div>
+
+                    <!-- 中间：6项核心属性网格 (完全对应截图) -->
+                    <div class="grid grid-cols-2 gap-1 flex-1 text-[11px]">
+                        <div class="attr-pill px-2 py-0.5 rounded flex justify-between">
+                            <span class="text-stone-600">道号</span>
+                            <span id="ui-username" class="font-bold text-amber-950">歆钥</span>
+                        </div>
+                        <div class="attr-pill px-2 py-0.5 rounded flex justify-between">
+                            <span class="text-stone-600">💎 灵石</span>
+                            <span id="ui-lingshi" class="font-bold text-sky-800">134,538</span>
+                        </div>
+                        <div class="attr-pill px-2 py-0.5 rounded flex justify-between">
+                            <span class="text-stone-600">官职</span>
+                            <span id="ui-guanzhi" class="text-amber-800">暂无官职</span>
+                        </div>
+                        <div class="attr-pill px-2 py-0.5 rounded flex justify-between">
+                            <span class="text-stone-600">💧 声望</span>
+                            <span id="ui-shengwang" class="font-bold text-sky-800">116,116</span>
+                        </div>
+                        <div class="attr-pill px-2 py-0.5 rounded flex justify-between">
+                            <span class="text-stone-600">门派</span>
+                            <span id="ui-menpai" class="text-amber-900">青羽门</span>
+                        </div>
+                        <div class="attr-pill px-2 py-0.5 rounded flex justify-between">
+                            <span class="text-stone-600">🧘 修炼</span>
+                            <span id="ui-year" class="font-bold text-amber-900">1657年</span>
                         </div>
                     </div>
-                    <div class="text-right text-[11px]">
-                        <div>灵石: <span class="text-amber-300 font-bold">37,395</span></div>
-                        <div>修炼: <span class="text-emerald-300 font-bold" id="ui-year">243,326 年</span></div>
+
+                    <!-- 右侧：奇珍会与坊市挂坠 -->
+                    <div class="flex flex-col space-y-1 ml-1 text-[10px]">
+                        <button onclick="alert('【奇珍会】仙家宝库，暂未开放！')" class="hanging-tag px-1.5 py-1 rounded text-amber-950 font-bold border border-amber-700">奇珍会</button>
+                        <button onclick="alert('【坊市】灵石交易，暂未开放！')" class="hanging-tag px-1.5 py-1 rounded text-amber-950 font-bold border border-amber-700">坊 市</button>
                     </div>
                 </div>
             </header>
 
-            <main class="flex-1 overflow-y-auto p-3 no-scrollbar space-y-3">
-                <div class="xiuxian-panel p-3 rounded-lg space-y-2">
-                    <div class="flex justify-between items-center border-b border-[#b89753]/40 pb-2">
-                        <div>
-                            <span class="text-xs font-bold text-amber-900">⛩️ 境界</span>
-                            <span class="ml-2 font-bold text-xs text-stone-900">地仙 10阶</span>
+            <!-- 2.2 主体核心打坐区与操作条 -->
+            <main class="flex-1 overflow-y-auto p-2 no-scrollbar flex flex-col justify-between space-y-2">
+                
+                <!-- 2.2.1 境界与肉身栏 -->
+                <div class="space-y-1.5">
+                    <div class="panel-row p-1.5 rounded-md flex justify-between items-center text-xs">
+                        <div class="flex items-center space-x-2">
+                            <span class="bg-amber-800/20 text-amber-950 px-1.5 py-0.5 rounded text-[10px] font-bold">👑 境界</span>
+                            <span id="ui-realm-name" class="font-bold text-amber-950">分神 1阶</span>
                         </div>
-                        <button onclick="tryBreakthrough('realm')" class="gold-btn px-2.5 py-1 text-[11px] rounded shadow">渡劫</button>
+                        <span id="ui-realm-xiuwei" class="text-[11px] text-stone-700">66789000 修为</span>
+                        <button onclick="tryBreakthrough('realm')" class="gold-btn px-3 py-1 rounded text-[11px]">渡劫</button>
                     </div>
-                    <div class="flex justify-between items-center pt-0.5">
-                        <div>
-                            <span class="text-xs font-bold text-amber-900">💪 肉身</span>
-                            <span class="ml-2 font-bold text-xs text-stone-900">玄仙之躯 1阶</span>
+
+                    <div class="panel-row p-1.5 rounded-md flex justify-between items-center text-xs">
+                        <div class="flex items-center space-x-2">
+                            <span class="bg-amber-800/20 text-amber-950 px-1.5 py-0.5 rounded text-[10px] font-bold">💪 肉身</span>
+                            <span id="ui-body-name" class="font-bold text-amber-950">凡人之躯 1阶</span>
                         </div>
-                        <button onclick="tryBreakthrough('body')" class="gold-btn px-2.5 py-1 text-[11px] rounded shadow">升级</button>
+                        <span id="ui-body-xiuwei" class="text-[11px] text-stone-700">1000 修为</span>
+                        <button onclick="tryBreakthrough('body')" class="gold-btn px-3 py-1 rounded text-[11px]">升级</button>
                     </div>
                 </div>
 
-                <div class="xiuxian-panel p-4 rounded-lg text-center space-y-3 relative overflow-hidden">
-                    <div class="relative w-28 h-28 mx-auto flex items-center justify-center">
-                        <div class="absolute inset-0 rounded-full border-2 border-dashed border-amber-700/60 animate-spin-slow"></div>
-                        <div class="w-20 h-20 rounded-full border-2 border-[#b89753] flex items-center justify-center text-3xl bg-gradient-to-b from-amber-100 to-amber-300 shadow-inner">
-                            ☯️
+                <!-- 2.2.2 中央打坐场景与快捷悬浮按钮 -->
+                <div class="relative my-auto flex flex-col items-center justify-center py-4">
+                    
+                    <!-- 左侧挂轴：论道、奖励 -->
+                    <div class="absolute left-1 top-2 flex flex-col space-y-2 z-10">
+                        <button onclick="alert('【论道】仙友论道切磋')" class="bg-stone-100/80 border border-amber-800 text-amber-950 text-[10px] px-1.5 py-2 rounded-b writing-mode-vertical shadow">论道</button>
+                        <button onclick="alert('【奖励】每日签到福利发放')" class="bg-stone-100/80 border border-amber-800 text-amber-950 text-[10px] px-1.5 py-2 rounded-b writing-mode-vertical shadow">奖励</button>
+                    </div>
+
+                    <!-- 右侧上方工具图标与试炼之地 -->
+                    <div class="absolute right-2 top-0 flex items-center space-x-2 text-[10px] text-amber-950 z-10">
+                        <button onclick="alert('【传书】暂无飞鸽传书')" class="flex flex-col items-center">✉️<span>传书</span></button>
+                        <button onclick="alert('【道友】好友列表')" class="flex flex-col items-center">🧘<span>道友</span></button>
+                        <button onclick="alert('【帮助】修仙指南')" class="flex flex-col items-center">❓<span>帮助</span></button>
+                        <button onclick="handleLogout()" class="flex flex-col items-center text-rose-800 font-bold">⚙️<span>设置</span></button>
+                    </div>
+
+                    <button onclick="alert('【试炼之地】进入秘境挑战！')" class="absolute right-2 top-10 hanging-tag px-2 py-1 rounded border border-amber-800 text-[10px] font-bold z-10 shadow">
+                        ⚔️ 试炼之地
+                    </button>
+
+                    <!-- 中央：打坐光环特效与背影 -->
+                    <div class="relative w-44 h-44 flex items-center justify-center my-2">
+                        <!-- 大圆月背光 -->
+                        <div class="absolute w-36 h-36 rounded-full bg-amber-100/70 border border-amber-300 shadow-inner"></div>
+                        <!-- 慢速旋转阴阳法阵 -->
+                        <div class="absolute w-40 h-40 rounded-full border border-dashed border-amber-700/40 animate-spin-slow"></div>
+                        <!-- 核心发光打坐小人 -->
+                        <div class="relative z-10 w-24 h-24 rounded-full bg-gradient-to-t from-amber-600 via-amber-400 to-yellow-200 gold-glow flex items-center justify-center shadow-lg">
+                            <span class="text-5xl opacity-90">🧘‍♂️</span>
                         </div>
                     </div>
-                    <div>
-                        <div class="text-[11px] font-bold text-stone-700">当前修炼效率：20,040/5秒</div>
-                        <div class="text-xs font-mono text-amber-950 font-bold mt-1">总修为: <span id="total-xiuwei" class="text-sm">630,156,239,206</span></div>
-                        <p class="text-[10px] text-stone-600 mt-0.5">✨ 自动同步本地安全沙箱...</p>
-                    </div>
-                </div>
 
-                <div class="xiuxian-panel p-3 rounded-lg space-y-2 text-center">
-                    <div class="font-bold text-xs text-amber-900">🔐 安全存档与加密备份</div>
-                    <div class="grid grid-cols-2 gap-2">
-                        <button onclick="exportSecureSave()" class="gold-btn py-1.5 rounded text-[11px] shadow">加密导出存档</button>
-                        <button onclick="importSecureSave()" class="gold-btn py-1.5 rounded text-[11px] shadow">密码解密导入</button>
+                    <!-- 修炼效率与进度条 -->
+                    <div class="w-full text-center space-y-1 z-10">
+                        <div class="text-[11px] text-stone-800 font-bold">当前修炼效率：(940~3160)/5秒</div>
+                        
+                        <!-- 倒计时 5 秒循环进度条 -->
+                        <div class="w-48 h-2.5 mx-auto bg-stone-300 rounded-full border border-amber-800 overflow-hidden relative">
+                            <div id="ui-progress-bar" class="h-full bg-amber-500 w-0 transition-all duration-100"></div>
+                        </div>
+                        <div class="text-[9px] text-stone-600 font-mono">00:<span id="ui-timer-sec">05</span></div>
+
+                        <div class="text-xs text-stone-900 font-bold">
+                            总修为: <span id="total-xiuwei" class="text-amber-900 text-sm font-mono">1,246,644</span>
+                        </div>
+                        <div class="text-[10px] text-emerald-800 font-bold">永无休止的自动修炼！</div>
                     </div>
-                    <button onclick="handleLogout()" class="w-full bg-rose-900/80 text-rose-100 py-1.5 rounded text-[11px] border border-rose-700 shadow mt-1">
-                        🔒 切换道号 / 退出登录
+
+                    <!-- 右侧：修炼增幅按钮 -->
+                    <button onclick="alert('【修炼增幅】消耗仙丹可加速修炼！')" class="absolute right-2 bottom-2 w-12 h-12 rounded-full bg-sky-100 border-2 border-sky-600 text-sky-950 text-[9px] flex flex-col items-center justify-center font-bold shadow-md">
+                        <span>修炼</span><span>增幅</span>
                     </button>
                 </div>
+
+                <!-- 2.2.3 底部修仙日志文本框 (完全还原截图底部文案) -->
+                <div class="panel-row p-2 rounded border border-amber-800/60 h-24 flex flex-col justify-between text-[11px] leading-relaxed relative">
+                    <div class="text-stone-500 absolute top-0.5 left-2 text-[9px]">↑ 历史日志</div>
+                    <div id="game-logs" class="overflow-y-auto no-scrollbar space-y-1 pt-3 text-stone-800">
+                        <p>【 <span class="text-amber-800 font-bold" id="log-year-1">1657年</span> 】风云变色，无边无际的乌云，从四面八方，滚滚而来，最终聚集到一点，形成一个黑漆漆的劫云漩涡，一道道闪电劈在【 <span class="text-amber-900 font-bold" id="log-user">歆钥</span> 】的头上。</p>
+                        <p class="text-emerald-900 font-bold">【 <span id="log-year-2">1657年</span> 】九死一生后，【 <span id="log-user-2">歆钥</span> 】渡劫成功了！</p>
+                    </div>
+                </div>
+
             </main>
 
-            <footer class="bg-[#2a1f15] p-2 border-t-2 border-[#b89753] grid grid-cols-6 gap-1 shrink-0 text-center text-[#f3e5c8]">
-                <button class="nav-btn active py-1.5 rounded text-[10px]"><div class="text-sm">🧘‍♂️</div>修炼</button>
-                <button class="nav-btn py-1.5 rounded text-[10px]"><div class="text-sm">🎒</div>储物</button>
-                <button class="nav-btn py-1.5 rounded text-[10px]"><div class="text-sm">☯️</div>灵根</button>
-                <button class="nav-btn py-1.5 rounded text-[10px]"><div class="text-sm">📜</div>功法</button>
-                <button class="nav-btn py-1.5 rounded text-[10px]"><div class="text-sm">🏛️</div>洞府</button>
-                <button class="nav-btn py-1.5 rounded text-[10px]"><div class="text-sm">🏺</div>宝库</button>
+            <!-- 2.3 底部经典 6 图标导航栏 -->
+            <footer class="bg-[#241a11] p-1.5 border-t-2 border-[#b89753] grid grid-cols-6 gap-1 shrink-0 text-center shadow-lg">
+                <button class="nav-item active py-1">
+                    <div class="text-base">🧘</div>
+                    <span>修炼</span>
+                </button>
+                <button onclick="alert('【储物】打开背包')" class="nav-item py-1">
+                    <div class="text-base">🎒</div>
+                    <span>储物</span>
+                </button>
+                <button onclick="alert('【灵根】提升金木水火土灵根')" class="nav-item py-1">
+                    <div class="text-base">☯️</div>
+                    <span>灵根</span>
+                </button>
+                <button onclick="alert('【功法】参悟仙家心法')" class="nav-item py-1">
+                    <div class="text-base">📜</div>
+                    <span>功法</span>
+                </button>
+                <button onclick="alert('【洞府】经营灵田与聚灵阵')" class="nav-item py-1">
+                    <div class="text-base">🏛️</div>
+                    <span>洞府</span>
+                </button>
+                <button onclick="alert('【仙缘】游历修真界')" class="nav-item py-1">
+                    <div class="text-base">🏺</div>
+                    <span>仙缘</span>
+                </button>
             </footer>
         </div>
 
@@ -211,9 +337,16 @@
     <script>
         let currentUser = null;
         let gameData = {
-            xiuwei: 630156239206,
-            rate: 20040
+            xiuwei: 1246644,
+            rate: 2040,
+            year: 1657,
+            lingshi: 134538,
+            shengwang: 116116,
+            realm: '分神 1阶',
+            body: '凡人之躯 1阶'
         };
+
+        let timerCount = 5;
 
         window.addEventListener('DOMContentLoaded', () => {
             loadHistoryUsers();
@@ -266,18 +399,9 @@
             const password = passwordInput ? passwordInput.value.trim() : '';
             const agree = agreeCheck ? agreeCheck.checked : false;
 
-            if (!username) {
-                alert("请输入您的道号！");
-                return;
-            }
-            if (!password) {
-                alert("请输入您的登录秘钥（密码）！");
-                return;
-            }
-            if (!agree) {
-                alert("请先勾选并同意服务协议与隐私政策！");
-                return;
-            }
+            if (!username) { alert("请输入您的道号！"); return; }
+            if (!password) { alert("请输入您的登录秘钥（密码）！"); return; }
+            if (!agree) { alert("请先勾选并同意服务协议与隐私政策！"); return; }
 
             const savedPwd = localStorage.getItem(`xiuxian_pwd_${username}`);
             if (savedPwd && savedPwd !== password) {
@@ -290,20 +414,41 @@
 
             const userSave = localStorage.getItem(`xiuxian_secure_save_${username}`);
             if (userSave) {
-                try {
-                    gameData = JSON.parse(userSave);
-                } catch(e) {}
+                try { gameData = JSON.parse(userSave); } catch(e) {}
             } else {
                 saveUserData();
             }
 
             document.getElementById('screen-login').classList.add('hidden');
             document.getElementById('screen-game').classList.remove('hidden');
+            
+            // 绑定玩家姓名到界面
             document.getElementById('ui-username').innerText = username;
+            document.getElementById('log-user').innerText = username;
+            document.getElementById('log-user-2').innerText = username;
+            updateUI();
 
             if (typeof confetti === 'function') {
                 confetti({ particleCount: 60, spread: 60, origin: { y: 0.5 } });
             }
+        }
+
+        function updateUI() {
+            document.getElementById('ui-lingshi').innerText = gameData.lingshi.toLocaleString();
+            document.getElementById('ui-shengwang').innerText = gameData.shengwang.toLocaleString();
+            document.getElementById('ui-year').innerText = gameData.year + "年";
+            document.getElementById('total-xiuwei').innerText = gameData.xiuwei.toLocaleString();
+            document.getElementById('log-year-1').innerText = gameData.year + "年";
+            document.getElementById('log-year-2').innerText = gameData.year + "年";
+        }
+
+        function addLog(text) {
+            const container = document.getElementById('game-logs');
+            if (!container) return;
+            const p = document.createElement('p');
+            p.innerHTML = `【 ${gameData.year}年 】${text}`;
+            container.appendChild(p);
+            container.scrollTop = container.scrollHeight;
         }
 
         function saveUserData() {
@@ -320,20 +465,12 @@
         }
 
         function exportSecureSave() {
-            if (!currentUser) {
-                alert("请先登录游戏后再导出存档！");
-                return;
-            }
-            const password = prompt("【加密备份】请设置一个用于解密该存档的 4 位以上安全密码（导入时需输入）：");
+            if (!currentUser) { alert("请先登录！"); return; }
+            const password = prompt("设置导出解密密码：");
             if (!password) return;
 
             try {
-                const rawPayload = {
-                    user: currentUser,
-                    data: gameData,
-                    salt: Math.random().toString(36).substring(2)
-                };
-
+                const rawPayload = { user: currentUser, data: gameData, salt: Math.random().toString(36).substring(2) };
                 const jsonStr = JSON.stringify(rawPayload);
                 const encrypted = btoa(encodeURIComponent(jsonStr.split('').map((char, i) => 
                     String.fromCharCode(char.charCodeAt(0) ^ password.charCodeAt(i % password.length))
@@ -345,17 +482,14 @@
                 textarea.select();
                 document.execCommand('copy');
                 document.body.removeChild(textarea);
-
-                alert("🛡️ 【加密存档导出成功】\n存档码已复制到剪贴板！该存档已受您设置的密码保护！");
-            } catch(e) {
-                alert("❌ 加密失败！");
-            }
+                alert("🛡️ 加密存档码已复制到剪贴板！");
+            } catch(e) { alert("❌ 加密失败！"); }
         }
 
         function importSecureSave() {
-            const code = prompt("请在此处粘贴您的加密存档码：");
+            const code = prompt("粘贴加密存档码：");
             if (!code) return;
-            const password = prompt("请输入导出该存档时设置的安全解密密码：");
+            const password = prompt("输入解密密码：");
             if (!password) return;
 
             try {
@@ -365,11 +499,7 @@
                 ).join('');
 
                 const parsed = JSON.parse(originalJson);
-
-                if (!parsed.user || !parsed.data) {
-                    alert("❌ 存档格式不正确！");
-                    return;
-                }
+                if (!parsed.user || !parsed.data) { alert("❌ 格式不正确！"); return; }
 
                 currentUser = parsed.user;
                 gameData = parsed.data;
@@ -379,28 +509,39 @@
                 document.getElementById('screen-login').classList.add('hidden');
                 document.getElementById('screen-game').classList.remove('hidden');
                 document.getElementById('ui-username').innerText = currentUser;
-                document.getElementById('total-xiuwei').innerText = gameData.xiuwei.toLocaleString();
-
-                alert(`🎉 【解密成功】欢迎道友【${currentUser}】重返仙途，存档已完美恢复！`);
-            } catch (e) {
-                alert("❌ 解密失败：存档码错误或安全密码不匹配！");
-            }
+                updateUI();
+                alert(`🎉 欢迎道友【${currentUser}】归来！`);
+            } catch (e) { alert("❌ 解密失败！"); }
         }
 
+        // 5秒循环倒计时与自动增加修为
         setInterval(() => {
             if (currentUser) {
-                gameData.xiuwei += gameData.rate;
-                const xiuweiEl = document.getElementById('total-xiuwei');
-                if (xiuweiEl) xiuweiEl.innerText = gameData.xiuwei.toLocaleString();
-                saveUserData();
+                timerCount--;
+                if (timerCount < 0) {
+                    timerCount = 5;
+                    gameData.xiuwei += gameData.rate;
+                    gameData.year += 1; // 每次结算增加 1 年修仙历
+                    updateUI();
+                    saveUserData();
+                }
+                // 更新倒计时 UI 和进度条
+                const secEl = document.getElementById('ui-timer-sec');
+                const barEl = document.getElementById('ui-progress-bar');
+                if (secEl) secEl.innerText = "0" + timerCount;
+                if (barEl) barEl.style.width = ((5 - timerCount) / 5 * 100) + "%";
             }
-        }, 5000);
+        }, 1000);
 
         function tryBreakthrough(type) {
             if (typeof confetti === 'function') {
                 confetti({ particleCount: 80, spread: 70, origin: { y: 0.6 } });
             }
-            alert(type === 'realm' ? "【渡劫成功】金光贯体，成功突破！" : "【肉身升级】气血爆棚，肉身突破！");
+            if (type === 'realm') {
+                addLog(`天地灵气汇聚，【 <span class="text-amber-900 font-bold">${currentUser}</span> 】突破成功，修为大增！`);
+            } else {
+                addLog(`【 <span class="text-amber-900 font-bold">${currentUser}</span> 】淬炼肉身，气血冲天！`);
+            }
         }
     </script>
 </body>
