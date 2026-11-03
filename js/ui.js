@@ -73,3 +73,14 @@ function startGameLoop() {
     renderPlayerUI(player);
   }, 5000);
 }
+/** 登录按钮处理函数：隐藏登录弹窗，启动游戏 */
+function handleLogin(){
+  // 找到登录弹窗遮罩，隐藏它，根据你页面的class/id微调
+  const loginModal = document.getElementById("login-modal");
+  if(loginModal){
+    loginModal.style.display = "none";
+  }
+  // 游戏已经在bootstrap启动了，这里只负责关闭登录弹窗
+  console.log("✅登录成功，进入游戏");
+}
+
