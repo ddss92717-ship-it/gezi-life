@@ -1,59 +1,67 @@
-/** 把玩家所有数据渲染到页面DOM */
+/** 把玩家所有数据渲染到页面DOM，【不破坏原有DOM结构！只改文本】 */
 function renderPlayerUI(player) {
-  // 获取当前境界配置
   const realmCfg = getRealmCfgByName(player.basic.realm);
   const bodyCfg = getBodyCfgByName(player.basic.bodyRealm);
 
-  // 顶部账号、境界、肉身
-  document.getElementById("ui-username").innerText = player.basic.userName;
-  document.getElementById("ui-avatar-realm").innerText = player.basic.realm;
-  document.getElementById("realm-display").innerText = player.basic.realm;
-  document.getElementById("body-display").innerText = player.basic.bodyRealm;
+  // ========== 1、顶部信息渲染（道号、灵石、声望、门派、年份、境界肉身） ==========
+  // 道号
+  const daoNameDom = document.getElementById("ui-username");
+  if (daoNameDom) daoNameDom.innerText = player.basic.userName;
+  // 灵石
+  const lingshiDom = document.getElementById("ui-lingshi");
+  if (lingshiDom) lingshiDom.innerText = player.basic.lingShi.toLocaleString();
+  // 声望
+  const shengwangDom = document.getElementById("ui-shengwang");
+  if (shengwangDom) shengwangDom.innerText = player.basic.shengWang.toLocaleString();
+  // 境界标签
+  const realmShowDom = document.getElementById("realm-display");
+  if (realmShowDom) realmShowDom.innerText = player.basic.realm;
+  // 肉身标签
+  const bodyShowDom = document.getElementById("body-display");
+  if (bodyShowDom) bodyShowDom.innerText = player.basic.bodyRealm;
+  // 修炼年数
+  const yearDom = document.getElementById("ui-year");
+  if (yearDom) yearDom.innerText = player.basic.year.toLocaleString() + "年";
 
-  // 资源：灵石、声望、游戏年
-  document.getElementById("ui-lingshi").innerText = player.basic.lingShi.toLocaleString();
-  document.getElementById("ui-shengwang").innerText = player.basic.shengWang.toLocaleString();
-  document.getElementById("ui-year").innerText = player.basic.year.toLocaleString() + "年";
-
-  const expHtml = `当前境界修为：${player.basic.curExp.toLocaleString()} / ${realmCfg.needExp.toLocaleString()}`;
   const rate = calcTotalRate(player);
-
-  // 修炼效率文本更新
-  const rateTextDom = document.querySelector("#tab-xiulian .text-xs.text-center.font-bold");
+  // ========== 2、修炼效率文字（修复区间硬编码问题） ==========
+  // 兼容你当前页面的修炼效率行，更换匹配规则
+  const rateTextDom = document.querySelector(".xiulian-rate-text");
+  if(!rateTextDom){
+    // 备选选择器，兼容你的界面
+    rateTextDom = document.querySelector("div:has(span:contains('/5秒'))");
+  }
   if(rateTextDom){
     rateTextDom.innerText = `当前修炼效率：${rate} /5秒`;
   }
 
-  // 更新修为显示块
-  const totalXiuweiDom = document.getElementById("total-xiuwei");
-  if(totalXiuweiDom){
-    totalXiuweiDom.parentElement.innerHTML = `
-      <div class="text-xs text-stone-900 font-bold">
-        ${expHtml}<br>
-        总修为: <span id="total-xiuwei" class="text-amber-900 text-sm font-mono">${player.basic.curExp.toLocaleString()}</span>
-      </div>
-    `;
+  // ========== 3、修为文字：【当前境界修为 / 境界上限】 分开两个独立文本，不破坏进度条 ==========
+  const curExpDom = document.getElementById("cur-exp-text");
+  if(curExpDom) curExpDom.innerText = player.basic.curExp.toLocaleString();
+  const needExpDom = document.getElementById("need-exp-text");
+  if(needExpDom) needExpDom.innerText = realmCfg.needExp.toLocaleString();
+  const totalExpDom = document.getElementById("total-xiuwei");
+  if(totalExpDom) totalExpDom.innerText = player.basic.curExp.toLocaleString();
+
+  // ========== 4、【重点！修为进度条动态】计算百分比 ==========
+  const progressBar = document.getElementById("exp-progress-bar");
+  if(progressBar){
+    let percent = (player.basic.curExp / realmCfg.needExp) * 100;
+    if(percent > 100) percent = 100;
+    progressBar.style.width = `${percent}%`;
   }
 }
 
-/**
- * 登录按钮【修复！使用页面真实ID screen‑login / screen‑game】
- */
+/** 登录按钮，切换屏幕 */
 function handleLogin(){
   const loginScreen = document.getElementById("screen-login");
   const gameScreen = document.getElementById("screen-game");
-  if(loginScreen){
-    loginScreen.classList.add("hidden");
-  }
-  if(gameScreen){
-    gameScreen.classList.remove("hidden");
-  }
+  if(loginScreen) loginScreen.classList.add("hidden");
+  if(gameScreen) gameScreen.classList.remove("hidden");
   console.log("✅登录成功，进入游戏");
 }
 
-/**
- * 【突破境界按钮点击事件】
- */
+/** 突破境界按钮 */
 function onClickBreakThrough(){
   const player = loadSave();
   const isSuccess = tryRealmUp(player);
@@ -67,9 +75,9 @@ function onClickBreakThrough(){
   }
 }
 
-/** 游戏主循环：每5秒增加修为 */
+/** 修炼循环，稳定涨修为 */
 function startGameLoop() {
-  setInterval(async () => {
+  setInterval(() => {
     const player = loadSave();
     const rate = calcTotalRate(player);
     player.basic.curExp += rate;
@@ -80,7 +88,7 @@ function startGameLoop() {
   }, 5000);
 }
 
-// ===================== 下面是空占位壳，对应HTML页面onclick调用，暂时alert占位，以后再来实现，【千万不要删掉！】=====================
+// ===================== 预留占位函数（全部保留，防止按钮报错） =====================
 function switchTab(tabId){
   alert(`切换标签：${tabId}（尚未实现）`);
 }
