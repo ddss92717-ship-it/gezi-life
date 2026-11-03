@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>想不想修真 · 储物背包完美还原版</title>
+    <title>想不想修真 · 全功能无缝版</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/canvas-confetti.browser.min.js"></script>
@@ -79,7 +79,6 @@
             box-shadow: 0 2px 5px rgba(0,0,0,0.2);
         }
 
-        /* 装备槽精准复刻（四周环绕） */
         .equip-slot {
             width: 38px;
             height: 38px;
@@ -145,6 +144,48 @@
         .wx-shui { background: radial-gradient(circle, #8cecf5 0%, #186ac4 100%); border: 1px solid #fff; }
         .wx-huo { background: radial-gradient(circle, #f59e8c 0%, #c42718 100%); border: 1px solid #fff; }
         .wx-tu { background: radial-gradient(circle, #e5ba8c 0%, #8b5118 100%); border: 1px solid #fff; }
+
+        /* 玄门全鉴专属样式 */
+        .gongfa-book-item {
+            width: 44px;
+            height: 48px;
+            background: #d8cbb8;
+            border: 1px solid #8c765c;
+            border-radius: 4px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            cursor: pointer;
+        }
+        .gongfa-book-item.selected {
+            border: 2px solid #e08e2b;
+            box-shadow: 0 0 8px rgba(224, 142, 43, 0.8);
+            background: #fff6e0;
+        }
+        .tag-weixue {
+            position: absolute;
+            top: 1px;
+            left: 1px;
+            background: #b71c1c;
+            color: #fff;
+            font-size: 7px;
+            padding: 0 2px;
+            border-radius: 2px;
+            transform: scale(0.85);
+        }
+        .tag-yixue {
+            position: absolute;
+            top: 1px;
+            left: 1px;
+            background: #2e7d32;
+            color: #fff;
+            font-size: 7px;
+            padding: 0 2px;
+            border-radius: 2px;
+            transform: scale(0.85);
+        }
 
         .scroll-modal {
             background: linear-gradient(180deg, #f7f3e8 0%, #ebdcc1 100%);
@@ -216,7 +257,7 @@
         <!-- ==================== 2. 游戏主界面 (SPA多视图无缝集成) ==================== -->
         <div id="screen-game" class="inset-0 flex flex-col justify-between hidden h-full game-bg select-none relative">
             
-            <!-- 2.1 顶部通用角色信息栏 (精准匹配图示数据) -->
+            <!-- 2.1 顶部通用角色信息栏 -->
             <header class="p-2 border-b border-[#b89753]/60 bg-[#ebdcc1]/80 relative shrink-0 shadow-sm">
                 <div class="flex items-center justify-between">
                     <div class="relative flex flex-col items-center mr-2">
@@ -243,9 +284,9 @@
                             <span class="text-stone-600">💧 声望</span>
                             <span id="ui-shengwang" class="font-bold text-sky-800">102,244,105</span>
                         </div>
-                        <div class="attr-pill px-2 py-0.5 rounded flex justify-between">
+                        <div class="attr-pill px-2 py-0.5 rounded flex justify-between cursor-pointer" onclick="switchTab('tab-gongfa')">
                             <span class="text-stone-600">门派</span>
-                            <span id="ui-menpai" class="text-amber-900">隐仙宫</span>
+                            <span id="ui-menpai" class="text-amber-900 font-bold underline">隐仙宫</span>
                         </div>
                         <div class="attr-pill px-2 py-0.5 rounded flex justify-between">
                             <span class="text-stone-600">🧘 修炼</span>
@@ -309,41 +350,34 @@
                 </div>
             </main>
 
-            <!-- ==================== 视图 2：储物/背包 (精准复刻图示四周装备环绕与多件衣服槽) ==================== -->
+            <!-- ==================== 视图 2：储物/背包 ==================== -->
             <main id="tab-chuwu" class="flex-1 overflow-y-auto p-2 no-scrollbar hidden flex flex-col justify-between space-y-1">
                 <div class="relative p-2 panel-row rounded-lg flex flex-col items-center justify-center">
-                    <!-- 上方法相标签 -->
                     <div class="mb-1">
                         <button onclick="alert('法相系统')" class="hanging-tag px-3 py-0.5 rounded text-[10px] font-bold border border-amber-800">法相</button>
                     </div>
 
-                    <!-- 环绕装备槽与中心打坐人物 -->
                     <div class="grid grid-cols-5 gap-1 items-center justify-center w-full max-w-[340px]">
-                        <!-- 第一列 -->
                         <div class="flex flex-col space-y-1">
                             <div class="equip-slot">👘<span class="absolute bottom-0 right-0.5 text-[7px] font-bold">1</span></div>
                             <div class="equip-slot">👘<span class="absolute bottom-0 right-0.5 text-[7px] font-bold">1</span></div>
                             <div class="equip-slot">👘<span class="absolute bottom-0 right-0.5 text-[7px] font-bold">1</span></div>
                         </div>
-                        <!-- 第二列 -->
                         <div class="flex flex-col space-y-1">
                             <div class="equip-slot">👘<span class="absolute bottom-0 right-0.5 text-[7px] font-bold">1</span></div>
                             <div class="equip-slot border-amber-600 bg-amber-100">💍<span class="absolute bottom-0 right-0.5 text-[7px]">戒指</span></div>
                             <div class="equip-slot">👘<span class="absolute bottom-0 right-0.5 text-[7px] font-bold">1</span></div>
                         </div>
-                        <!-- 中心打坐人物 -->
                         <div class="flex flex-col items-center justify-center relative">
                             <div class="w-16 h-16 rounded-full bg-amber-200/50 border border-amber-600/40 flex items-center justify-center shadow-inner">
                                 <span class="text-2xl opacity-80">🧘</span>
                             </div>
                         </div>
-                        <!-- 第四列 -->
                         <div class="flex flex-col space-y-1">
                             <div class="equip-slot">👘<span class="absolute bottom-0 right-0.5 text-[7px] font-bold">1</span></div>
                             <div onclick="switchTab('tab-shuxing')" class="equip-slot cursor-pointer border-amber-600 bg-amber-100 font-bold text-xs text-amber-950">属性</div>
                             <div class="equip-slot">👘<span class="absolute bottom-0 right-0.5 text-[7px] font-bold">1</span></div>
                         </div>
-                        <!-- 第五列 -->
                         <div class="flex flex-col space-y-1">
                             <div class="equip-slot">👘<span class="absolute bottom-0 right-0.5 text-[7px] font-bold">1</span></div>
                             <div class="equip-slot">🏹<span class="absolute bottom-0 right-0.5 text-[7px] font-bold">1</span></div>
@@ -351,14 +385,12 @@
                         </div>
                     </div>
 
-                    <!-- 下方炼丹与炼器快捷按钮 -->
                     <div class="flex space-x-4 mt-1.5">
                         <button onclick="alert('炼丹坊')" class="hanging-tag px-2.5 py-0.5 rounded text-[10px] font-bold border border-amber-800 flex items-center space-x-1"><span>🏺</span><span>炼丹</span></button>
                         <button onclick="switchTab('tab-lianqi')" class="hanging-tag px-2.5 py-0.5 rounded text-[10px] font-bold border border-amber-800 flex items-center space-x-1"><span>⚒️</span><span>炼器</span></button>
                     </div>
                 </div>
 
-                <!-- 空间容量提示条 -->
                 <div class="flex justify-between items-center px-1 text-[11px]">
                     <div class="flex items-center space-x-1 font-bold text-amber-950">
                         <span>四品须弥戒指</span>
@@ -368,10 +400,8 @@
                     <div class="text-rose-800 text-[10px] font-bold">衣服类法宝可穿多件！</div>
                 </div>
 
-                <!-- 背包网格容器 (5行×6列) -->
                 <div id="inventory-grid-container" class="inventory-grid panel-row p-1.5 rounded-lg flex-1 min-h-[170px] overflow-y-auto no-scrollbar"></div>
 
-                <!-- 底部三大操作按钮 -->
                 <div class="grid grid-cols-3 gap-2 pt-0.5">
                     <button onclick="alert('出售成功')" class="gold-btn py-1 rounded text-xs">出 售</button>
                     <button onclick="alert('全部使用成功')" class="gold-btn py-1 rounded text-xs">全部使用</button>
@@ -400,6 +430,41 @@
                 </div>
             </main>
 
+            <!-- ==================== 视图 8：功法 / 玄门全鉴 (新增：对应最新截图) ==================== -->
+            <main id="tab-gongfa" class="flex-1 overflow-y-auto p-2 no-scrollbar hidden flex flex-col space-y-2">
+                <!-- 玄门全鉴卷轴标题栏 -->
+                <div class="flex items-center justify-between border-b border-amber-800/40 pb-1">
+                    <div class="w-4"></div>
+                    <div class="hanging-tag px-6 py-0.5 rounded text-xs font-black tracking-widest text-amber-950 border border-amber-800">
+                        玄门全鉴[cite: 21]
+                    </div>
+                    <button onclick="switchTab('tab-xiulian')" class="w-5 h-5 rounded bg-rose-900 text-amber-100 font-bold text-xs flex items-center justify-center">✕</button>
+                </div>
+
+                <!-- 说明文案面板 -->
+                <div class="panel-row p-2 rounded-md text-[10px] text-stone-800 leading-tight space-y-1 shadow-sm">
+                    <p>这本《玄门全鉴》其详细记录了修真界所有宗门所擅<span class="text-rose-800 font-bold">功法绝学</span>等绝密之事，以及道友的学习情况，但只可查阅满足最低进入等级要求的宗门，未达到入门要求的门派不可查阅。[cite: 21]</p>
+                </div>
+
+                <!-- 筛选与选择栏 -->
+                <div class="flex items-center justify-between text-[10px] px-1">
+                    <label class="flex items-center space-x-1 font-bold text-stone-800 cursor-pointer">
+                        <input type="checkbox" id="chk-unlearned" checked onchange="renderXuanmenList()" class="accent-amber-700">
+                        <span>只显示未学完心法、攻诀、绝学的门派[cite: 21]</span>
+                    </label>
+                    <select id="select-star" onchange="renderXuanmenList()" class="bg-amber-100 border border-amber-700/60 rounded px-1 py-0.5 font-bold text-amber-950 text-[10px] focus:outline-none">
+                        <option value="10">10星门派 ▼[cite: 21]</option>
+                        <option value="9">9星门派 ▼</option>
+                        <option value="8">8星门派 ▼</option>
+                    </select>
+                </div>
+
+                <!-- 宗门卡片容器 -->
+                <div id="xuanmen-container" class="space-y-2 flex-1 overflow-y-auto no-scrollbar pt-1">
+                    <!-- JS动态渲染宗门信息卡片 -->
+                </div>
+            </main>
+
             <!-- ==================== 视图 4：洞府大阵 ==================== -->
             <main id="tab-dongfudaji" class="flex-1 overflow-y-auto p-2 no-scrollbar hidden flex flex-col space-y-2">
                 <div class="panel-row p-2 rounded text-center text-xs font-bold text-amber-950">洞府大阵系统</div>
@@ -418,7 +483,7 @@
                 <div class="space-y-1.5 overflow-y-auto flex-1">
                     <div class="panel-row p-2 rounded flex justify-between items-center text-xs">
                         <div>📜 兑换时空残卷</div>
-                        <button onclick="openBaokuModal()" class="gold-btn px-3 py-1 rounded text-[11px]">兑换 (5/10)</button>[cite: 12]
+                        <button onclick="alert('兑换成功')" class="gold-btn px-3 py-1 rounded text-[11px]">兑换 (5/10)</button>[cite: 12]
                     </div>
                 </div>
             </main>
@@ -428,9 +493,6 @@
                 <div class="flex justify-between items-center px-1">
                     <span class="text-xs font-bold text-sky-900 bg-sky-100 px-2 py-0.5 rounded">一品炼器师[cite: 9]</span>
                     <div class="hanging-tag px-2 py-0.5 rounded text-xs font-bold">选择使用的炼器炉[cite: 9]</div>
-                </div>
-                <div class="flex justify-center space-x-4">
-                    <div class="furnace-item active"><span class="text-xl">🏺</span><span class="absolute -bottom-1 text-[8px] bg-amber-900 text-amber-100 px-1 rounded-full">⭐⭐</span>[cite: 9]</div>
                 </div>
                 <button onclick="switchTab('tab-chuwu')" class="gold-btn py-1.5 rounded text-xs">返回背包</button>
             </main>
@@ -442,8 +504,8 @@
                     <div class="panel-row py-1 rounded">肉身[cite: 15]</div>
                 </div>
                 <div class="grid grid-cols-2 gap-1 text-xs">
-                    <div class="panel-row p-1.5 rounded flex justify-between"><span>攻</span><span class="font-mono font-bold">120681</span>[cite: 15]</div>
-                    <div class="panel-row p-1.5 rounded flex justify-between"><span>防</span><span class="font-mono font-bold">136230</span>[cite: 15]</div>
+                    <div class="panel-row p-1.5 rounded flex justify-between"><span>攻</span><span class="font-mono font-bold" id="attr-gong">120681</span>[cite: 15]</div>
+                    <div class="panel-row p-1.5 rounded flex justify-between"><span>防</span><span class="font-mono font-bold" id="attr-fang">136230</span>[cite: 15]</div>
                 </div>
                 <button onclick="switchTab('tab-chuwu')" class="gold-btn py-1.5 rounded text-xs">返回背包</button>
             </main>
@@ -453,7 +515,7 @@
                 <div onclick="switchTab('tab-xiulian')" id="nav-xiulian" class="nav-item active py-1"><div class="text-base">🧘</div><span>修炼</span></div>
                 <div onclick="switchTab('tab-chuwu')" id="nav-chuwu" class="nav-item py-1"><div class="text-base">🎒</div><span>储物</span></div>
                 <div onclick="switchTab('tab-linggen')" id="nav-linggen" class="nav-item py-1"><div class="text-base">☯️</div><span>灵根</span></div>
-                <div onclick="alert('【功法】')" class="nav-item py-1"><div class="text-base">📜</div><span>功法</span></div>
+                <div onclick="switchTab('tab-gongfa')" id="nav-gongfa" class="nav-item py-1"><div class="text-base">📜</div><span>功法</span></div>
                 <div onclick="switchTab('tab-dongfudaji')" id="nav-dongfu" class="nav-item py-1"><div class="text-base">🏛️</div><span>洞府</span></div>
                 <div onclick="switchTab('tab-qizhen')" id="nav-xiandao" class="nav-item py-1"><div class="text-base">🏺</div><span>仙缘</span></div>
             </footer>
@@ -470,21 +532,33 @@
             year: 150560,
             lingshi: 375598,
             shengwang: 102244105,
+            attack: 120681,
+            defense: 136230,
+            learnedGongfa: [], // 保存已学的功法ID
             inventory: [
                 { id: 1, name: '火焰', icon: '🔥', count: 5 },
-                { id: 2, name: '火焰', icon: '🔥', count: 1 },
-                { id: 3, name: '紫球', icon: '🔮', count: 44 },
-                { id: 4, name: '玄铁', icon: '🪨', count: 88 },
-                { id: 5, name: '金块', icon: '🔶', count: 395 },
-                { id: 6, name: '矿石', icon: '🪨', count: 65 },
-                { id: 7, name: '灵草', icon: '🌼', count: 952 },
-                { id: 8, name: '灵草', icon: '🌼', count: 999 },
-                { id: 9, name: '灵草', icon: '🌼', count: 999 },
-                { id: 10, name: '灵草', icon: '🌼', count: 999 },
-                { id: 11, name: '人参', icon: '🥕', count: 999 },
-                { id: 12, name: '人参', icon: '🥕', count: 999 }
+                { id: 2, name: '紫球', icon: '🔮', count: 44 },
+                { id: 3, name: '玄铁', icon: '🪨', count: 88 },
+                { id: 4, name: '人参', icon: '🥕', count: 999 }
             ]
         };
+
+        // 玄门全鉴宗门数据库 (复刻截图数据)
+        const xuanmenData = [
+            {
+                name: '太一殿',
+                stars: 7,
+                shanchang: '奇门遁甲',
+                books: [
+                    { id: 'ty1', type: '心法', icon: '📘', learned: false, attr: '防御+500' },
+                    { id: 'ty2', type: '攻诀', icon: '📙', learned: false, attr: '攻击+600' },
+                    { id: 'ty3', type: '遁术', icon: '🔮', learned: false, attr: '闪避+300' },
+                    { id: 'ty4', type: '身法', icon: '📖', learned: false, attr: '速度+200' },
+                    { id: 'ty5', type: '特殊', icon: '📜', learned: false, attr: '暴击+150' },
+                    { id: 'ty6', type: '绝学', icon: '📕', learned: false, attr: '修炼速率+100', selected: true }
+                ]
+            }
+        ];
 
         let timerCount = 4;
 
@@ -533,15 +607,16 @@
             document.getElementById('screen-game').classList.remove('hidden');
             updateUI();
             renderInventory();
+            renderXuanmenList();
         }
 
         function switchTab(tabId) {
-            ['tab-xiulian', 'tab-chuwu', 'tab-linggen', 'tab-dongfudaji', 'tab-qizhen', 'tab-lianqi', 'tab-shuxing'].forEach(id => {
+            ['tab-xiulian', 'tab-chuwu', 'tab-linggen', 'tab-gongfa', 'tab-dongfudaji', 'tab-qizhen', 'tab-lianqi', 'tab-shuxing'].forEach(id => {
                 const el = document.getElementById(id);
                 if (el) el.classList.add('hidden');
             });
 
-            ['nav-xiulian', 'nav-chuwu', 'nav-linggen', 'nav-dongfu', 'nav-xiandao'].forEach(id => {
+            ['nav-xiulian', 'nav-chuwu', 'nav-linggen', 'nav-gongfa', 'nav-dongfu', 'nav-xiandao'].forEach(id => {
                 const el = document.getElementById(id);
                 if (el) el.classList.remove('active');
             });
@@ -552,15 +627,68 @@
             if (tabId === 'tab-xiulian') document.getElementById('nav-xiulian').classList.add('active');
             else if (tabId === 'tab-chuwu') { document.getElementById('nav-chuwu').classList.add('active'); renderInventory(); }
             else if (tabId === 'tab-linggen') document.getElementById('nav-linggen').classList.add('active');
+            else if (tabId === 'tab-gongfa') { document.getElementById('nav-gongfa').classList.add('active'); renderXuanmenList(); }
             else if (tabId === 'tab-dongfudaji') document.getElementById('nav-dongfu').classList.add('active');
             else if (tabId === 'tab-qizhen') document.getElementById('nav-xiandao').classList.add('active');
+        }
+
+        /* 动态渲染玄门全鉴列表 (精准匹配图示) */
+        function renderXuanmenList() {
+            const container = document.getElementById('xuanmen-container');
+            if (!container) return;
+            container.innerHTML = '';
+
+            xuanmenData.forEach(sect => {
+                const card = document.createElement('div');
+                card.className = 'panel-row p-2 rounded-lg space-y-1.5 shadow-sm';
+                
+                const starsHtml = '🌙' + '⭐'.repeat(sect.stars);
+
+                card.innerHTML = `
+                    <div class="flex justify-between items-center text-xs">
+                        <div class="flex items-center space-x-2">
+                            <span class="font-black text-amber-950">${sect.name}</span>
+                            <span class="text-[10px] text-amber-600">${starsHtml}</span>
+                        </div>
+                        <span class="text-[10px] text-stone-700 font-bold">此门擅长：<span class="text-amber-900">${sect.shanchang}</span></span>
+                    </div>
+                    <div class="grid grid-cols-6 gap-1 pt-1">
+                        ${sect.books.map(b => {
+                            const isLearned = gameData.learnedGongfa.includes(b.id);
+                            return `
+                                <div onclick="learnGongfa('${b.id}', '${b.attr}')" class="gongfa-book-item ${b.selected ? 'selected' : ''}">
+                                    <span class="${isLearned ? 'tag-yixue' : 'tag-weixue'}">${isLearned ? '已学' : '未学'}</span>
+                                    <span class="text-lg">${b.icon}</span>
+                                    <span class="text-[9px] font-bold text-stone-800 scale-90">${b.type}</span>
+                                </div>
+                            `;
+                        }).join('')}
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function learnGongfa(id, attr) {
+            if (gameData.learnedGongfa.includes(id)) {
+                alert('道友已融会贯通此门功法！');
+                return;
+            }
+            if (confirm(`是否领悟该功法秘籍？（增加属性：${attr}）`)) {
+                gameData.learnedGongfa.push(id);
+                gameData.attack += 500;
+                gameData.defense += 500;
+                saveUserData();
+                renderXuanmenList();
+                updateUI();
+                alert('领悟成功！属性已全面提升。');
+            }
         }
 
         function renderInventory() {
             const container = document.getElementById('inventory-grid-container');
             if (!container) return;
             container.innerHTML = '';
-            // 渲染满 30 格（5行6列）
             for (let i = 0; i < 30; i++) {
                 const item = gameData.inventory[i];
                 const div = document.createElement('div');
@@ -578,6 +706,8 @@
             document.getElementById('ui-shengwang').innerText = gameData.shengwang.toLocaleString();
             document.getElementById('ui-year').innerText = gameData.year + "年";
             document.getElementById('total-xiuwei').innerText = gameData.xiuwei.toLocaleString();
+            if (document.getElementById('attr-gong')) document.getElementById('attr-gong').innerText = gameData.attack;
+            if (document.getElementById('attr-fang')) document.getElementById('attr-fang').innerText = gameData.defense;
         }
 
         function saveUserData() {
@@ -585,7 +715,6 @@
             localStorage.setItem(`xiuxian_save_${currentUser}`, JSON.stringify(gameData));
         }
 
-        // 自动修炼计时器
         setInterval(() => {
             if (currentUser) {
                 timerCount--;
