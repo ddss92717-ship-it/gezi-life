@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>想不想修真 · 完整包含炼器系统版</title>
+    <title>想不想修真 · 全功能完美集成版</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/canvas-confetti.browser.min.js"></script>
@@ -152,7 +152,14 @@
         .wx-huo { background: radial-gradient(circle, #f59e8c 0%, #c42718 100%); border: 1px solid #fff; }
         .wx-tu { background: radial-gradient(circle, #e5ba8c 0%, #8b5118 100%); border: 1px solid #fff; }
 
-        /* 炼器界面专属样式 */
+        .dongfu-card {
+            background: linear-gradient(180deg, #fbf7ee 0%, #ebdcc1 100%);
+            border: 1px solid #b89753;
+            border-radius: 4px;
+            padding: 6px 8px;
+            box-shadow: inset 0 0 4px rgba(255,255,255,0.6);
+        }
+
         .recipe-btn {
             background: linear-gradient(180deg, #fdfaf2 0%, #f0e3cc 100%);
             border: 1px solid #be9d5c;
@@ -173,21 +180,9 @@
         }
 
         .furnace-item {
-            width: 52px;
-            height: 52px;
-            border-radius: 50%;
-            background: radial-gradient(circle, #e3f2fd 0%, #90caf9 100%);
-            border: 2px solid #42a5f5;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            cursor: pointer;
+            width: 52px; height: 52px; border-radius: 50%; background: radial-gradient(circle, #e3f2fd 0%, #90caf9 100%); border: 2px solid #42a5f5; display: flex; align-items: center; justify-content: center; position: relative; cursor: pointer;
         }
-        .furnace-item.active {
-            border-color: #ff9800;
-            box-shadow: 0 0 12px #ffb74d;
-        }
+        .furnace-item.active { border-color: #ff9800; box-shadow: 0 0 12px #ffb74d; }
 
         .scroll-modal {
             background: linear-gradient(180deg, #f7f3e8 0%, #ebdcc1 100%);
@@ -205,7 +200,7 @@
             text-align: center;
         }
         .social-tab-btn.active {
-            background: linear-gradient(180deg, #d9a43a 0%, #8b6212 100%);
+            background: linear-gradient(180deg, #d9a43a 100%, #8b6212 100%);
             color: #fff;
             font-weight: bold;
         }
@@ -283,7 +278,7 @@
             </div>
         </div>
 
-        <!-- ==================== 2. 游戏主界面 ==================== -->
+        <!-- ==================== 2. 游戏主界面 (含多视图无缝切换) ==================== -->
         <div id="screen-game" class="inset-0 flex flex-col justify-between hidden h-full game-bg select-none relative">
             
             <!-- 2.1 顶部通用角色信息栏 -->
@@ -291,35 +286,35 @@
                 <div class="flex items-center justify-between">
                     <div class="relative flex flex-col items-center mr-2">
                         <div class="w-14 h-14 rounded-full border-2 border-amber-700 bg-amber-100 flex items-center justify-center overflow-hidden shadow-md">
-                            <span class="text-2xl">👧</span>
+                            <span class="text-2xl">👩‍🦰</span>
                         </div>
-                        <span id="ui-avatar-realm" class="absolute -bottom-1 bg-amber-900 text-amber-100 text-[9px] px-1.5 py-0.2 rounded-full border border-amber-500 scale-90 whitespace-nowrap">分神1阶</span>
+                        <span id="ui-avatar-realm" class="absolute -bottom-1 bg-amber-900 text-amber-100 text-[9px] px-1.5 py-0.2 rounded-full border border-amber-500 scale-90 whitespace-nowrap">准帝仙10阶</span>
                     </div>
 
                     <div class="grid grid-cols-2 gap-1 flex-1 text-[11px]">
                         <div class="attr-pill px-2 py-0.5 rounded flex justify-between">
                             <span class="text-stone-600">道号</span>
-                            <span id="ui-username" class="font-bold text-amber-950">全方阵亡</span>
+                            <span id="ui-username" class="font-bold text-amber-950">桑梓心痕</span>
                         </div>
                         <div class="attr-pill px-2 py-0.5 rounded flex justify-between">
                             <span class="text-stone-600">💎 灵石</span>
-                            <span id="ui-lingshi" class="font-bold text-sky-800">8013</span>
+                            <span id="ui-lingshi" class="font-bold text-sky-800">375,474</span>
                         </div>
                         <div class="attr-pill px-2 py-0.5 rounded flex justify-between">
                             <span class="text-stone-600">官职</span>
-                            <span id="ui-guanzhi" class="text-stone-500 text-[10px]">暂无官职</span>
+                            <span id="ui-guanzhi" class="text-stone-500 text-[10px]">金甲天将</span>
                         </div>
                         <div class="attr-pill px-2 py-0.5 rounded flex justify-between">
                             <span class="text-stone-600">💧 声望</span>
-                            <span id="ui-shengwang" class="font-bold text-sky-800">79448</span>
+                            <span id="ui-shengwang" class="font-bold text-sky-800">102,244,031</span>
                         </div>
                         <div class="attr-pill px-2 py-0.5 rounded flex justify-between">
                             <span class="text-stone-600">门派</span>
-                            <span id="ui-menpai" class="text-amber-900">隐神谷</span>
+                            <span id="ui-menpai" class="text-amber-900">隐仙宫</span>
                         </div>
                         <div class="attr-pill px-2 py-0.5 rounded flex justify-between">
                             <span class="text-stone-600">🧘 修炼</span>
-                            <span id="ui-year" class="font-bold text-amber-900">2073年</span>
+                            <span id="ui-year" class="font-bold text-amber-900">150560年</span>
                         </div>
                     </div>
 
@@ -330,135 +325,221 @@
                 </div>
             </header>
 
-            <!-- 2.2 标签页 1：修炼视图 -->
+            <!-- ==================== 视图 1：修炼主页 ==================== -->
             <main id="tab-xiulian" class="flex-1 overflow-y-auto p-2 no-scrollbar flex flex-col justify-between space-y-2">
                 <div class="space-y-1.5">
                     <div class="panel-row p-1.5 rounded-md flex justify-between items-center text-xs">
                         <div class="flex items-center space-x-2">
                             <span class="bg-amber-800/20 text-amber-950 px-1.5 py-0.5 rounded text-[10px] font-bold">👑 境界</span>
-                            <span id="ui-realm-name" class="font-bold text-amber-950">分神 1阶</span>
+                            <span class="font-bold text-amber-950">准帝仙 10阶</span>
                         </div>
-                        <span id="ui-realm-xiuwei" class="text-[11px] text-stone-700">9990000 修为</span>
+                        <span class="text-[11px] text-stone-700">999000000 修为</span>
                         <button onclick="tryBreakthrough('realm')" class="gold-btn px-3 py-1 rounded text-[11px]">渡劫</button>
                     </div>
                 </div>
 
                 <div class="relative my-auto flex flex-col items-center justify-center py-4">
+                    <div class="absolute left-1 top-2 flex flex-col space-y-2 z-10">
+                        <button onclick="alert('【论道】')" class="bg-stone-100/80 border border-amber-800 text-amber-950 text-[10px] px-1.5 py-2 rounded-b writing-mode-vertical shadow">论道</button>
+                        <button onclick="alert('【奖励】')" class="bg-stone-100/80 border border-amber-800 text-amber-950 text-[10px] px-1.5 py-2 rounded-b writing-mode-vertical shadow">奖励</button>
+                    </div>
+
                     <div class="absolute right-2 top-0 flex items-center space-x-2 text-[10px] text-amber-950 z-10">
-                        <button onclick="openSocialModal('jieyi')" class="flex flex-col items-center">🧘<span class="font-bold text-amber-900">道友</span></button>
+                        <button onclick="openSocialModal('zhijiao')" class="flex flex-col items-center">🧘<span class="font-bold text-amber-900">道友</span></button>
                         <button onclick="handleLogout()" class="flex flex-col items-center text-rose-800 font-bold">⚙️<span>设置</span></button>
                     </div>
 
                     <div class="relative w-44 h-44 flex items-center justify-center my-2">
+                        <div class="absolute w-36 h-36 rounded-full bg-amber-100/70 border border-amber-300 shadow-inner"></div>
+                        <div class="absolute w-40 h-40 rounded-full border border-dashed border-amber-700/40 animate-spin-slow"></div>
                         <div class="relative z-10 w-24 h-24 rounded-full bg-gradient-to-t from-purple-700 via-amber-400 to-yellow-200 gold-glow flex items-center justify-center shadow-lg">
-                            <span class="text-5xl opacity-90">👧</span>
+                            <span class="text-5xl opacity-90">👩‍🦰</span>
+                        </div>
+                    </div>
+
+                    <div class="w-full text-center space-y-1 z-10">
+                        <div class="text-[11px] text-stone-800 font-bold">当前修炼效率：(940~3160)/5秒</div>
+                        <div class="w-48 h-2.5 mx-auto bg-stone-300 rounded-full border border-amber-800 overflow-hidden relative">
+                            <div id="ui-progress-bar" class="h-full bg-amber-500 w-0 transition-all duration-100"></div>
+                        </div>
+                        <div class="text-[9px] text-stone-600 font-mono">00:<span id="ui-timer-sec">05</span></div>
+                        <div class="text-xs text-stone-900 font-bold">
+                            总修为: <span id="total-xiuwei" class="text-amber-900 text-sm font-mono">98,642,644</span>
                         </div>
                     </div>
                 </div>
 
-                <div class="panel-row p-2 rounded border border-amber-800/60 h-24 flex flex-col justify-between text-[11px] relative">
-                    <div id="game-logs" class="overflow-y-auto no-scrollbar space-y-1 text-stone-800">
-                        <p>【 2073年 】打坐吐纳，吸纳天地灵气。</p>
-                    </div>
+                <div class="panel-row p-2 rounded border border-amber-800/60 h-20 flex flex-col justify-between text-[11px]">
+                    <p>【 <span class="text-amber-800 font-bold" id="log-year-1">150560年</span> 】在魔神界参加“狩猎域外天魔”获得奖励：15功德。</p>
                 </div>
             </main>
 
-            <!-- 2.3 标签页 2：储物/背包视图 -->
+            <!-- ==================== 视图 2：储物/背包视图 ==================== -->
             <main id="tab-chuwu" class="flex-1 overflow-y-auto p-2 no-scrollbar hidden flex flex-col justify-between space-y-1.5">
                 <div class="relative flex items-center justify-between p-2 panel-row rounded-lg">
                     <div class="flex-1 flex flex-col items-center justify-center relative h-full mx-1">
                         <div class="w-24 h-24 rounded-full bg-amber-200/50 border border-amber-600/40 flex items-center justify-center">
-                            <span class="text-4xl opacity-80">👧</span>
+                            <span class="text-4xl opacity-80">👩‍🦰</span>
                         </div>
                         <button onclick="switchTab('tab-lianqi')" class="absolute bottom-1 right-3 hanging-tag px-2 py-0.5 rounded border border-amber-800 text-[10px] font-bold shadow">⚒️ 炼器</button>
                     </div>
                 </div>
 
-                <div id="inventory-grid-container" class="inventory-grid panel-row p-1.5 rounded-lg flex-1 min-h-[190px] overflow-y-auto no-scrollbar"></div>
-            </main>
+                <div class="flex justify-between items-center px-1 text-[11px]">
+                    <div class="flex items-center space-x-1 font-bold text-amber-950">
+                        <span>初级储物手镯</span>
+                        <span id="inv-capacity-text" class="text-rose-800">8/111</span>
+                    </div>
+                </div>
 
-            <!-- 2.4 标签页 3：灵根与聚灵阵视图 -->
-            <main id="tab-linggen" class="flex-1 overflow-y-auto p-2 no-scrollbar hidden flex flex-col justify-between space-y-2">
-                <div class="text-right pr-2 space-y-0.5">
-                    <div class="text-xs font-bold text-amber-950">⚡ 170级聚灵阵</div>
+                <div id="inventory-grid-container" class="inventory-grid panel-row p-1.5 rounded-lg flex-1 min-h-[190px] overflow-y-auto no-scrollbar"></div>
+
+                <div class="grid grid-cols-3 gap-2 pt-0.5">
+                    <button onclick="sellItems()" class="gold-btn py-1.5 rounded text-xs">出 售</button>
+                    <button onclick="useAllItems()" class="gold-btn py-1.5 rounded text-xs">全部使用</button>
+                    <button onclick="sortInventory()" class="gold-btn py-1.5 rounded text-xs">整 理</button>
                 </div>
             </main>
 
-            <!-- 2.5 标签页 5：炼器/炼炉视图 (1:1 像素级复刻最新截图) -->
+            <!-- ==================== 视图 3：灵根与聚灵阵视图 ==================== -->
+            <main id="tab-linggen" class="flex-1 overflow-y-auto p-2 no-scrollbar hidden flex flex-col justify-between space-y-2">
+                <div class="text-right pr-2 space-y-0.5">
+                    <div class="text-xs font-bold text-amber-950">⚡ <span id="ui-juling-lv">170</span>级聚灵阵</div>
+                    <div class="text-[11px] text-sky-900 font-mono">🔮 灵气: <span id="ui-lingqi-cur">23698</span>/<span id="ui-lingqi-max">217440</span></div>
+                </div>
+
+                <div class="relative my-auto flex flex-col items-center justify-center py-2">
+                    <div class="relative w-48 h-48 flex items-center justify-center">
+                        <div class="absolute inset-0 rounded-full border-2 border-amber-600/40 bg-amber-100/30 flex items-center justify-center shadow-inner">
+                            <div class="w-20 h-20 rounded-full border border-dashed border-amber-800/50 animate-spin-slow flex items-center justify-center">
+                                <span class="text-3xl">☯️</span>
+                            </div>
+                        </div>
+                        <div class="absolute -top-1 wuxing-ball wx-jin">金</div>
+                        <div class="absolute top-12 -right-1 wuxing-ball wx-mu">木</div>
+                        <div class="absolute bottom-2 right-4 wuxing-ball wx-shui">水</div>
+                        <div class="absolute bottom-2 left-4 wuxing-ball wx-huo">火</div>
+                        <div class="absolute top-12 -left-1 wuxing-ball wx-tu">土</div>
+                    </div>
+                </div>
+
+                <div class="space-y-1">
+                    <div class="panel-row p-1.5 rounded flex justify-between items-center text-[11px]">
+                        <div class="flex items-center space-x-2"><span class="wuxing-ball wx-jin text-[10px] w-5 h-5">金</span><span class="font-bold text-stone-800">凡仙二阶</span></div>
+                        <span class="text-stone-600">本系功法效果+460%</span>
+                        <button onclick="upgradeLingGen('金')" class="gold-btn px-2 py-0.5 rounded text-xs font-bold">+</button>
+                    </div>
+                </div>
+            </main>
+
+            <!-- ==================== 视图 4：洞府仙居与资源管理 ==================== -->
+            <main id="tab-dongfu" class="flex-1 overflow-y-auto p-2 no-scrollbar hidden flex flex-col space-y-2">
+                <div class="panel-row p-1.5 rounded-lg flex items-center justify-between text-xs font-bold text-amber-950 shadow-sm">
+                    <div class="flex items-center space-x-1">
+                        <span>闲置仆役:</span>
+                        <span id="dongfu-idle-servants" class="font-mono text-sky-800">7,543,056</span>
+                        <button onclick="addServants()" class="gold-btn px-2 py-0.2 rounded text-[10px]">+</button>
+                    </div>
+                    <span class="hanging-tag px-2 py-0.5 rounded text-[10px] border border-amber-800">仙居</span>
+                </div>
+
+                <!-- 食物 -->
+                <div class="dongfu-card space-y-1">
+                    <div class="flex justify-between items-center">
+                        <div class="flex items-center space-x-2">
+                            <span class="text-xl">🥩</span>
+                            <div>
+                                <div class="text-xs font-bold text-amber-950">食物: <span id="df-food-lv">300</span>级</div>
+                                <div class="text-[10px] font-mono text-stone-700">储量: <span id="df-food-cur">39594</span>/<span id="df-food-max">41943000</span></div>
+                            </div>
+                        </div>
+                        <button onclick="upgradeDongfu('food')" class="gold-btn px-4 py-1 rounded text-xs shadow">升级</button>
+                    </div>
+                </div>
+                <!-- 木材 -->
+                <div class="dongfu-card space-y-1">
+                    <div class="flex justify-between items-center">
+                        <div class="flex items-center space-x-2">
+                            <span class="text-xl">🪵</span>
+                            <div>
+                                <div class="text-xs font-bold text-amber-950">木材: <span id="df-wood-lv">300</span>级</div>
+                                <div class="text-[10px] font-mono text-stone-700">储量: <span id="df-wood-cur">1380900</span>/<span id="df-wood-max">16200000</span></div>
+                            </div>
+                        </div>
+                        <button onclick="upgradeDongfu('wood')" class="gold-btn px-4 py-1 rounded text-xs shadow">升级</button>
+                    </div>
+                </div>
+                <!-- 灵草 -->
+                <div class="dongfu-card space-y-1">
+                    <div class="flex justify-between items-center">
+                        <div class="flex items-center space-x-2">
+                            <span class="text-xl">🌿</span>
+                            <div>
+                                <div class="text-xs font-bold text-amber-950">灵草: <span id="df-herb-lv">300</span>级</div>
+                                <div class="text-[10px] font-mono text-stone-700">储量: <span id="df-herb-cur">2870419</span>/<span id="df-herb-max">8640000</span></div>
+                            </div>
+                        </div>
+                        <button onclick="upgradeDongfu('herb')" class="gold-btn px-4 py-1 rounded text-xs shadow">升级</button>
+                    </div>
+                </div>
+                <!-- 玄铁 -->
+                <div class="dongfu-card space-y-1">
+                    <div class="flex justify-between items-center">
+                        <div class="flex items-center space-x-2">
+                            <span class="text-xl">🪨</span>
+                            <div>
+                                <div class="text-xs font-bold text-amber-950">玄铁: <span id="df-iron-lv">269</span>级</div>
+                                <div class="text-[10px] font-mono text-stone-700">储量: <span id="df-iron-cur">1784775</span>/<span id="df-iron-max">6946656</span></div>
+                            </div>
+                        </div>
+                        <button onclick="upgradeDongfu('iron')" class="gold-btn px-4 py-1 rounded text-xs shadow">升级</button>
+                    </div>
+                </div>
+            </main>
+
+            <!-- ==================== 视图 5：炼器坊 ==================== -->
             <main id="tab-lianqi" class="flex-1 overflow-y-auto p-2 no-scrollbar hidden flex flex-col justify-between space-y-2">
-                <!-- 顶部：身份与选择炼器炉 -->
                 <div class="flex justify-between items-center px-1">
                     <span class="text-xs font-bold text-sky-900 bg-sky-100/60 border border-sky-700/40 px-2 py-0.5 rounded">一品炼器师</span>
-                    <div class="hanging-tag px-3 py-0.5 rounded text-xs font-bold text-amber-950 border border-amber-800">
-                        选择使用的炼器炉
-                    </div>
+                    <div class="hanging-tag px-3 py-0.5 rounded text-xs font-bold text-amber-950 border border-amber-800">选择使用的炼器炉</div>
                     <span></span>
                 </div>
 
-                <!-- 炼器炉图标展示 -->
                 <div class="flex justify-center items-center space-x-6 py-1">
-                    <div class="furnace-item" onclick="selectFurnace(1)">
-                        <span class="text-2xl">🏺</span>
-                        <span class="absolute -bottom-1 text-[8px] bg-amber-900 text-amber-100 px-1 rounded-full">⭐</span>
-                    </div>
-                    <div class="furnace-item active" onclick="selectFurnace(2)">
+                    <div class="furnace-item active">
                         <span class="text-2xl">🏺</span>
                         <span class="absolute -bottom-1 text-[8px] bg-amber-900 text-amber-100 px-1 rounded-full">⭐⭐</span>
                     </div>
                 </div>
 
-                <!-- 勾选项与标题栏 -->
-                <div class="flex justify-between items-center px-1 text-xs font-bold text-stone-800">
-                    <label class="flex items-center space-x-1 cursor-pointer">
-                        <input type="checkbox" checked class="accent-emerald-700">
-                        <span class="text-[11px] text-stone-700">自动选择合适炼器炉</span>
-                    </label>
-                    <button class="hanging-tag px-3 py-0.5 rounded text-xs font-bold text-amber-950 border border-amber-800">选择炼制的法宝</button>
-                    <span class="text-emerald-800 text-[11px] cursor-pointer">隐藏图纸</span>
+                <div class="grid grid-cols-2 gap-1.5 px-1">
+                    <div class="recipe-btn active">【一品】一品须弥石</div>
+                    <div class="recipe-btn">【一品】一品炼丹炉</div>
                 </div>
 
-                <!-- 可炼制图纸网格 (支持点击切换) -->
-                <div id="recipe-grid" class="grid grid-cols-2 gap-1.5 px-1">
-                    <div onclick="selectRecipe('xumi1')" id="rec-xumi1" class="recipe-btn active">【一品】一品须弥石</div>
-                    <div onclick="selectRecipe('danlu1')" id="rec-danlu1" class="recipe-btn">【一品】一品炼丹炉</div>
-                    <div onclick="selectRecipe('qilu1')" id="rec-qilu1" class="recipe-btn">【一品】一品炼器炉</div>
-                    <div onclick="selectRecipe('ring_xuan')" id="rec-ring_xuan" class="recipe-btn">【一品】[玄]丙午论道之戒</div>
-                    <div onclick="selectRecipe('ring_di')" id="rec-ring_di" class="recipe-btn">【一品】[地]丙午论道之戒</div>
-                    <div onclick="selectRecipe('ring_tian')" id="rec-ring_tian" class="recipe-btn">【一品】[天]丙午论道之戒</div>
-                    <div onclick="selectRecipe('xumi2')" id="rec-xumi2" class="recipe-btn">【二品】二品须弥石</div>
-                </div>
-
-                <!-- 所需材料面板 -->
                 <div class="panel-row p-2 rounded-lg text-center space-y-1.5 shadow">
                     <div class="inline-block hanging-tag px-4 py-0.5 rounded text-xs font-bold text-amber-950 border border-amber-800">所需材料</div>
-                    <div class="text-[11px] text-rose-800 font-bold">炼制成功率：<span id="craft-rate">100%</span></div>
-                    
+                    <div class="text-[11px] text-rose-800 font-bold">炼制成功率：100%</div>
                     <div class="flex justify-center space-x-4 py-1">
                         <div class="flex flex-col items-center">
                             <div class="w-10 h-10 bg-amber-100/70 border border-amber-700/50 rounded flex items-center justify-center text-lg">🪨</div>
-                            <span id="mat-req-1" class="text-[10px] font-mono text-stone-800 font-bold">29/10</span>
-                        </div>
-                        <div class="flex flex-col items-center">
-                            <div class="w-10 h-10 bg-amber-100/70 border border-amber-700/50 rounded flex items-center justify-center text-lg">⚙️</div>
-                            <span id="mat-req-2" class="text-[10px] font-mono text-stone-800 font-bold">370/10</span>
+                            <span class="text-[10px] font-mono text-stone-800 font-bold">29/10</span>
                         </div>
                     </div>
-
-                    <div class="text-[10px] text-stone-600 font-bold">已使用：<span id="craft-used-count">8/12</span></div>
+                    <div class="text-[10px] text-stone-600 font-bold">已使用：8/12</div>
                 </div>
 
-                <!-- 炼器控制与实时倒计时条 -->
                 <div class="flex items-center space-x-2 px-1 pt-1">
                     <span class="text-xs font-bold text-stone-800 whitespace-nowrap">炼器中：</span>
                     <div class="flex-1 h-4 bg-stone-300 rounded border border-amber-800 overflow-hidden relative">
                         <div id="craft-progress-bar" class="h-full bg-sky-500 w-[40%] transition-all duration-300"></div>
                         <span id="craft-timer-text" class="absolute inset-0 flex items-center justify-center text-[9px] font-mono text-white font-bold drop-shadow">00:14:10</span>
                     </div>
-                    <button onclick="cancelCrafting()" class="red-btn px-2.5 py-1 rounded text-xs whitespace-nowrap">强行中止</button>
+                    <button onclick="alert('已中止')" class="red-btn px-2.5 py-1 rounded text-xs whitespace-nowrap">强行中止</button>
                 </div>
             </main>
 
-            <!-- 3. 社交模态卷轴弹窗 -->
+            <!-- ==================== 3. 社交与结义/至交模态弹窗 ==================== -->
             <div id="modal-social" class="absolute inset-0 z-50 bg-black/60 flex items-center justify-center p-3 hidden">
                 <div class="scroll-modal w-full h-[88vh] flex flex-col justify-between p-3 relative overflow-hidden select-none">
                     <div class="flex items-center justify-between border-b-2 border-amber-800/40 pb-1.5 shrink-0">
@@ -466,16 +547,22 @@
                         <button onclick="closeSocialModal()" class="w-6 h-6 rounded bg-rose-900 text-amber-100 font-bold text-xs flex items-center justify-center">✕</button>
                     </div>
                     <div id="social-main-body" class="space-y-2 flex-1 overflow-y-auto no-scrollbar p-2"></div>
+                    <div class="grid grid-cols-4 gap-1 shrink-0 pt-1 border-t border-amber-800/40">
+                        <button onclick="switchSocialTab('jieyin')" id="stab-jieyin" class="social-tab-btn rounded-l">👤 接引</button>
+                        <button onclick="switchSocialTab('jieyi')" id="stab-jieyi" class="social-tab-btn active">🤝 结义</button>
+                        <button onclick="switchSocialTab('zhijiao')" id="stab-zhijiao" class="social-tab-btn">🌸 至交</button>
+                        <button onclick="switchSocialTab('huzhu')" id="stab-huzhu" class="social-tab-btn rounded-r">🏰 道友互助</button>
+                    </div>
                 </div>
             </div>
 
-            <!-- 2.6 底部 6 图标通用导航栏 -->
+            <!-- ==================== 2.6 底部 6 图标通用导航栏 ==================== -->
             <footer class="bg-[#241a11] p-1.5 border-t-2 border-[#b89753] grid grid-cols-6 gap-1 shrink-0 text-center shadow-lg">
                 <div onclick="switchTab('tab-xiulian')" id="nav-xiulian" class="nav-item active py-1"><div class="text-base">🧘</div><span>修炼</span></div>
                 <div onclick="switchTab('tab-chuwu')" id="nav-chuwu" class="nav-item py-1"><div class="text-base">🎒</div><span>储物</span></div>
                 <div onclick="switchTab('tab-linggen')" id="nav-linggen" class="nav-item py-1"><div class="text-base">☯️</div><span>灵根</span></div>
                 <div onclick="alert('【功法】')" class="nav-item py-1"><div class="text-base">📜</div><span>功法</span></div>
-                <div onclick="alert('【洞府】')" class="nav-item py-1"><div class="text-base">🏛️</div><span>洞府</span></div>
+                <div onclick="switchTab('tab-dongfu')" id="nav-dongfu" class="nav-item py-1"><div class="text-base">🏛️</div><span>洞府</span></div>
                 <div onclick="alert('【仙缘】')" class="nav-item py-1"><div class="text-base">🏺</div><span>仙缘</span></div>
             </footer>
         </div>
@@ -488,20 +575,28 @@
         let gameData = {
             xiuwei: 98642644,
             rate: 2040,
-            year: 2073,
-            lingshi: 8013,
-            shengwang: 79448,
+            year: 150560,
+            lingshi: 375474,
+            shengwang: 102244031,
             maxSlots: 111,
-            // 炼器系统数据绑定
-            crafting: {
-                isCrafting: true,
-                selectedRecipe: 'xumi1',
-                timeLeftSec: 850,
-                totalTimeSec: 900
-            },
-            materials: { iron: 29, ore: 370 },
-            inventory: [{ id: 1, name: '一品须弥石', icon: '🪨', count: 8, type: 'item', desc: '提升储物槽容量' }]
+            idleServants: 7543056,
+            julingLv: 170,
+            lingqiCur: 23698,
+            lingqiMax: 217440,
+            zhijiaoName: null,
+            jieyiList: [null, null, null, null, null, null],
+            inventory: [
+                { id: 1, name: '一品须弥石', icon: '🪨', count: 8, type: 'item', desc: '提升储物槽容量' }
+            ],
+            dongfu: {
+                food: { level: 300, cur: 39594, max: 41943000, servants: 902, maxServants: 902 },
+                wood: { level: 300, cur: 1380900, max: 16200000, servants: 190, maxServants: 600 },
+                herb: { level: 300, cur: 2870419, max: 8640000, servants: 79, maxServants: 300 },
+                iron: { level: 269, cur: 1784775, max: 6946656, servants: 49, maxServants: 269 }
+            }
         };
+
+        let timerCount = 5;
 
         window.addEventListener('DOMContentLoaded', () => { loadHistoryUsers(); });
 
@@ -513,77 +608,134 @@
                     datalist.innerHTML = '';
                     history.forEach(user => { const option = document.createElement('option'); option.value = user; datalist.appendChild(option); });
                 }
+                if (history.length > 0) {
+                    const userInput = document.getElementById('input-username');
+                    if (userInput) userInput.value = history[0];
+                }
             } catch(e) {}
         }
 
         function handleLogin() {
             const usernameInput = document.getElementById('input-username');
-            const passwordInput = document.getElementById('input-password');
-            currentUser = usernameInput ? usernameInput.value.trim() : '全方阵亡';
+            currentUser = usernameInput ? usernameInput.value.trim() : '桑梓心痕';
             
+            const saved = localStorage.getItem(`xiuxian_secure_save_${currentUser}`);
+            if (saved) { try { gameData = JSON.parse(saved); } catch(e){} }
+
             document.getElementById('screen-login').classList.add('hidden');
             document.getElementById('screen-game').classList.remove('hidden');
             updateUI();
+            renderInventory();
         }
 
-        /* 切换炼制图纸 */
-        function selectRecipe(id) {
-            document.querySelectorAll('.recipe-btn').forEach(btn => btn.classList.remove('active'));
-            const target = document.getElementById(`rec-${id}`);
-            if (target) target.classList.add('active');
-            gameData.crafting.selectedRecipe = id;
-        }
-
-        /* 强行中止炼器 */
-        function cancelCrafting() {
-            if (confirm("强行中止炼器将损失部分材料，确定中止吗？")) {
-                gameData.crafting.isCrafting = false;
-                gameData.crafting.timeLeftSec = 0;
-                document.getElementById('craft-progress-bar').style.width = '0%';
-                document.getElementById('craft-timer-text').innerText = '已中止';
-            }
-        }
-
+        /* 统一多视图切换 */
         function switchTab(tabId) {
-            ['tab-xiulian', 'tab-chuwu', 'tab-linggen', 'tab-lianqi'].forEach(id => {
+            ['tab-xiulian', 'tab-chuwu', 'tab-linggen', 'tab-dongfu', 'tab-lianqi'].forEach(id => {
                 const el = document.getElementById(id);
                 if (el) el.classList.add('hidden');
             });
 
-            document.getElementById('nav-xiulian').classList.remove('active');
-            document.getElementById('nav-chuwu').classList.remove('active');
-            document.getElementById('nav-linggen').classList.remove('active');
+            ['nav-xiulian', 'nav-chuwu', 'nav-linggen', 'nav-dongfu'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.classList.remove('active');
+            });
 
             const activeTab = document.getElementById(tabId);
             if (activeTab) activeTab.classList.remove('hidden');
 
             if (tabId === 'tab-xiulian') document.getElementById('nav-xiulian').classList.add('active');
-            else if (tabId === 'tab-chuwu') document.getElementById('nav-chuwu').classList.add('active');
+            else if (tabId === 'tab-chuwu') { document.getElementById('nav-chuwu').classList.add('active'); renderInventory(); }
             else if (tabId === 'tab-linggen') document.getElementById('nav-linggen').classList.add('active');
+            else if (tabId === 'tab-dongfu') document.getElementById('nav-dongfu').classList.add('active');
+        }
+
+        /* 社交与结义弹窗 */
+        function openSocialModal(type) {
+            document.getElementById('modal-social').classList.remove('hidden');
+            switchSocialTab(type || 'jieyi');
+        }
+        function closeSocialModal() {
+            document.getElementById('modal-social').classList.add('hidden');
+        }
+        function switchSocialTab(sub) {
+            ['stab-jieyin', 'stab-jieyi', 'stab-zhijiao', 'stab-huzhu'].forEach(id => document.getElementById(id).classList.remove('active'));
+            const mainBody = document.getElementById('social-main-body');
+            const titleEl = document.getElementById('social-title');
+
+            if (sub === 'jieyi') {
+                document.getElementById('stab-jieyi').classList.add('active');
+                titleEl.innerText = "结 义";
+                mainBody.innerHTML = `<div class="text-xs font-bold text-amber-950 pb-1">您与如下道友义结金兰</div>` + 
+                    gameData.jieyiList.map((f, i) => `
+                        <div class="jieyi-slot flex items-center justify-between">
+                            <span class="text-xs font-bold">${f ? f.name : '暂无'}</span>
+                            <button onclick="addJieyi(${i})" class="gold-btn px-2 py-0.5 rounded text-[10px]">${f ? '查看' : '结义'}</button>
+                        </div>
+                    `).join('');
+            } else if (sub === 'zhijiao') {
+                document.getElementById('stab-zhijiao').classList.add('active');
+                titleEl.innerText = "至 交";
+                mainBody.innerHTML = `<div class="text-center p-4 text-xs font-bold">当前至交：${gameData.zhijiaoName || '尚无至交'}</div>`;
+            }
+        }
+        function addJieyi(index) {
+            const name = prompt("请输入道友道号：");
+            if (!name) return;
+            gameData.jieyiList[index] = { name: name.trim() };
+            saveUserData();
+            switchSocialTab('jieyi');
+        }
+
+        function renderInventory() {
+            const container = document.getElementById('inventory-grid-container');
+            if (!container) return;
+            container.innerHTML = '';
+            for (let i = 0; i < 24; i++) {
+                const item = gameData.inventory[i];
+                const div = document.createElement('div');
+                div.className = 'inv-item';
+                if (item) {
+                    div.innerHTML = `<span>${item.icon}</span><span class="inv-count">${item.count}</span>`;
+                }
+                container.appendChild(div);
+            }
         }
 
         function updateUI() {
-            document.getElementById('ui-username').innerText = currentUser || '全方阵亡';
-            document.getElementById('ui-lingshi').innerText = gameData.lingshi;
-            document.getElementById('ui-shengwang').innerText = gameData.shengwang;
+            document.getElementById('ui-username').innerText = currentUser || '桑梓心痕';
+            document.getElementById('ui-lingshi').innerText = gameData.lingshi.toLocaleString();
+            document.getElementById('ui-shengwang').innerText = gameData.shengwang.toLocaleString();
             document.getElementById('ui-year').innerText = gameData.year + "年";
+            document.getElementById('total-xiuwei').innerText = gameData.xiuwei.toLocaleString();
+            document.getElementById('dongfu-idle-servants').innerText = gameData.idleServants.toLocaleString();
         }
 
-        // 炼器倒计时定时器
+        function saveUserData() {
+            if (!currentUser) return;
+            localStorage.setItem(`xiuxian_secure_save_${currentUser}`, JSON.stringify(gameData));
+        }
+
+        function handleLogout() {
+            saveUserData();
+            document.getElementById('screen-game').classList.add('hidden');
+            document.getElementById('screen-login').classList.remove('hidden');
+        }
+
+        // 自动循环计时器
         setInterval(() => {
-            if (gameData.crafting.isCrafting && gameData.crafting.timeLeftSec > 0) {
-                gameData.crafting.timeLeftSec--;
-                const sec = gameData.crafting.timeLeftSec;
-                const m = String(Math.floor(sec / 60)).padStart(2, '0');
-                const s = String(sec % 60).padStart(2, '0');
-                
-                const timerEl = document.getElementById('craft-timer-text');
-                const barEl = document.getElementById('craft-progress-bar');
-                if (timerEl) timerEl.innerText = `00:${m}:${s}`;
-                if (barEl) {
-                    const pct = ((gameData.crafting.totalTimeSec - sec) / gameData.crafting.totalTimeSec) * 100;
-                    barEl.style.width = pct + '%';
+            if (currentUser) {
+                timerCount--;
+                if (timerCount < 0) {
+                    timerCount = 5;
+                    gameData.xiuwei += gameData.rate;
+                    gameData.year += 1;
+                    updateUI();
+                    saveUserData();
                 }
+                const secEl = document.getElementById('ui-timer-sec');
+                const barEl = document.getElementById('ui-progress-bar');
+                if (secEl) secEl.innerText = "0" + timerCount;
+                if (barEl) barEl.style.width = ((5 - timerCount) / 5 * 100) + "%";
             }
         }, 1000);
     </script>
