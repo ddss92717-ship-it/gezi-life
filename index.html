@@ -73,6 +73,14 @@
         }
         .gold-btn:active { transform: scale(0.96); }
 
+        .green-btn {
+            background: linear-gradient(180deg, #d4f7a5 0%, #7cb342 100%);
+            border: 1px solid #4b7a21;
+            color: #1b3a01;
+            font-weight: 700;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.25);
+        }
+
         .hanging-tag {
             background: linear-gradient(180deg, #fff7d6 0%, #e0bd6f 100%);
             border: 1px solid #8b6826;
@@ -301,7 +309,7 @@
                 </div>
             </main>
 
-            <!-- 视图 2：储物/背包（完整保留四周装备槽与30格网格） -->
+            <!-- 视图 2：储物/背包 -->
             <main id="tab-chuwu" class="flex-1 overflow-y-auto p-2 no-scrollbar hidden flex flex-col justify-between space-y-1">
                 <div class="relative p-2 panel-row rounded-lg flex flex-col items-center justify-center">
                     <div class="mb-1">
@@ -363,8 +371,8 @@
             <!-- 视图 3：灵根与聚灵阵 -->
             <main id="tab-linggen" class="flex-1 overflow-y-auto p-2 no-scrollbar hidden flex flex-col justify-between space-y-2">
                 <div class="text-right pr-2 space-y-0.5">
-                    <div class="text-xs font-bold text-amber-950">⚡ 170级聚灵阵[cite: 6]</div>
-                    <div class="text-[11px] text-sky-900 font-mono">🔮 灵气: 23698/217440[cite: 6]</div>
+                    <div class="text-xs font-bold text-amber-950">⚡ 170级聚灵阵</div>
+                    <div class="text-[11px] text-sky-900 font-mono">🔮 灵气: 23698/217440</div>
                 </div>
                 <div class="relative my-auto flex flex-col items-center justify-center py-2">
                     <div class="relative w-40 h-40 flex items-center justify-center">
@@ -377,7 +385,7 @@
                         <div class="absolute bottom-1 left-3 wuxing-ball wx-huo">火</div>
                         <div class="absolute top-10 -left-1 wuxing-ball wx-tu">土</div>
                     </div>
-                    <div class="text-xs font-bold text-stone-800 mt-2">每5秒生产604点灵气[cite: 6]</div>
+                    <div class="text-xs font-bold text-stone-800 mt-2">每5秒生产604点灵气</div>
                 </div>
             </main>
 
@@ -386,22 +394,22 @@
                 <div class="flex items-center justify-between border-b border-amber-800/40 pb-1">
                     <div class="w-4"></div>
                     <div class="hanging-tag px-6 py-0.5 rounded text-xs font-black tracking-widest text-amber-950 border border-amber-800">
-                        玄门全鉴[cite: 21]
+                        玄门全鉴
                     </div>
                     <button onclick="switchTab('tab-xiulian')" class="w-5 h-5 rounded bg-rose-900 text-amber-100 font-bold text-xs flex items-center justify-center">✕</button>
                 </div>
 
                 <div class="panel-row p-2 rounded-md text-[10px] text-stone-800 leading-tight space-y-1 shadow-sm">
-                    <p>这本《玄门全鉴》其详细记录了修真界所有宗门所擅<span class="text-rose-800 font-bold">功法绝学</span>等绝密之事，以及道友的学习情况，但只可查阅满足最低进入等级要求的宗门，未达到入门要求的门派不可查阅。[cite: 21]</p>
+                    <p>这本《玄门全鉴》其详细记录了修真界所有宗门所擅<span class="text-rose-800 font-bold">功法绝学</span>等绝密之事，以及道友的学习情况，但只可查阅满足最低进入等级要求的宗门，未达到入门要求的门派不可查阅。</p>
                 </div>
 
                 <div class="flex items-center justify-between text-[10px] px-1">
                     <label class="flex items-center space-x-1 font-bold text-stone-800 cursor-pointer">
                         <input type="checkbox" id="chk-unlearned" checked onchange="renderXuanmenList()" class="accent-amber-700">
-                        <span>只显示未学完心法、攻诀、绝学的门派[cite: 21]</span>
+                        <span>只显示未学完心法、攻诀、绝学的门派</span>
                     </label>
                     <select id="select-star" onchange="renderXuanmenList()" class="bg-amber-100 border border-amber-700/60 rounded px-1 py-0.5 font-bold text-amber-950 text-[10px] focus:outline-none">
-                        <option value="10">10星门派 ▼[cite: 21]</option>
+                        <option value="10">10星门派 ▼</option>
                         <option value="9">9星门派 ▼</option>
                         <option value="8">8星门派 ▼</option>
                     </select>
@@ -410,7 +418,7 @@
                 <div id="xuanmen-container" class="space-y-2 flex-1 overflow-y-auto no-scrollbar pt-1"></div>
             </main>
 
-            <!-- 视图 5：仙缘 / 地图探索与四界之门 -->
+            <!-- 视图 5：仙缘 / 地图探索与界主入口 -->
             <main id="tab-xiandao" class="flex-1 overflow-y-auto p-2 no-scrollbar hidden flex flex-col space-y-2">
                 <div class="panel-row p-2 rounded-md flex justify-between items-center text-xs">
                     <span class="font-bold text-amber-950">💡 探索信息</span>
@@ -449,10 +457,10 @@
                 </div>
 
                 <div class="grid grid-cols-4 gap-1 text-center py-1">
-                    <div onclick="alert('仙界之门：通往三十三重天')" class="cursor-pointer flex flex-col items-center"><span class="text-2xl">🏛️</span><span class="text-[9px] font-bold">仙界之门</span></div>
-                    <div onclick="alert('魔界之门：通往大魔天')" class="cursor-pointer flex flex-col items-center"><span class="text-2xl">🔥</span><span class="text-[9px] font-bold">魔界之门</span></div>
-                    <div onclick="alert('冥界之门：通往阴曹地府')" class="cursor-pointer flex flex-col items-center"><span class="text-2xl">🌀</span><span class="text-[9px] font-bold">冥界之门</span></div>
-                    <div onclick="alert('神界之门：通往九霄神界')" class="cursor-pointer flex flex-col items-center"><span class="text-2xl">✨</span><span class="text-[9px] font-bold">神界之门</span></div>
+                    <div onclick="openShangqingModal()" class="cursor-pointer flex flex-col items-center"><span class="text-2xl">🏛️</span><span class="text-[9px] font-bold underline text-amber-900">仙界/上清宫</span></div>
+                    <div onclick="openShangqingModal()" class="cursor-pointer flex flex-col items-center"><span class="text-2xl">🔥</span><span class="text-[9px] font-bold">魔界之门</span></div>
+                    <div onclick="openShangqingModal()" class="cursor-pointer flex flex-col items-center"><span class="text-2xl">🌀</span><span class="text-[9px] font-bold">冥界之门</span></div>
+                    <div onclick="openShangqingModal()" class="cursor-pointer flex flex-col items-center"><span class="text-2xl">✨</span><span class="text-[9px] font-bold">神界之门</span></div>
                 </div>
 
                 <div class="panel-row p-2 rounded text-center space-y-1">
@@ -467,16 +475,16 @@
             <main id="tab-dongfudaji" class="flex-1 overflow-y-auto p-2 no-scrollbar hidden flex flex-col space-y-2">
                 <div class="panel-row p-2 rounded text-center text-xs font-bold text-amber-950">洞府大阵系统</div>
                 <div class="grid grid-cols-2 gap-1.5">
-                    <div class="panel-row p-2 rounded text-center"><div class="font-bold text-xs">五行聚灵阵</div><div class="text-[10px] text-stone-600">学会阵图可建造[cite: 11]</div></div>
-                    <div class="panel-row p-2 rounded text-center"><div class="font-bold text-xs">金光阵</div><div class="text-[10px] text-stone-600">学会阵图可建造[cite: 11]</div></div>
+                    <div class="panel-row p-2 rounded text-center"><div class="font-bold text-xs">五行聚灵阵</div><div class="text-[10px] text-stone-600">学会阵图可建造</div></div>
+                    <div class="panel-row p-2 rounded text-center"><div class="font-bold text-xs">金光阵</div><div class="text-[10px] text-stone-600">学会阵图可建造</div></div>
                 </div>
             </main>
 
             <!-- 视图 7：炼器坊 -->
             <main id="tab-lianqi" class="flex-1 overflow-y-auto p-2 no-scrollbar hidden flex flex-col justify-between space-y-2">
                 <div class="flex justify-between items-center px-1">
-                    <span class="text-xs font-bold text-sky-900 bg-sky-100 px-2 py-0.5 rounded">一品炼器师[cite: 9]</span>
-                    <div class="hanging-tag px-2 py-0.5 rounded text-xs font-bold">选择使用的炼器炉[cite: 9]</div>
+                    <span class="text-xs font-bold text-sky-900 bg-sky-100 px-2 py-0.5 rounded">一品炼器师</span>
+                    <div class="hanging-tag px-2 py-0.5 rounded text-xs font-bold">选择使用的炼器炉</div>
                 </div>
                 <button onclick="switchTab('tab-chuwu')" class="gold-btn py-1.5 rounded text-xs">返回背包</button>
             </main>
@@ -484,12 +492,12 @@
             <!-- 视图 8：角色全景属性 -->
             <main id="tab-shuxing" class="flex-1 overflow-y-auto p-2 no-scrollbar hidden flex flex-col space-y-1.5">
                 <div class="grid grid-cols-6 gap-0.5 text-center text-[10px]">
-                    <div class="gold-btn py-1 rounded">属性[cite: 15]</div>
-                    <div class="panel-row py-1 rounded">肉身[cite: 15]</div>
+                    <div class="gold-btn py-1 rounded">属性</div>
+                    <div class="panel-row py-1 rounded">肉身</div>
                 </div>
                 <div class="grid grid-cols-2 gap-1 text-xs">
-                    <div class="panel-row p-1.5 rounded flex justify-between"><span>攻</span><span class="font-mono font-bold" id="attr-gong">120681</span>[cite: 15]</div>
-                    <div class="panel-row p-1.5 rounded flex justify-between"><span>防</span><span class="font-mono font-bold" id="attr-fang">136230</span>[cite: 15]</div>
+                    <div class="panel-row p-1.5 rounded flex justify-between"><span>攻</span><span class="font-mono font-bold" id="attr-gong">120681</span></div>
+                    <div class="panel-row p-1.5 rounded flex justify-between"><span>防</span><span class="font-mono font-bold" id="attr-fang">136230</span></div>
                 </div>
                 <button onclick="switchTab('tab-chuwu')" class="gold-btn py-1.5 rounded text-xs">返回背包</button>
             </main>
@@ -538,6 +546,64 @@
                 </div>
             </div>
 
+            <!-- 弹窗 C：上清宫/界主挑战与大帝争夺模态框 (新增：精准复刻最新截图) -->
+            <div id="modal-shangqing" class="absolute inset-0 z-50 bg-black/60 flex items-center justify-center p-3 hidden">
+                <div class="scroll-modal w-full h-[82vh] flex flex-col justify-between p-3 relative select-none rounded-lg text-xs">
+                    <!-- 顶栏标题 -->
+                    <div class="flex items-center justify-between border-b border-amber-800/30 pb-1">
+                        <div class="w-4"></div>
+                        <div class="hanging-tag px-6 py-0.5 rounded text-xs font-black tracking-widest text-amber-950 border border-amber-800">
+                            上清宫
+                        </div>
+                        <button onclick="closeShangqingModal()" class="w-5 h-5 rounded bg-rose-900 text-amber-100 font-bold text-xs flex items-center justify-center">✕</button>
+                    </div>
+
+                    <!-- 挑战界主规则按钮 -->
+                    <div class="text-right pr-1">
+                        <button onclick="alert('界主规则：每日可挑战一次界主，增加征服度；征服度达到1000后可掌管本界！')" class="text-[10px] font-bold text-amber-900 underline">📜 挑战界主规则</button>
+                    </div>
+
+                    <!-- 界主打坐形象与立绘区 -->
+                    <div class="relative my-auto flex flex-col items-center justify-center py-2">
+                        <div class="relative w-36 h-36 flex items-center justify-center">
+                            <div class="absolute inset-0 rounded-full border-2 border-amber-500/50 bg-amber-100/40 shadow-lg"></div>
+                            <!-- 上清大帝竖标签 -->
+                            <div class="absolute -left-4 top-4 hanging-tag px-1 py-3 rounded text-[10px] font-black text-amber-950 writing-mode-vertical border border-amber-800 shadow">
+                                上清大帝
+                            </div>
+                            <!-- 帝王冠冕头像图标 -->
+                            <div class="relative z-10 w-24 h-24 rounded-full bg-gradient-to-t from-amber-600 to-yellow-200 border-2 border-amber-800 flex items-center justify-center shadow-md">
+                                <span class="text-5xl">👑</span>
+                            </div>
+                        </div>
+
+                        <!-- 管理本界 / 挑战大帝 按钮组 -->
+                        <div class="grid grid-cols-2 gap-3 w-full max-w-[280px] mt-4">
+                            <button onclick="alert('【管理本界】已获取本界天道巡查权！')" class="green-btn py-1.5 rounded text-xs shadow">管理本界</button>
+                            <button onclick="challengeEmperor()" class="gold-btn py-1.5 rounded text-xs shadow">挑战大帝</button>
+                        </div>
+                    </div>
+
+                    <!-- 大帝争夺进度条区 -->
+                    <div class="panel-row p-2.5 rounded-lg text-center space-y-1 shadow-inner">
+                        <div class="hanging-tag inline-block px-4 py-0.5 rounded text-[11px] font-bold text-amber-950 border border-amber-800">
+                            大帝争夺
+                        </div>
+                        <div class="text-xs font-bold text-amber-950 pt-1">
+                            梵度大帝征服度: <span id="zhengfu-val" class="font-mono text-rose-900 font-bold">972/1000</span>
+                        </div>
+                    </div>
+
+                    <!-- 底部提示与关闭按钮 -->
+                    <div class="space-y-1 text-center pt-1">
+                        <button onclick="closeShangqingModal()" class="gold-btn w-full py-1.5 rounded text-xs shadow">关 闭</button>
+                        <div id="challenge-tip" class="text-[10px] text-stone-700 font-bold py-0.5">
+                            道友，您今天已经挑战过了
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- 底部 6 图标导航栏 -->
             <footer class="bg-[#241a11] p-1.5 border-t-2 border-[#b89753] grid grid-cols-6 gap-1 shrink-0 text-center shadow-lg">
                 <div onclick="switchTab('tab-xiulian')" id="nav-xiulian" class="nav-item active py-1"><div class="text-base">🧘</div><span>修炼</span></div>
@@ -568,6 +634,7 @@
             attack: 120681,
             defense: 136230,
             exploreWheel: 115,
+            zhengfudu: 972, // 对应界主征服度数据
             learnedGongfa: [],
             inventory: [
                 { id: 1, name: '火焰', icon: '🔥', count: 5 },
@@ -690,6 +757,26 @@
             alert(`【探索】您已成功前往 ${placeName} 历练！当前探索轮次更新为：第 ${gameData.exploreWheel} 轮。`);
         }
 
+        /* 界主/上清宫弹窗交互逻辑 */
+        function openShangqingModal() {
+            document.getElementById('modal-shangqing').classList.remove('hidden');
+            updateUI();
+        }
+        function closeShangqingModal() {
+            document.getElementById('modal-shangqing').classList.add('hidden');
+        }
+        function challengeEmperor() {
+            if (gameData.zhengfudu < 1000) {
+                gameData.zhengfudu += 5;
+                if (gameData.zhengfudu > 1000) gameData.zhengfudu = 1000;
+                saveUserData();
+                updateUI();
+                alert(`【挑战成功】经过一场酣畅淋漓的大战，梵度大帝征服度提升至：${gameData.zhengfudu}/1000！`);
+            } else {
+                alert('道友征服度已满，已执掌本界！');
+            }
+        }
+
         function openYouliModal() {
             const tbody = document.getElementById('youli-table-body');
             if (!tbody) return;
@@ -781,6 +868,7 @@
             document.getElementById('ui-year').innerText = gameData.year + "年";
             document.getElementById('total-xiuwei').innerText = gameData.xiuwei.toLocaleString();
             if (document.getElementById('explore-wheel')) document.getElementById('explore-wheel').innerText = "第" + gameData.exploreWheel + "轮";
+            if (document.getElementById('zhengfu-val')) document.getElementById('zhengfu-val').innerText = gameData.zhengfudu + "/1000";
             if (document.getElementById('attr-gong')) document.getElementById('attr-gong').innerText = gameData.attack;
             if (document.getElementById('attr-fang')) document.getElementById('attr-fang').innerText = gameData.defense;
         }
