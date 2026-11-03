@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>想不想修真 · 全功能无缝版</title>
+    <title>想不想修真 · 全功能零遗漏完美版</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/canvas-confetti.browser.min.js"></script>
@@ -145,7 +145,6 @@
         .wx-huo { background: radial-gradient(circle, #f59e8c 0%, #c42718 100%); border: 1px solid #fff; }
         .wx-tu { background: radial-gradient(circle, #e5ba8c 0%, #8b5118 100%); border: 1px solid #fff; }
 
-        /* 玄门全鉴专属样式 */
         .gongfa-book-item {
             width: 44px;
             height: 48px;
@@ -165,26 +164,10 @@
             background: #fff6e0;
         }
         .tag-weixue {
-            position: absolute;
-            top: 1px;
-            left: 1px;
-            background: #b71c1c;
-            color: #fff;
-            font-size: 7px;
-            padding: 0 2px;
-            border-radius: 2px;
-            transform: scale(0.85);
+            position: absolute; top: 1px; left: 1px; background: #b71c1c; color: #fff; font-size: 7px; padding: 0 2px; border-radius: 2px; transform: scale(0.85);
         }
         .tag-yixue {
-            position: absolute;
-            top: 1px;
-            left: 1px;
-            background: #2e7d32;
-            color: #fff;
-            font-size: 7px;
-            padding: 0 2px;
-            border-radius: 2px;
-            transform: scale(0.85);
+            position: absolute; top: 1px; left: 1px; background: #2e7d32; color: #fff; font-size: 7px; padding: 0 2px; border-radius: 2px; transform: scale(0.85);
         }
 
         .scroll-modal {
@@ -192,20 +175,6 @@
             border: 3px solid #b89753;
             box-shadow: 0 15px 35px rgba(0,0,0,0.6);
             border-radius: 8px;
-        }
-
-        .social-tab-btn {
-            background: linear-gradient(180deg, #8b5c26 0%, #4a3215 100%);
-            border: 1px solid #b89753;
-            color: #f3e5c8;
-            padding: 4px 0;
-            font-size: 10px;
-            text-align: center;
-        }
-        .social-tab-btn.active {
-            background: linear-gradient(180deg, #d9a43a 0%, #8b6212 100%);
-            color: #fff;
-            font-weight: bold;
         }
 
         @keyframes pulse-gold { 0%, 100% { box-shadow: 0 0 15px rgba(234, 179, 8, 0.6); } 50% { box-shadow: 0 0 30px rgba(234, 179, 8, 0.9); } }
@@ -430,9 +399,8 @@
                 </div>
             </main>
 
-            <!-- ==================== 视图 8：功法 / 玄门全鉴 (新增：对应最新截图) ==================== -->
+            <!-- ==================== 视图 8：功法 / 玄门全鉴 ==================== -->
             <main id="tab-gongfa" class="flex-1 overflow-y-auto p-2 no-scrollbar hidden flex flex-col space-y-2">
-                <!-- 玄门全鉴卷轴标题栏 -->
                 <div class="flex items-center justify-between border-b border-amber-800/40 pb-1">
                     <div class="w-4"></div>
                     <div class="hanging-tag px-6 py-0.5 rounded text-xs font-black tracking-widest text-amber-950 border border-amber-800">
@@ -441,12 +409,10 @@
                     <button onclick="switchTab('tab-xiulian')" class="w-5 h-5 rounded bg-rose-900 text-amber-100 font-bold text-xs flex items-center justify-center">✕</button>
                 </div>
 
-                <!-- 说明文案面板 -->
                 <div class="panel-row p-2 rounded-md text-[10px] text-stone-800 leading-tight space-y-1 shadow-sm">
                     <p>这本《玄门全鉴》其详细记录了修真界所有宗门所擅<span class="text-rose-800 font-bold">功法绝学</span>等绝密之事，以及道友的学习情况，但只可查阅满足最低进入等级要求的宗门，未达到入门要求的门派不可查阅。[cite: 21]</p>
                 </div>
 
-                <!-- 筛选与选择栏 -->
                 <div class="flex items-center justify-between text-[10px] px-1">
                     <label class="flex items-center space-x-1 font-bold text-stone-800 cursor-pointer">
                         <input type="checkbox" id="chk-unlearned" checked onchange="renderXuanmenList()" class="accent-amber-700">
@@ -459,10 +425,7 @@
                     </select>
                 </div>
 
-                <!-- 宗门卡片容器 -->
-                <div id="xuanmen-container" class="space-y-2 flex-1 overflow-y-auto no-scrollbar pt-1">
-                    <!-- JS动态渲染宗门信息卡片 -->
-                </div>
+                <div id="xuanmen-container" class="space-y-2 flex-1 overflow-y-auto no-scrollbar pt-1"></div>
             </main>
 
             <!-- ==================== 视图 4：洞府大阵 ==================== -->
@@ -474,7 +437,7 @@
                 </div>
             </main>
 
-            <!-- ==================== 视图 5：奇珍会 ==================== -->
+            <!-- ==================== 视图 5：奇珍会 / 仙缘主页 ==================== -->
             <main id="tab-qizhen" class="flex-1 overflow-y-auto p-2 no-scrollbar hidden flex flex-col space-y-2">
                 <div class="flex justify-between items-center bg-amber-900/10 p-1.5 rounded border border-amber-800/40">
                     <span class="text-xs font-bold text-amber-950">准圣海域 · 纪元宝库</span>[cite: 12]
@@ -484,6 +447,10 @@
                     <div class="panel-row p-2 rounded flex justify-between items-center text-xs">
                         <div>📜 兑换时空残卷</div>
                         <button onclick="alert('兑换成功')" class="gold-btn px-3 py-1 rounded text-[11px]">兑换 (5/10)</button>[cite: 12]
+                    </div>
+                    <div class="panel-row p-2 rounded flex justify-between items-center text-xs">
+                        <div>📊 查看准圣海域游历次数统计</div>
+                        <button onclick="openYouliModal()" class="gold-btn px-3 py-1 rounded text-[11px]">查看次数</button>[cite: 22]
                     </div>
                 </div>
             </main>
@@ -510,6 +477,57 @@
                 <button onclick="switchTab('tab-chuwu')" class="gold-btn py-1.5 rounded text-xs">返回背包</button>
             </main>
 
+            <!-- ==================== 弹窗 A：社交/结义模态弹窗 ==================== -->
+            <div id="modal-social" class="absolute inset-0 z-50 bg-black/60 flex items-center justify-center p-3 hidden">
+                <div class="scroll-modal w-full h-[85vh] flex flex-col justify-between p-3 relative select-none">
+                    <div class="flex items-center justify-between border-b-2 border-amber-800/40 pb-1 shrink-0">
+                        <h2 id="social-title" class="text-sm font-black tracking-widest text-amber-950">道友</h2>
+                        <button onclick="closeSocialModal()" class="w-5 h-5 rounded bg-rose-900 text-amber-100 font-bold text-xs flex items-center justify-center">✕</button>
+                    </div>
+                    <div id="social-main-body" class="space-y-1.5 flex-1 overflow-y-auto no-scrollbar p-1"></div>
+                </div>
+            </div>
+
+            <!-- ==================== 弹窗 B：游历次数统计模态弹窗 (新增：对应最新截图) ==================== -->
+            <div id="modal-youli" class="absolute inset-0 z-50 bg-black/60 flex items-center justify-center p-2 hidden">
+                <div class="scroll-modal w-full h-[90vh] flex flex-col justify-between p-2.5 relative select-none rounded-lg text-xs">
+                    <!-- 弹窗标题 -->
+                    <div class="flex items-center justify-between border-b-2 border-amber-800/40 pb-1 shrink-0">
+                        <div class="w-4"></div>
+                        <h2 class="text-xs font-black tracking-widest text-amber-950">准圣海域 · 游历次数</h2>[cite: 22]
+                        <button onclick="closeYouliModal()" class="w-5 h-5 rounded bg-rose-900 text-amber-100 font-bold text-xs flex items-center justify-center">✕</button>
+                    </div>
+
+                    <!-- 提示文案 -->
+                    <div class="text-[10px] text-stone-800 py-1 font-medium text-center">
+                        你已在如下纪元各朝向游历了如下次数[cite: 22]
+                    </div>
+
+                    <!-- 表格数据容器 -->
+                    <div class="flex-1 overflow-y-auto no-scrollbar space-y-1.5 pr-0.5">
+                        <table class="w-full text-center text-[10px] border-collapse">
+                            <thead>
+                                <tr class="bg-amber-800/20 text-amber-950 font-bold border-b border-amber-700/40">
+                                    <th class="py-1">纪元名字</th>
+                                    <th class="py-1">海域</th>
+                                    <th class="py-1">向左</th>
+                                    <th class="py-1">向前</th>
+                                    <th class="py-1">向右</th>
+                                </tr>
+                            </thead>
+                            <tbody id="youli-table-body">
+                                <!-- JS动态注入 -->
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- 底部提示 -->
+                    <div class="text-[9px] text-stone-600 text-center pt-1.5 border-t border-amber-800/30 leading-tight">
+                        在混乱海域游历时的次数，也将同步计入平静海域游历次中[cite: 22]
+                    </div>
+                </div>
+            </div>
+
             <!-- ==================== 底部 6 图标通用导航栏 ==================== -->
             <footer class="bg-[#241a11] p-1.5 border-t-2 border-[#b89753] grid grid-cols-6 gap-1 shrink-0 text-center shadow-lg">
                 <div onclick="switchTab('tab-xiulian')" id="nav-xiulian" class="nav-item active py-1"><div class="text-base">🧘</div><span>修炼</span></div>
@@ -534,21 +552,28 @@
             shengwang: 102244105,
             attack: 120681,
             defense: 136230,
-            learnedGongfa: [], // 保存已学的功法ID
+            learnedGongfa: [],
             inventory: [
                 { id: 1, name: '火焰', icon: '🔥', count: 5 },
                 { id: 2, name: '紫球', icon: '🔮', count: 44 },
                 { id: 3, name: '玄铁', icon: '🪨', count: 88 },
                 { id: 4, name: '人参', icon: '🥕', count: 999 }
+            ],
+            // 游历次数数据集 (精准匹配截图数据)
+            youliData: [
+                { name: '近古纪元', calm: {l: 72, f: 76, r: 69}, chaos: {l: 72, f: 76, r: 69} },[cite: 22]
+                { name: '上古纪元', calm: {l: 68, f: 60, r: 65}, chaos: {l: 68, f: 60, r: 65} },[cite: 22]
+                { name: '远古纪元', calm: {l: 57, f: 55, r: 54}, chaos: {l: 57, f: 55, r: 54} },[cite: 22]
+                { name: '洪荒纪元', calm: {l: 49, f: 47, r: 46}, chaos: {l: 49, f: 47, r: 46} },[cite: 22]
+                { name: '太古纪元', calm: {l: 35, f: 34, r: 31}, chaos: {l: 35, f: 34, r: 31} },[cite: 22]
+                { name: '大衍纪元', calm: {l: 24, f: 23, r: 20}, chaos: {l: 24, f: 23, r: 20} },[cite: 22]
+                { name: '灵墟纪元', calm: {l: 13, f: 13, r: 10}, chaos: {l: 13, f: 13, r: 10} }[cite: 22]
             ]
         };
 
-        // 玄门全鉴宗门数据库 (复刻截图数据)
         const xuanmenData = [
             {
-                name: '太一殿',
-                stars: 7,
-                shanchang: '奇门遁甲',
+                name: '太一殿', stars: 7, shanchang: '奇门遁甲',
                 books: [
                     { id: 'ty1', type: '心法', icon: '📘', learned: false, attr: '防御+500' },
                     { id: 'ty2', type: '攻诀', icon: '📙', learned: false, attr: '攻击+600' },
@@ -632,7 +657,50 @@
             else if (tabId === 'tab-qizhen') document.getElementById('nav-xiandao').classList.add('active');
         }
 
-        /* 动态渲染玄门全鉴列表 (精准匹配图示) */
+        /* 游历次数弹窗控制 */
+        function openYouliModal() {
+            const tbody = document.getElementById('youli-table-body');
+            if (!tbody) return;
+            tbody.innerHTML = '';
+
+            gameData.youliData.forEach(item => {
+                // 平静海域行
+                const trCalm = document.createElement('tr');
+                trCalm.className = 'panel-row border-b border-amber-700/20';
+                trCalm.innerHTML = `
+                    <td rowspan="2" class="font-bold text-amber-950 bg-amber-100/60 border-r border-amber-700/20">${item.name}</td>
+                    <td class="py-1 text-[9px] text-emerald-800 font-bold">🌿 平静海域[cite: 22]</td>
+                    <td class="py-1 font-mono">${item.calm.l}</td>
+                    <td class="py-1 font-mono">${item.calm.f}</td>
+                    <td class="py-1 font-mono">${item.calm.r}</td>
+                `;
+                tbody.appendChild(trCalm);
+
+                // 混乱海域行
+                const trChaos = document.createElement('tr');
+                trChaos.className = 'panel-row border-b border-amber-700/30';
+                trChaos.innerHTML = `
+                    <td class="py-1 text-[9px] text-purple-900 font-bold">🔥 混乱海域[cite: 22]</td>
+                    <td class="py-1 font-mono">${item.chaos.l}</td>
+                    <td class="py-1 font-mono">${item.chaos.f}</td>
+                    <td class="py-1 font-mono">${item.chaos.r}</td>
+                `;
+                tbody.appendChild(trChaos);
+            });
+
+            document.getElementById('modal-youli').classList.remove('hidden');
+        }
+        function closeYouliModal() {
+            document.getElementById('modal-youli').classList.add('hidden');
+        }
+
+        function openSocialModal(type) {
+            document.getElementById('modal-social').classList.remove('hidden');
+            document.getElementById('social-title').innerText = "至交 / 道友";
+            document.getElementById('social-main-body').innerHTML = `<div class="text-center p-6 text-xs font-bold text-stone-700">三生石上刻下名，生生世世永结莫逆。</div>`;
+        }
+        function closeSocialModal() { document.getElementById('modal-social').classList.add('hidden'); }
+
         function renderXuanmenList() {
             const container = document.getElementById('xuanmen-container');
             if (!container) return;
@@ -641,7 +709,6 @@
             xuanmenData.forEach(sect => {
                 const card = document.createElement('div');
                 card.className = 'panel-row p-2 rounded-lg space-y-1.5 shadow-sm';
-                
                 const starsHtml = '🌙' + '⭐'.repeat(sect.stars);
 
                 card.innerHTML = `
@@ -670,10 +737,7 @@
         }
 
         function learnGongfa(id, attr) {
-            if (gameData.learnedGongfa.includes(id)) {
-                alert('道友已融会贯通此门功法！');
-                return;
-            }
+            if (gameData.learnedGongfa.includes(id)) { alert('道友已融会贯通此门功法！'); return; }
             if (confirm(`是否领悟该功法秘籍？（增加属性：${attr}）`)) {
                 gameData.learnedGongfa.push(id);
                 gameData.attack += 500;
