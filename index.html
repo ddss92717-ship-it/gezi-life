@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>想不想修真 · 全功能高阶完美完全体</title>
+    <title>想不想修真 · 全功能灵兽大圆满完全体</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/canvas-confetti.browser.min.js"></script>
@@ -77,6 +77,14 @@
             background: linear-gradient(180deg, #d4f7a5 0%, #7cb342 100%);
             border: 1px solid #4b7a21;
             color: #1b3a01;
+            font-weight: 700;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.25);
+        }
+
+        .orange-btn {
+            background: linear-gradient(180deg, #ffcc80 0%, #fb8c00 100%);
+            border: 1px solid #e65100;
+            color: #fff;
             font-weight: 700;
             box-shadow: 0 2px 4px rgba(0,0,0,0.25);
         }
@@ -203,33 +211,33 @@
                         <div class="w-14 h-14 rounded-full border-2 border-amber-700 bg-amber-100 flex items-center justify-center overflow-hidden shadow-md">
                             <span class="text-2xl">👩‍🦰</span>
                         </div>
-                        <span id="ui-avatar-realm" class="absolute -bottom-1 bg-amber-900 text-amber-100 text-[9px] px-1.5 py-0.2 rounded-full border border-amber-500 scale-90 whitespace-nowrap">大罗金仙2阶</span>
+                        <span id="ui-avatar-realm" class="absolute -bottom-1 bg-amber-900 text-amber-100 text-[9px] px-1.5 py-0.2 rounded-full border border-amber-500 scale-90 whitespace-nowrap">准圣7阶</span>
                     </div>
 
                     <div class="grid grid-cols-2 gap-1 flex-1 text-[11px]">
                         <div class="attr-pill px-2 py-0.5 rounded flex justify-between">
                             <span class="text-stone-600">道号</span>
-                            <span id="ui-username" class="font-bold text-amber-950">金无双</span>
+                            <span id="ui-username" class="font-bold text-amber-950">江小鱼TEL</span>
                         </div>
                         <div class="attr-pill px-2 py-0.5 rounded flex justify-between">
                             <span class="text-stone-600">💎 灵石</span>
-                            <span id="ui-lingshi" class="font-bold text-sky-800">34,590</span>
+                            <span id="ui-lingshi" class="font-bold text-sky-800">85,016,454</span>
                         </div>
                         <div class="attr-pill px-2 py-0.5 rounded flex justify-between">
                             <span class="text-stone-600">官职</span>
-                            <span id="ui-guanzhi" class="text-amber-900 text-[10px] font-bold">赤明.武曲星君</span>
+                            <span id="ui-guanzhi" class="text-amber-900 text-[10px] font-bold">阴阳道主</span>
                         </div>
                         <div class="attr-pill px-2 py-0.5 rounded flex justify-between">
                             <span class="text-stone-600">💧 声望</span>
-                            <span id="ui-shengwang" class="font-bold text-sky-800">905,257</span>
+                            <span id="ui-shengwang" class="font-bold text-sky-800">175,380,952</span>
                         </div>
                         <div class="attr-pill px-2 py-0.5 rounded flex justify-between cursor-pointer" onclick="switchTab('tab-gongfa')">
                             <span class="text-stone-600">门派</span>
-                            <span id="ui-menpai" class="text-amber-900 font-bold underline">万佛宗</span>
+                            <span id="ui-menpai" class="text-amber-900 font-bold underline">净乐宫</span>
                         </div>
                         <div class="attr-pill px-2 py-0.5 rounded flex justify-between">
                             <span class="text-stone-600">🧘 修炼</span>
-                            <span id="ui-year" class="font-bold text-amber-900">106,856年</span>
+                            <span id="ui-year" class="font-bold text-amber-900">180,449年</span>
                         </div>
                     </div>
 
@@ -246,17 +254,17 @@
                     <div class="panel-row p-1 rounded-md flex justify-between items-center text-xs">
                         <div class="flex items-center space-x-1">
                             <button class="bg-amber-800 text-amber-100 px-2 py-0.5 rounded text-[10px] font-bold">👑 境界</button>
-                            <span class="font-bold text-amber-950 text-[11px]" id="realm-display">大罗金仙2阶</span>
+                            <span class="font-bold text-amber-950 text-[11px]" id="realm-display">准圣7阶</span>
                         </div>
                         <div class="flex items-center space-x-1">
                             <button class="bg-stone-300 text-stone-800 px-2 py-0.5 rounded text-[10px]">💪 肉身</button>
-                            <span class="text-[10px] text-stone-700" id="body-display">地仙之躯6阶</span>
+                            <span class="text-[10px] text-stone-700" id="body-display">圣体9阶</span>
                         </div>
                         <button onclick="upgradeRealm()" class="gold-btn px-3 py-1 rounded text-[11px]">升 级</button>
                     </div>
                     <!-- 跑马灯日志公告 -->
                     <div class="bg-amber-100/60 border border-amber-700/30 rounded px-2 py-0.5 text-[9px] text-rose-900 font-bold flex items-center justify-between overflow-hidden">
-                        <span>📢 【106582年】金无双在剧毒魔界参悟大法！</span>
+                        <span>📢 【180445年】江小鱼TEL在神界太清宫参悟无上大道！</span>
                     </div>
                 </div>
 
@@ -268,9 +276,8 @@
 
                     <div class="absolute right-1 top-0 flex flex-col items-end space-y-1.5 z-10 text-[9px] text-amber-950 font-bold">
                         <div class="flex space-x-2">
-                            <button onclick="alert('【传书】')" class="flex flex-col items-center">✉️<span>传书</span></button>
+                            <button onclick="openLingzhuModal()" class="flex flex-col items-center text-rose-900">🔥<span>灵兽</span></button>
                             <button onclick="openSocialModal()" class="flex flex-col items-center">🧘<span>道友</span></button>
-                            <button onclick="alert('【帮助】')" class="flex flex-col items-center">❓<span>帮助</span></button>
                             <button onclick="alert('【设置】')" class="flex flex-col items-center">⚙️<span>设置</span></button>
                         </div>
                         <button onclick="alert('进入【试炼之地】')" class="hanging-tag px-2 py-1 rounded border border-amber-800 flex items-center space-x-1 shadow mt-2">
@@ -288,24 +295,24 @@
 
                     <div class="w-full flex justify-between px-4 -mt-4 z-20">
                         <div onclick="alert('【太上绘卷】开启')" class="lotus-ball"><span class="text-sm">🌊</span><span>太上绘卷</span></div>
-                        <div onclick="alert('【修炼增幅】已激活+50%')" class="lotus-ball"><span class="text-sm">✨</span><span>修炼增幅</span></div>
+                        <div onclick="alert('【修炼增幅】已激活+100%')" class="lotus-ball"><span class="text-sm">✨</span><span>修炼增幅</span></div>
                     </div>
 
                     <div class="w-full text-center space-y-1 z-10 mt-2">
-                        <div class="text-[11px] text-stone-800 font-bold">当前修炼效率：(15640~24440)/5秒</div>
+                        <div class="text-[11px] text-stone-800 font-bold">当前修炼效率：(35640~44440)/5秒</div>
                         <div class="w-48 h-2.5 mx-auto bg-stone-300 rounded-full border border-amber-800 overflow-hidden relative">
                             <div id="ui-progress-bar" class="h-full bg-amber-500 w-0 transition-all duration-100"></div>
                         </div>
                         <div class="text-[9px] text-stone-600 font-mono">00:<span id="ui-timer-sec">03</span></div>
                         <div class="text-xs text-stone-900 font-bold">
-                            永无休止的自动修炼！总修为: <span id="total-xiuwei" class="text-amber-900 text-sm font-mono">97378692433</span>
+                            永无休止的自动修炼！总修为: <span id="total-xiuwei" class="text-amber-900 text-sm font-mono">875692341200</span>
                         </div>
                     </div>
                 </div>
 
                 <div class="panel-row p-2 rounded border border-amber-800/60 h-20 flex flex-col justify-between text-[10px] overflow-y-auto no-scrollbar space-y-1">
-                    <p>【 <span class="text-amber-800 font-bold">106854年</span> 】金无双在剧毒魔界参加“守卫剧毒魔界”获得奖励：5功德。</p>
-                    <p>【 <span class="text-amber-800 font-bold">106858年</span> 】金无双在剧毒魔界参加“守卫剧毒魔界”获得奖励：5功德。</p>
+                    <p>【 <span class="text-amber-800 font-bold">180440年</span> 】江小鱼TEL在神界太清宫参加“狩猎域外天魔”获得奖励：25功德。</p>
+                    <p>【 <span class="text-amber-800 font-bold">180446年</span> 】九转凤凰出战击杀域外魔头，为主上带回大量稀有灵草！</p>
                 </div>
             </main>
 
@@ -352,8 +359,8 @@
 
                 <div class="flex justify-between items-center px-1 text-[11px]">
                     <div class="flex items-center space-x-1 font-bold text-amber-950">
-                        <span>四品须弥戒指</span>
-                        <span class="text-rose-800 font-mono">198/291</span>
+                        <span>九品须弥戒指</span>
+                        <span class="text-rose-800 font-mono">285/291</span>
                         <span class="text-xs bg-amber-200 px-1 rounded border border-amber-600">+</span>
                     </div>
                     <div class="text-rose-800 text-[10px] font-bold">衣服类法宝可穿多件！</div>
@@ -371,8 +378,8 @@
             <!-- 视图 3：灵根与聚灵阵 -->
             <main id="tab-linggen" class="flex-1 overflow-y-auto p-2 no-scrollbar hidden flex flex-col justify-between space-y-2">
                 <div class="text-right pr-2 space-y-0.5">
-                    <div class="text-xs font-bold text-amber-950">⚡ 170级聚灵阵</div>
-                    <div class="text-[11px] text-sky-900 font-mono">🔮 灵气: 23698/217440</div>
+                    <div class="text-xs font-bold text-amber-950">⚡ 220级聚灵阵</div>
+                    <div class="text-[11px] text-sky-900 font-mono">🔮 灵气: 85698/317440</div>
                 </div>
                 <div class="relative my-auto flex flex-col items-center justify-center py-2">
                     <div class="relative w-40 h-40 flex items-center justify-center">
@@ -385,7 +392,7 @@
                         <div class="absolute bottom-1 left-3 wuxing-ball wx-huo">火</div>
                         <div class="absolute top-10 -left-1 wuxing-ball wx-tu">土</div>
                     </div>
-                    <div class="text-xs font-bold text-stone-800 mt-2">每5秒生产604点灵气</div>
+                    <div class="text-xs font-bold text-stone-800 mt-2">每5秒生产1200点灵气</div>
                 </div>
             </main>
 
@@ -422,7 +429,7 @@
             <main id="tab-xiandao" class="flex-1 overflow-y-auto p-2 no-scrollbar hidden flex flex-col space-y-2">
                 <div class="panel-row p-2 rounded-md flex justify-between items-center text-xs">
                     <span class="font-bold text-amber-950">💡 探索信息</span>
-                    <span class="text-stone-700">当前所在地：<span class="font-bold text-amber-900" id="explore-wheel">第115轮</span></span>
+                    <span class="text-stone-700">当前所在地：<span class="font-bold text-amber-900" id="explore-wheel">第320轮</span></span>
                 </div>
 
                 <div class="grid grid-cols-2 gap-2">
@@ -458,7 +465,7 @@
 
                 <div class="grid grid-cols-4 gap-1 text-center py-1">
                     <div onclick="openShangqingModal()" class="cursor-pointer flex flex-col items-center"><span class="text-2xl">🏛️</span><span class="text-[9px] font-bold underline text-amber-900">仙界/上清宫</span></div>
-                    <div onclick="openShangqingModal()" class="cursor-pointer flex flex-col items-center"><span class="text-2xl">🔥</span><span class="text-[9px] font-bold">魔界之门</span></div>
+                    <div onclick="openLingzhuModal()" class="cursor-pointer flex flex-col items-center"><span class="text-2xl">🔥</span><span class="text-[9px] font-bold text-rose-800">灵兽凤凰</span></div>
                     <div onclick="openShangqingModal()" class="cursor-pointer flex flex-col items-center"><span class="text-2xl">🌀</span><span class="text-[9px] font-bold">冥界之门</span></div>
                     <div onclick="openShangqingModal()" class="cursor-pointer flex flex-col items-center"><span class="text-2xl">✨</span><span class="text-[9px] font-bold">神界之门</span></div>
                 </div>
@@ -483,7 +490,7 @@
             <!-- 视图 7：炼器坊 -->
             <main id="tab-lianqi" class="flex-1 overflow-y-auto p-2 no-scrollbar hidden flex flex-col justify-between space-y-2">
                 <div class="flex justify-between items-center px-1">
-                    <span class="text-xs font-bold text-sky-900 bg-sky-100 px-2 py-0.5 rounded">一品炼器师</span>
+                    <span class="text-xs font-bold text-sky-900 bg-sky-100 px-2 py-0.5 rounded">九品炼器师</span>
                     <div class="hanging-tag px-2 py-0.5 rounded text-xs font-bold">选择使用的炼器炉</div>
                 </div>
                 <button onclick="switchTab('tab-chuwu')" class="gold-btn py-1.5 rounded text-xs">返回背包</button>
@@ -496,8 +503,8 @@
                     <div class="panel-row py-1 rounded">肉身</div>
                 </div>
                 <div class="grid grid-cols-2 gap-1 text-xs">
-                    <div class="panel-row p-1.5 rounded flex justify-between"><span>攻</span><span class="font-mono font-bold" id="attr-gong">120681</span></div>
-                    <div class="panel-row p-1.5 rounded flex justify-between"><span>防</span><span class="font-mono font-bold" id="attr-fang">136230</span></div>
+                    <div class="panel-row p-1.5 rounded flex justify-between"><span>攻</span><span class="font-mono font-bold" id="attr-gong">220681</span></div>
+                    <div class="panel-row p-1.5 rounded flex justify-between"><span>防</span><span class="font-mono font-bold" id="attr-fang">236230</span></div>
                 </div>
                 <button onclick="switchTab('tab-chuwu')" class="gold-btn py-1.5 rounded text-xs">返回背包</button>
             </main>
@@ -546,10 +553,9 @@
                 </div>
             </div>
 
-            <!-- 弹窗 C：上清宫/界主挑战与大帝争夺模态框 (新增：精准复刻最新截图) -->
+            <!-- 弹窗 C：上清宫/界主挑战与大帝争夺模态框 -->
             <div id="modal-shangqing" class="absolute inset-0 z-50 bg-black/60 flex items-center justify-center p-3 hidden">
                 <div class="scroll-modal w-full h-[82vh] flex flex-col justify-between p-3 relative select-none rounded-lg text-xs">
-                    <!-- 顶栏标题 -->
                     <div class="flex items-center justify-between border-b border-amber-800/30 pb-1">
                         <div class="w-4"></div>
                         <div class="hanging-tag px-6 py-0.5 rounded text-xs font-black tracking-widest text-amber-950 border border-amber-800">
@@ -558,33 +564,27 @@
                         <button onclick="closeShangqingModal()" class="w-5 h-5 rounded bg-rose-900 text-amber-100 font-bold text-xs flex items-center justify-center">✕</button>
                     </div>
 
-                    <!-- 挑战界主规则按钮 -->
                     <div class="text-right pr-1">
                         <button onclick="alert('界主规则：每日可挑战一次界主，增加征服度；征服度达到1000后可掌管本界！')" class="text-[10px] font-bold text-amber-900 underline">📜 挑战界主规则</button>
                     </div>
 
-                    <!-- 界主打坐形象与立绘区 -->
                     <div class="relative my-auto flex flex-col items-center justify-center py-2">
                         <div class="relative w-36 h-36 flex items-center justify-center">
                             <div class="absolute inset-0 rounded-full border-2 border-amber-500/50 bg-amber-100/40 shadow-lg"></div>
-                            <!-- 上清大帝竖标签 -->
                             <div class="absolute -left-4 top-4 hanging-tag px-1 py-3 rounded text-[10px] font-black text-amber-950 writing-mode-vertical border border-amber-800 shadow">
                                 上清大帝
                             </div>
-                            <!-- 帝王冠冕头像图标 -->
                             <div class="relative z-10 w-24 h-24 rounded-full bg-gradient-to-t from-amber-600 to-yellow-200 border-2 border-amber-800 flex items-center justify-center shadow-md">
                                 <span class="text-5xl">👑</span>
                             </div>
                         </div>
 
-                        <!-- 管理本界 / 挑战大帝 按钮组 -->
                         <div class="grid grid-cols-2 gap-3 w-full max-w-[280px] mt-4">
                             <button onclick="alert('【管理本界】已获取本界天道巡查权！')" class="green-btn py-1.5 rounded text-xs shadow">管理本界</button>
                             <button onclick="challengeEmperor()" class="gold-btn py-1.5 rounded text-xs shadow">挑战大帝</button>
                         </div>
                     </div>
 
-                    <!-- 大帝争夺进度条区 -->
                     <div class="panel-row p-2.5 rounded-lg text-center space-y-1 shadow-inner">
                         <div class="hanging-tag inline-block px-4 py-0.5 rounded text-[11px] font-bold text-amber-950 border border-amber-800">
                             大帝争夺
@@ -594,7 +594,6 @@
                         </div>
                     </div>
 
-                    <!-- 底部提示与关闭按钮 -->
                     <div class="space-y-1 text-center pt-1">
                         <button onclick="closeShangqingModal()" class="gold-btn w-full py-1.5 rounded text-xs shadow">关 闭</button>
                         <div id="challenge-tip" class="text-[10px] text-stone-700 font-bold py-0.5">
@@ -603,6 +602,118 @@
                     </div>
                 </div>
             </div>
+
+            <!-- 弹窗 D：灵兽九转凤凰养成系统（新增：精准复刻最新截图） -->
+            <div id="modal-lingzhu" class="absolute inset-0 z-50 bg-black/60 flex items-center justify-center p-2 hidden">
+                <div class="scroll-modal w-full h-[94vh] flex flex-col justify-between p-3 relative select-none rounded-lg text-xs overflow-y-auto no-scrollbar">
+                    <!-- 顶栏 -->
+                    <div class="flex items-center justify-between border-b border-amber-800/40 pb-1 shrink-0">
+                        <div class="w-4"></div>
+                        <div class="hanging-tag px-6 py-0.5 rounded text-xs font-black tracking-widest text-amber-950 border border-amber-800">
+                            九转凤凰
+                        </div>
+                        <button onclick="closeLingzhuModal()" class="w-5 h-5 rounded bg-rose-900 text-amber-100 font-bold text-xs flex items-center justify-center">✕</button>
+                    </div>
+
+                    <!-- 顶部核心状态栏 -->
+                    <div class="panel-row p-2 rounded-lg flex items-center justify-between mt-1 shrink-0">
+                        <div class="flex items-center space-x-2">
+                            <span class="text-emerald-800 font-bold text-xs">护主模式</span>
+                        </div>
+                        <div class="w-12 h-12 rounded-lg bg-amber-200 border border-amber-700 flex items-center justify-center shadow">
+                            <span class="text-2xl">🦅</span>
+                        </div>
+                        <button onclick="alert('灵兽放生需谨慎！')" class="orange-btn px-3 py-1 rounded text-xs">放生</button>
+                    </div>
+
+                    <!-- 属性指标区 -->
+                    <div class="panel-row p-2 rounded-lg space-y-1 text-[11px] shrink-0 font-medium text-stone-900">
+                        <div class="flex justify-between">
+                            <span>种族：凤族(九转凤凰)</span>
+                            <span>性别：雄性 ➔</span>
+                            <span>移动方式：飞行</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>忠诚：<span class="font-bold text-amber-900">107</span></span>
+                            <span>谱代：九代 <span class="text-xs bg-amber-200 px-1 rounded border border-amber-600">?</span></span>
+                            <span>移动速度：<span class="font-bold">1192</span></span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>身份牌：442971037</span>
+                            <span>成长：攻击型</span>
+                            <span>可否骑乘：可骑乘</span>
+                        </div>
+                        <div class="pt-0.5 font-bold text-rose-900 border-t border-amber-800/20">
+                            等级：<span id="lingzhu-level">58</span> ( <span id="lingzhu-exp">668/24712533</span> )
+                        </div>
+                    </div>
+
+                    <!-- 四维战斗属性面板 -->
+                    <div class="grid grid-cols-2 gap-1 text-[10px] shrink-0">
+                        <div class="panel-row p-1.5 rounded flex justify-between items-center">
+                            <span class="text-rose-900 font-bold">凤攻</span>
+                            <span class="font-mono font-bold">120159(48067+72092)</span>
+                        </div>
+                        <div class="panel-row p-1.5 rounded flex justify-between items-center">
+                            <span class="text-sky-900 font-bold">防御</span>
+                            <span class="font-mono font-bold">62565(19212+43353)</span>
+                        </div>
+                        <div class="panel-row p-1.5 rounded flex justify-between items-center">
+                            <span class="text-emerald-900 font-bold">生命</span>
+                            <span class="font-mono font-bold">265049(146883+118166)</span>
+                        </div>
+                        <div class="panel-row p-1.5 rounded flex justify-between items-center">
+                            <span class="text-amber-900 font-bold">暴击</span>
+                            <span class="font-mono font-bold">9682(3611+6071)</span>
+                        </div>
+                    </div>
+
+                    <!-- 资质、根骨、速度星级 -->
+                    <div class="panel-row p-2 rounded-lg space-y-1 shrink-0">
+                        <div class="flex items-center justify-between text-xs font-bold text-amber-950">
+                            <span>资质</span>
+                            <span class="text-amber-600">⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐</span>
+                            <button onclick="alert('归元洗练成功！')" class="gold-btn px-2 py-0.5 rounded text-[10px]">归元</button>
+                        </div>
+                        <div class="flex items-center justify-between text-xs font-bold text-amber-950">
+                            <span>根骨</span>
+                            <span class="text-amber-600">⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐</span>
+                        </div>
+                        <div class="flex items-center justify-between text-xs font-bold text-amber-950">
+                            <span>速度</span>
+                            <span class="text-amber-600">⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐</span>
+                        </div>
+                    </div>
+
+                    <!-- 已掌握兽诀 (7/7) -->
+                    <div class="panel-row p-2 rounded-lg space-y-1 shrink-0">
+                        <div class="flex justify-between items-center text-[11px]">
+                            <span class="font-bold text-amber-950">已掌握兽诀：<span class="text-rose-900">7/7</span></span>
+                            <div class="space-x-1">
+                                <button onclick="alert('请选择需要忘却的兽诀')" class="text-[10px] text-stone-700 underline font-bold">忘却兽诀</button>
+                                <button onclick="alert('已有兽诀列表完整')" class="text-[10px] text-amber-900 underline font-bold">已有兽诀</button>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-7 gap-1 pt-1">
+                            <div class="equip-slot bg-amber-100 border-amber-600"><span class="text-lg">🔥</span><span class="absolute bottom-0 right-0.5 text-[7px] font-bold">2</span></div>
+                            <div class="equip-slot bg-amber-100 border-amber-600"><span class="text-lg">🔥</span><span class="absolute bottom-0 right-0.5 text-[7px] font-bold">1</span></div>
+                            <div class="equip-slot bg-amber-100 border-amber-600"><span class="text-lg">🔥</span><span class="absolute bottom-0 right-0.5 text-[7px] font-bold">2</span></div>
+                            <div class="equip-slot bg-amber-100 border-amber-600"><span class="text-lg">🔥</span><span class="absolute bottom-0 right-0.5 text-[7px] font-bold">3</span></div>
+                            <div class="equip-slot bg-amber-100 border-amber-600"><span class="text-lg">🔥</span><span class="absolute bottom-0 right-0.5 text-[7px] font-bold">2</span></div>
+                            <div class="equip-slot bg-amber-100 border-amber-600"><span class="text-lg">🔥</span><span class="absolute bottom-0 right-0.5 text-[7px] font-bold">2</span></div>
+                            <div class="equip-slot bg-amber-100 border-amber-600"><span class="text-lg">🔥</span><span class="absolute bottom-0 right-0.5 text-[7px] font-bold">2</span></div>
+                        </div>
+                    </div>
+
+                    <!-- 底部操作按钮 -->
+                    <div class="grid grid-cols-4 gap-2 pt-1 shrink-0">
+                        <button onclick="feedLingzhu()" class="gold-btn py-1.5 rounded text-xs">喂养</button>
+                        <button onclick="alert('灵兽已进入休息状态')" class="panel-row py-1.5 rounded text-xs font-bold text-stone-800">休息</button>
+                        <button onclick="alert('已成功骑乘九转凤凰！')" class="panel-row py-1.5 rounded text-xs font-bold text-amber-900">骑乘</button>
+                        <button onclick="alert('九转凤凰已出战杀敌！')" class="orange-btn py-1.5 rounded text-xs">出战</button>
+                    </div>
+                </div>
+            </main>
 
             <!-- 底部 6 图标导航栏 -->
             <footer class="bg-[#241a11] p-1.5 border-t-2 border-[#b89753] grid grid-cols-6 gap-1 shrink-0 text-center shadow-lg">
@@ -621,20 +732,22 @@
     <script>
         let currentUser = null;
         let gameData = {
-            username: '金无双',
-            realm: '大罗金仙2阶',
-            bodyRealm: '地仙之躯6阶',
-            menpai: '万佛宗',
-            guanzhi: '赤明.武曲星君',
-            lingshi: 34590,
-            shengwang: 905257,
-            year: 106856,
-            xiuwei: 97378692433,
-            rate: 20040,
-            attack: 120681,
-            defense: 136230,
-            exploreWheel: 115,
-            zhengfudu: 972, // 对应界主征服度数据
+            username: '江小鱼TEL',
+            realm: '准圣7阶',
+            bodyRealm: '圣体9阶',
+            menpai: '净乐宫',
+            guanzhi: '阴阳道主',
+            lingshi: 85016454,
+            shengwang: 175380952,
+            year: 180449,
+            xiuwei: 875692341200,
+            rate: 40040,
+            attack: 220681,
+            defense: 236230,
+            exploreWheel: 320,
+            zhengfudu: 972,
+            lingzhuLevel: 58,
+            lingzhuExp: 668,
             learnedGongfa: [],
             inventory: [
                 { id: 1, name: '火焰', icon: '🔥', count: 5 },
@@ -643,13 +756,13 @@
                 { id: 4, name: '人参', icon: '🥕', count: 999 }
             ],
             youliData: [
-                { name: '近古纪元', calm: {l: 72, f: 76, r: 69}, chaos: {l: 72, f: 76, r: 69} },
-                { name: '上古纪元', calm: {l: 68, f: 60, r: 65}, chaos: {l: 68, f: 60, r: 65} },
-                { name: '远古纪元', calm: {l: 57, f: 55, r: 54}, chaos: {l: 57, f: 55, r: 54} },
-                { name: '洪荒纪元', calm: {l: 49, f: 47, r: 46}, chaos: {l: 49, f: 47, r: 46} },
-                { name: '太古纪元', calm: {l: 35, f: 34, r: 31}, chaos: {l: 35, f: 34, r: 31} },
-                { name: '大衍纪元', calm: {l: 24, f: 23, r: 20}, chaos: {l: 24, f: 23, r: 20} },
-                { name: '灵墟纪元', calm: {l: 13, f: 13, r: 10}, chaos: {l: 13, f: 13, r: 10} }
+                { name: '近古纪元', calm: {l: 172, f: 176, r: 169}, chaos: {l: 172, f: 176, r: 169} },
+                { name: '上古纪元', calm: {l: 168, f: 160, r: 165}, chaos: {l: 168, f: 160, r: 165} },
+                { name: '远古纪元', calm: {l: 157, f: 155, r: 154}, chaos: {l: 157, f: 155, r: 154} },
+                { name: '洪荒纪元', calm: {l: 149, f: 147, r: 146}, chaos: {l: 149, f: 147, r: 146} },
+                { name: '太古纪元', calm: {l: 135, f: 134, r: 131}, chaos: {l: 135, f: 134, r: 131} },
+                { name: '大衍纪元', calm: {l: 124, f: 123, r: 120}, chaos: {l: 124, f: 123, r: 120} },
+                { name: '灵墟纪元', calm: {l: 113, f: 113, r: 110}, chaos: {l: 113, f: 113, r: 110} }
             ]
         };
 
@@ -744,10 +857,10 @@
         }
 
         function upgradeRealm() {
-            gameData.xiuwei += 1000000000;
+            gameData.xiuwei += 2000000000;
             saveUserData();
             updateUI();
-            alert('恭喜道友成功提升修为境界！');
+            alert('恭喜道友成功提升准圣修为境界！');
         }
 
         function exploreMap(placeName) {
@@ -758,13 +871,8 @@
         }
 
         /* 界主/上清宫弹窗交互逻辑 */
-        function openShangqingModal() {
-            document.getElementById('modal-shangqing').classList.remove('hidden');
-            updateUI();
-        }
-        function closeShangqingModal() {
-            document.getElementById('modal-shangqing').classList.add('hidden');
-        }
+        function openShangqingModal() { document.getElementById('modal-shangqing').classList.remove('hidden'); updateUI(); }
+        function closeShangqingModal() { document.getElementById('modal-shangqing').classList.add('hidden'); }
         function challengeEmperor() {
             if (gameData.zhengfudu < 1000) {
                 gameData.zhengfudu += 5;
@@ -775,6 +883,20 @@
             } else {
                 alert('道友征服度已满，已执掌本界！');
             }
+        }
+
+        /* 灵兽系统弹窗交互逻辑 */
+        function openLingzhuModal() { document.getElementById('modal-lingzhu').classList.remove('hidden'); updateUI(); }
+        function closeLingzhuModal() { document.getElementById('modal-lingzhu').classList.add('hidden'); }
+        function feedLingzhu() {
+            gameData.lingzhuExp += 50000;
+            if (gameData.lingzhuExp >= 24712533) {
+                gameData.lingzhuLevel++;
+                gameData.lingzhuExp = 0;
+            }
+            saveUserData();
+            updateUI();
+            alert('喂养成功！九转凤凰修为大增，凤攻与生命得到显著提升！');
         }
 
         function openYouliModal() {
@@ -865,10 +987,12 @@
             document.getElementById('body-display').innerText = gameData.bodyRealm;
             document.getElementById('ui-lingshi').innerText = gameData.lingshi.toLocaleString();
             document.getElementById('ui-shengwang').innerText = gameData.shengwang.toLocaleString();
-            document.getElementById('ui-year').innerText = gameData.year + "年";
+            document.getElementById('ui-year').innerText = gameData.year.toLocaleString() + "年";
             document.getElementById('total-xiuwei').innerText = gameData.xiuwei.toLocaleString();
             if (document.getElementById('explore-wheel')) document.getElementById('explore-wheel').innerText = "第" + gameData.exploreWheel + "轮";
             if (document.getElementById('zhengfu-val')) document.getElementById('zhengfu-val').innerText = gameData.zhengfudu + "/1000";
+            if (document.getElementById('lingzhu-level')) document.getElementById('lingzhu-level').innerText = gameData.lingzhuLevel;
+            if (document.getElementById('lingzhu-exp')) document.getElementById('lingzhu-exp').innerText = gameData.lingzhuExp + "/24712533";
             if (document.getElementById('attr-gong')) document.getElementById('attr-gong').innerText = gameData.attack;
             if (document.getElementById('attr-fang')) document.getElementById('attr-fang').innerText = gameData.defense;
         }
