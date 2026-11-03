@@ -1,73 +1,47 @@
-/**
- * 【重要】index.html完全不修改！全部复用页面已有的DOM，不新增任何标签ID
- */
+// 【安全版】只渲染顶部UI，绝不触碰中间修炼区域DOM，保护打坐图、进度条、修为文本
 function renderPlayerUI(player) {
-  const realmCfg = getRealmCfgByName(player.basic.realm);
-  const bodyCfg = getBodyCfgByName(player.basic.bodyRealm);
+  try{
+    const realmCfg = getRealmCfgByName(player.basic.realm);
+    // ========= 只修改顶部这一行信息，完全不碰中间修炼板块 =========
+    const daoNameDom = document.getElementById("ui-username");
+    if (daoNameDom) daoNameDom.innerText = player.basic.userName;
 
-  // =========顶部信息渲染 =========
-  const daoNameDom = document.getElementById("ui-username");
-  if (daoNameDom) daoNameDom.innerText = player.basic.userName;
+    const avatarRealmDom = document.getElementById("ui-avatar-realm");
+    if(avatarRealmDom) avatarRealmDom.innerText = player.basic.realm;
 
-  document.getElementById("ui-avatar-realm").innerText = player.basic.realm;
-  document.getElementById("realm-display").innerText = player.basic.realm;
-  document.getElementById("body-display").innerText = player.basic.bodyRealm;
-  document.getElementById("ui-lingshi").innerText = player.basic.lingShi.toLocaleString();
-  document.getElementById("ui-shengwang").innerText = player.basic.shengWang.toLocaleString();
-  document.getElementById("ui-year").innerText = player.basic.year.toLocaleString() + "年";
+    const realmShowDom = document.getElementById("realm-display");
+    if(realmShowDom) realmShowDom.innerText = player.basic.realm;
 
-  const rate = calcTotalRate(player);
+    const bodyShowDom = document.getElementById("body-display");
+    if(bodyShowDom) bodyShowDom.innerText = player.basic.bodyRealm;
 
-  // ========= 1、修改修炼效率文本（匹配现有DOM，无class/id，靠文本内容定位） =========
-  const allDiv = document.querySelectorAll("#tab-xiulian div");
-  for(let d of allDiv){
-    if(d.innerText.indexOf("当前修炼效率：") !== -1){
-      d.innerText = `当前修炼效率：${rate} /5秒`;
-      break;
-    }
-  }
+    const lingshiDom = document.getElementById("ui-lingshi");
+    if(lingshiDom) lingshiDom.innerText = player.basic.lingShi.toLocaleString();
 
-  // =========2、总修为（已有id total‑xiuwei） =========
-  const totalExpDom = document.getElementById("total-xiuwei");
-  if(totalExpDom){
-    totalExpDom.innerText = player.basic.curExp.toLocaleString();
-    // 往它的父节点追加文字，不破坏原有页面其他元素
-    let parent = totalExpDom.parentElement;
-    // 先把旧的【当前境界修为】删掉，防止重复叠加
-    let oldTip = parent.querySelector(".exp-tip-node");
-    if(oldTip) oldTip.remove();
-    // 创建一个新的span，附加到父容器，不破坏原始HTML
-    let tipSpan = document.createElement("div");
-    tipSpan.className = "exp-tip-node";
-    tipSpan.style.fontSize="11px";
-    tipSpan.style.color="#92400e";
-    tipSpan.innerText = `当前境界修为：${player.basic.curExp.toLocaleString()} / ${realmCfg.needExp.toLocaleString()}`;
-    parent.insertBefore(tipSpan, totalExpDom);
-  }
+    const shengwangDom = document.getElementById("ui-shengwang");
+    if(shengwangDom) shengwangDom.innerText = player.basic.shengWang.toLocaleString();
 
-  // =========3、进度条，使用页面真实id ui‑progress‑bar =========
-  const progressBar = document.getElementById("ui-progress-bar");
-  if(progressBar){
-    let percent = (player.basic.curExp / realmCfg.needExp) * 100;
-    if(percent > 100) percent = 100;
-    progressBar.style.width = `${percent}%`;
+    const yearDom = document.getElementById("ui-year");
+    if(yearDom) yearDom.innerText = player.basic.year.toLocaleString() + "年";
+  }catch(err){
+    console.warn("顶部渲染异常，不影响修炼循环",err);
   }
 }
 
-/** 登录按钮，使用页面真实ID，index按钮onclick保持不变 */
 function handleLogin(){
-  const loginScreen = document.getElementById("screen-login");
-  const gameScreen = document.getElementById("screen-game");
-  if(loginScreen) loginScreen.classList.add("hidden");
-  if(gameScreen) gameScreen.classList.remove("hidden");
-  console.log("✅登录成功，进入游戏");
+  try{
+    document.getElementById("screen-login").classList.add("hidden");
+    document.getElementById("screen-game").classList.remove("hidden");
+    console.log("✅登录完成");
+  }catch(e){
+    console.error("登录切换异常",e);
+  }
 }
 
-/** 突破境界按钮 */
 function onClickBreakThrough(){
   const player = loadSave();
-  const isSuccess = tryRealmUp(player);
-  if(isSuccess){
+  const ok = tryRealmUp(player);
+  if(ok){
     saveSave(player);
     renderPlayerUI(player);
     alert("🎉恭喜道友，境界突破成功！");
@@ -77,32 +51,33 @@ function onClickBreakThrough(){
   }
 }
 
-/** 修炼循环 */
 function startGameLoop() {
   setInterval(() => {
-    const player = loadSave();
-    const rate = calcTotalRate(player);
-    player.basic.curExp += rate;
-    tryRealmUp(player);
-    player.basic.year += 1;
-    saveSave(player);
-    renderPlayerUI(player);
-  }, 5000);
+    try{
+      const player = loadSave();
+      const rate = calcTotalRate(player);
+      player.basic.curExp += rate;
+      tryRealmUp(player);
+      player.basic.year +=1;
+      saveSave(player);
+      renderPlayerUI(player);
+    }catch(e){
+      console.error("循环异常",e);
+    }
+  },5000);
 }
 
-// ========== 全部占位空函数（页面onclick会调用，不能缺失！！index.html完全不动 ==========
-function switchTab(tabId){
-  alert(`切换标签：${tabId}（尚未实现）`);
-}
-function openLingzhuModal(){ alert("灵兽弹窗（尚未实现）"); }
-function openSocialModal(){ alert("道友弹窗（尚未实现）"); }
-function openShangqingModal(){ alert("上清宫弹窗（尚未实现）"); }
-function openYouliModal(){ alert("游历统计弹窗（尚未实现）"); }
+// 占位函数，防止页面按钮点击报未定义
+function switchTab(tabId){alert(`切换标签${tabId}，尚未实现`);}
+function openLingzhuModal(){alert("灵兽弹窗尚未实现");}
+function openSocialModal(){alert("道友弹窗尚未实现");}
+function openShangqingModal(){alert("上清宫弹窗尚未实现");}
+function openYouliModal(){alert("游历弹窗尚未实现");}
 function closeYouliModal(){}
 function closeSocialModal(){}
 function closeLingzhuModal(){}
 function closeShangqingModal(){}
-function feedLingzhu(){ alert("喂养灵兽（尚未实现）"); }
-function exploreMap(mapName){ alert(`探索地图：${mapName}（尚未实现）`); }
-function renderXuanmenList(){ alert("玄门全鉴渲染（尚未实现）"); }
-function challengeEmperor(){ alert("挑战大帝（尚未实现）"); }
+function feedLingzhu(){alert("喂养灵兽尚未实现");}
+function exploreMap(name){alert(`探索${name}尚未实现`);}
+function renderXuanmenList(){alert("玄门全鉴尚未实现");}
+function challengeEmperor(){alert("挑战大帝尚未实现");}
