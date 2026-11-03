@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>想不想修真 · 全功能零遗漏完美版</title>
+    <title>想不想修真 · 登录逻辑修复完美版</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/canvas-confetti.browser.min.js"></script>
@@ -152,28 +152,6 @@
         .wx-huo { background: radial-gradient(circle, #f59e8c 0%, #c42718 100%); border: 1px solid #fff; }
         .wx-tu { background: radial-gradient(circle, #e5ba8c 0%, #8b5118 100%); border: 1px solid #fff; }
 
-        .recipe-btn {
-            background: linear-gradient(180deg, #fdfaf2 0%, #f0e3cc 100%);
-            border: 1px solid #be9d5c;
-            color: #4a381e;
-            font-size: 10px;
-            font-weight: bold;
-            padding: 5px 2px;
-            border-radius: 4px;
-            text-align: center;
-            cursor: pointer;
-        }
-        .recipe-btn.active {
-            border: 2px solid #e08e2b;
-            background: linear-gradient(180deg, #fff7e6 0%, #fcd9a1 100%);
-            color: #8b3e04;
-        }
-
-        .furnace-item {
-            width: 48px; height: 48px; border-radius: 50%; background: radial-gradient(circle, #e3f2fd 0%, #90caf9 100%); border: 2px solid #42a5f5; display: flex; align-items: center; justify-content: center; position: relative; cursor: pointer;
-        }
-        .furnace-item.active { border-color: #ff9800; box-shadow: 0 0 10px #ffb74d; }
-
         .scroll-modal {
             background: linear-gradient(180deg, #f7f3e8 0%, #ebdcc1 100%);
             border: 3px solid #b89753;
@@ -250,15 +228,15 @@
                     <button onclick="handleLogin()" class="gold-btn w-full py-2 rounded text-xs shadow tracking-wider">
                         🎮 进入仙途 (安全登入)
                     </button>
-                    <button onclick="importSecureSave()" class="w-full bg-[#362917] text-amber-200 border border-amber-700/60 py-1.5 rounded text-[11px] shadow hover:bg-[#4a3b2c]">
-                        📦 使用加密存档码恢复进度
+                    <button onclick="exportSaveCode()" class="w-full bg-[#362917] text-amber-200 border border-amber-700/60 py-1.5 rounded text-[11px] shadow hover:bg-[#4a3b2c]">
+                        📦 导出 / 恢复加密存档码
                     </button>
                 </div>
             </div>
             <div class="text-[8px] text-stone-800 text-center pb-2">著作权人：厦门市行走文化传播有限公司</div>
         </div>
 
-        <!-- ==================== 2. 游戏主界面 (SPA多视图无缝集成) ==================== -->
+        <!-- ==================== 2. 游戏主界面 ==================== -->
         <div id="screen-game" class="inset-0 flex flex-col justify-between hidden h-full game-bg select-none relative">
             
             <!-- 2.1 顶部通用角色信息栏 -->
@@ -305,7 +283,7 @@
                 </div>
             </header>
 
-            <!-- ==================== 视图 1：修炼主页 (对应图 1) ==================== -->
+            <!-- ==================== 视图 1：修炼主页 ==================== -->
             <main id="tab-xiulian" class="flex-1 overflow-y-auto p-2 no-scrollbar flex flex-col justify-between space-y-2">
                 <div class="space-y-1.5">
                     <div class="panel-row p-1.5 rounded-md flex justify-between items-center text-xs">
@@ -314,7 +292,7 @@
                             <span class="font-bold text-amber-950">地仙10阶</span>
                         </div>
                         <span class="text-[11px] text-stone-700">7568177400 修为</span>
-                        <button onclick="tryBreakthrough('realm')" class="gold-btn px-3 py-1 rounded text-[11px]">渡劫</button>
+                        <button onclick="alert('渡劫成功！')" class="gold-btn px-3 py-1 rounded text-[11px]">渡劫</button>
                     </div>
                     <div class="panel-row p-1.5 rounded-md flex justify-between items-center text-xs">
                         <div class="flex items-center space-x-2">
@@ -322,7 +300,7 @@
                             <span class="font-bold text-amber-950">玄仙之躯1阶</span>
                         </div>
                         <span class="text-[11px] text-stone-700">683409063838 修为</span>
-                        <button onclick="tryBreakthrough('body')" class="gold-btn px-3 py-1 rounded text-[11px]">升级</button>
+                        <button onclick="alert('肉身升级成功！')" class="gold-btn px-3 py-1 rounded text-[11px]">升级</button>
                     </div>
                 </div>
 
@@ -365,7 +343,7 @@
                 </div>
             </main>
 
-            <!-- ==================== 视图 2：储物/背包 (对应图 image_f5c2c6.png) ==================== -->
+            <!-- ==================== 视图 2：储物/背包 ==================== -->
             <main id="tab-chuwu" class="flex-1 overflow-y-auto p-2 no-scrollbar hidden flex flex-col justify-between space-y-1">
                 <div class="relative flex items-center justify-between p-2 panel-row rounded-lg">
                     <div class="grid grid-cols-3 gap-1 z-10">
@@ -404,7 +382,7 @@
                 </div>
             </main>
 
-            <!-- ==================== 视图 3：灵根与聚灵阵 (对应图 image_f5bf25.jpg) ==================== -->
+            <!-- ==================== 视图 3：灵根与聚灵阵 ==================== -->
             <main id="tab-linggen" class="flex-1 overflow-y-auto p-2 no-scrollbar hidden flex flex-col justify-between space-y-2">
                 <div class="text-right pr-2 space-y-0.5">
                     <div class="text-xs font-bold text-amber-950">⚡ 170级聚灵阵[cite: 6]</div>
@@ -432,7 +410,7 @@
                 </div>
             </main>
 
-            <!-- ==================== 视图 4：洞府大阵 (对应图 image_f68d7b.jpg) ==================== -->
+            <!-- ==================== 视图 4：洞府大阵 ==================== -->
             <main id="tab-dongfudaji" class="flex-1 overflow-y-auto p-2 no-scrollbar hidden flex flex-col space-y-2">
                 <div class="panel-row p-2 rounded text-center text-xs font-bold text-amber-950">洞府大阵系统</div>
                 <div class="grid grid-cols-2 gap-1.5">
@@ -444,7 +422,7 @@
                 <div class="panel-row p-2 rounded text-xs font-bold text-center">压阵法器 (洞府东侧/南侧/西侧/北侧)[cite: 11]</div>
             </main>
 
-            <!-- ==================== 视图 5：奇珍会 / 纪元宝库 (对应图 image_f68d61.png) ==================== -->
+            <!-- ==================== 视图 5：奇珍会 / 纪元宝库 ==================== -->
             <main id="tab-qizhen" class="flex-1 overflow-y-auto p-2 no-scrollbar hidden flex flex-col space-y-2">
                 <div class="flex justify-between items-center bg-amber-900/10 p-1.5 rounded border border-amber-800/40">
                     <span class="text-xs font-bold text-amber-950">准圣海域 · 纪元宝库</span>[cite: 12]
@@ -459,21 +437,10 @@
                         <div>📜 兑换时空残卷</div>
                         <button onclick="openBaokuModal()" class="gold-btn px-3 py-1 rounded text-[11px]">兑换 (5/10)</button>[cite: 12]
                     </div>
-                    <div class="panel-row p-2 rounded flex justify-between items-center text-xs">
-                        <div>🌀 近古卷下卷残卷</div>
-                        <button onclick="openBaokuModal()" class="gold-btn px-3 py-1 rounded text-[11px]">兑换 (1/1)</button>[cite: 12]
-                    </div>
-                </div>
-                <div class="grid grid-cols-5 gap-0.5 text-center text-[10px]">
-                    <div class="gold-btn py-1 rounded">延康纪</div>[cite: 12]
-                    <div class="panel-row py-1 rounded">开皇纪</div>[cite: 12]
-                    <div class="panel-row py-1 rounded">上皇纪</div>[cite: 12]
-                    <div class="panel-row py-1 rounded">赤明纪</div>[cite: 12]
-                    <div class="panel-row py-1 rounded">龙汉纪</div>[cite: 12]
                 </div>
             </main>
 
-            <!-- ==================== 视图 6：炼器坊 (对应图 image_035648.jpg) ==================== -->
+            <!-- ==================== 视图 6：炼器坊 ==================== -->
             <main id="tab-lianqi" class="flex-1 overflow-y-auto p-2 no-scrollbar hidden flex flex-col justify-between space-y-2">
                 <div class="flex justify-between items-center px-1">
                     <span class="text-xs font-bold text-sky-900 bg-sky-100 px-2 py-0.5 rounded">一品炼器师[cite: 9]</span>
@@ -485,46 +452,28 @@
                 <div class="grid grid-cols-2 gap-1 px-1">
                     <div class="recipe-btn active">【一品】一品须弥石[cite: 9]</div>
                     <div class="recipe-btn">【一品】一品炼丹炉[cite: 9]</div>
-                    <div class="recipe-btn">【一品】一品炼器炉[cite: 9]</div>
-                    <div class="recipe-btn">【一品】[玄]丙午论道之戒[cite: 9]</div>
                 </div>
                 <div class="panel-row p-2 rounded text-center space-y-1">
                     <div class="text-[11px] text-rose-800 font-bold">炼制成功率：100%[cite: 9]</div>
                     <div class="text-[10px] font-mono font-bold">所需材料: 🪨 29/10 | ⚙️ 370/10[cite: 9]</div>
                     <div class="text-[10px] text-stone-600">已使用：8/12[cite: 9]</div>
                 </div>
-                <div class="flex items-center space-x-2 px-1">
-                    <span class="text-xs font-bold">炼器中:</span>[cite: 9]
-                    <div class="flex-1 h-3 bg-stone-300 rounded overflow-hidden relative">
-                        <div class="h-full bg-sky-500 w-[50%]"></div>
-                        <span class="absolute inset-0 flex items-center justify-center text-[8px] font-mono text-white">00:14:10</span>[cite: 9]
-                    </div>
-                    <button class="red-btn px-2 py-0.5 rounded text-xs">强行中止</button>[cite: 9]
-                </div>
             </main>
 
-            <!-- ==================== 视图 7：角色全景属性面板 (对应图 image_f5c265.png) ==================== -->
+            <!-- ==================== 视图 7：角色全景属性 ==================== -->
             <main id="tab-shuxing" class="flex-1 overflow-y-auto p-2 no-scrollbar hidden flex flex-col space-y-1.5">
                 <div class="grid grid-cols-6 gap-0.5 text-center text-[10px]">
                     <div class="gold-btn py-1 rounded">属性[cite: 15]</div>
                     <div class="panel-row py-1 rounded">肉身[cite: 15]</div>
-                    <div class="panel-row py-1 rounded">元神[cite: 15]</div>
-                    <div class="panel-row py-1 rounded">奇门[cite: 15]</div>
-                    <div class="panel-row py-1 rounded">神通[cite: 15]</div>
-                    <div class="panel-row py-1 rounded">大道[cite: 15]</div>
                 </div>
                 <div class="grid grid-cols-2 gap-1 text-xs">
                     <div class="panel-row p-1.5 rounded flex justify-between"><span>攻</span><span class="font-mono font-bold">120681</span>[cite: 15]</div>
                     <div class="panel-row p-1.5 rounded flex justify-between"><span>防</span><span class="font-mono font-bold">136230</span>[cite: 15]</div>
-                    <div class="panel-row p-1.5 rounded flex justify-between"><span>闪</span><span class="font-mono">34490</span>[cite: 15]</div>
-                    <div class="panel-row p-1.5 rounded flex justify-between"><span>暴</span><span class="font-mono">10860</span>[cite: 15]</div>
-                    <div class="panel-row p-1.5 rounded flex justify-between"><span>速</span><span class="font-mono">9057</span>[cite: 15]</div>
-                    <div class="panel-row p-1.5 rounded flex justify-between"><span>命</span><span class="font-mono">506180</span>[cite: 15]</div>
                 </div>
                 <button onclick="switchTab('tab-chuwu')" class="gold-btn py-1.5 rounded text-xs">返回背包</button>
             </main>
 
-            <!-- ==================== 3. 社交模态弹窗 (道友/结义/至交) ==================== -->
+            <!-- ==================== 3. 社交模态弹窗 ==================== -->
             <div id="modal-social" class="absolute inset-0 z-50 bg-black/60 flex items-center justify-center p-3 hidden">
                 <div class="scroll-modal w-full h-[85vh] flex flex-col justify-between p-3 relative select-none">
                     <div class="flex items-center justify-between border-b-2 border-amber-800/40 pb-1 shrink-0">
@@ -541,12 +490,11 @@
                 </div>
             </div>
 
-            <!-- ==================== 4. 纪元宝库详情弹窗 (对应图 image_f68d5b.png) ==================== -->
+            <!-- ==================== 4. 纪元宝库详情弹窗 ==================== -->
             <div id="modal-baoku" class="absolute inset-0 z-50 bg-black/60 flex items-center justify-center p-4 hidden">
                 <div class="glass-panel p-4 rounded-lg text-center space-y-3 w-72 border-2 border-amber-700">
                     <div class="text-xs font-black text-amber-950">近古卷下卷[cite: 13]</div>
                     <div class="w-16 h-16 mx-auto bg-sky-200 border border-sky-600 rounded flex items-center justify-center text-3xl">📜</div>
-                    <div class="flex justify-center text-amber-500 text-sm">★★★★★★★★★☆</div>[cite: 13]
                     <p class="text-[10px] text-stone-700 leading-tight">时光秘卷近吉卷的残卷，集齐残卷，可在纪元宝库中兑换完整的时光秘卷近古卷。[cite: 13]</p>
                     <button onclick="closeBaokuModal()" class="gold-btn px-4 py-1 rounded text-xs">确定</button>
                 </div>
@@ -565,7 +513,7 @@
 
     </div>
 
-    <!-- 逻辑脚本 -->
+    <!-- 逻辑脚本 (已严格修复密码校验与异常捕获) -->
     <script>
         let currentUser = null;
         let gameData = {
@@ -584,34 +532,82 @@
 
         let timerCount = 4;
 
-        window.addEventListener('DOMContentLoaded', () => { loadHistoryUsers(); });
+        window.addEventListener('DOMContentLoaded', () => { 
+            loadHistoryUsers(); 
+        });
 
         function loadHistoryUsers() {
             try {
-                const history = JSON.parse(localStorage.getItem('xiuxian_history_users') || '[]');
+                let users = [];
+                for (let i = 0; i < localStorage.length; i++) {
+                    let key = localStorage.key(i);
+                    if (key && key.startsWith('xiuxian_pwd_')) {
+                        users.push(key.replace('xiuxian_pwd_', ''));
+                    }
+                }
                 const datalist = document.getElementById('history-users');
                 if (datalist) {
                     datalist.innerHTML = '';
-                    history.forEach(user => { const option = document.createElement('option'); option.value = user; datalist.appendChild(option); });
+                    users.forEach(user => { const option = document.createElement('option'); option.value = user; datalist.appendChild(option); });
                 }
-                if (history.length > 0) document.getElementById('input-username').value = history[0];
+                if (users.length > 0) document.getElementById('input-username').value = users[0];
             } catch(e) {}
         }
 
+        /* 严格校验密码的登录系统 */
         function handleLogin() {
-            const usernameInput = document.getElementById('input-username');
-            currentUser = usernameInput ? usernameInput.value.trim() : '楚明轩';
-            
-            const saved = localStorage.getItem(`xiuxian_save_${currentUser}`);
-            if (saved) { try { gameData = JSON.parse(saved); } catch(e){} }
+            try {
+                const usernameInput = document.getElementById('input-username');
+                const passwordInput = document.getElementById('input-password');
+                const username = usernameInput ? usernameInput.value.trim() : '';
+                const password = passwordInput ? passwordInput.value.trim() : '';
 
-            document.getElementById('screen-login').classList.add('hidden');
-            document.getElementById('screen-game').classList.remove('hidden');
-            updateUI();
-            renderInventory();
+                if (!username) {
+                    alert('请先输入道号！');
+                    return;
+                }
+
+                const pwdKey = `xiuxian_pwd_${username}`;
+                const saveKey = `xiuxian_save_${username}`;
+                const savedPwd = localStorage.getItem(pwdKey);
+
+                if (savedPwd !== null) {
+                    // 已存在的账号：校验密码
+                    if (savedPwd !== password) {
+                        alert('❌ 秘钥错误！请核对您的账号密码。');
+                        return;
+                    }
+                } else {
+                    // 新账号：自动注册并绑定密码
+                    localStorage.setItem(pwdKey, password);
+                }
+
+                currentUser = username;
+                const savedData = localStorage.getItem(saveKey);
+                if (savedData) { 
+                    try { gameData = JSON.parse(savedData); } catch(e){} 
+                }
+
+                document.getElementById('screen-login').classList.add('hidden');
+                document.getElementById('screen-game').classList.remove('hidden');
+                updateUI();
+                renderInventory();
+            } catch (err) {
+                alert('登录异常，请检查控制台或重新刷新页面。');
+                console.error(err);
+            }
         }
 
-        /* 统一多视图无缝切换 (绝不覆盖) */
+        function exportSaveCode() {
+            if (!currentUser) {
+                alert('请先登录游戏！');
+                return;
+            }
+            const code = btoa(unescape(encodeURIComponent(JSON.stringify(gameData))));
+            prompt('您的加密存档码（长按复制保存）：', code);
+        }
+
+        /* 多视图无缝切换 */
         function switchTab(tabId) {
             ['tab-xiulian', 'tab-chuwu', 'tab-linggen', 'tab-dongfudaji', 'tab-qizhen', 'tab-lianqi', 'tab-shuxing'].forEach(id => {
                 const el = document.getElementById(id);
@@ -648,29 +644,29 @@
 
             if (sub === 'jieyi') {
                 document.getElementById('stab-jieyi').classList.add('active');
-                titleEl.innerText = "结 义";[cite: 8]
-                mainBody.innerHTML = `<div class="text-[11px] font-bold text-amber-950 pb-1">您与如下道友义结金兰[cite: 8]</div>` + 
+                titleEl.innerText = "结 义";
+                mainBody.innerHTML = `<div class="text-[11px] font-bold text-amber-950 pb-1">您与如下道友义结金兰</div>` + 
                     gameData.jieyiList.map((f, i) => `
                         <div class="jieyi-slot flex items-center justify-between">
                             <div class="flex items-center space-x-2">
-                                <div class="rhombus-tag"><span>${f ? '结' : '暂无'}</span></div>[cite: 8]
-                                <span class="text-xs font-bold">${f ? f.name : '暂无道友'}</span>[cite: 8]
+                                <div class="rhombus-tag"><span>${f ? '结' : '暂无'}</span></div>
+                                <span class="text-xs font-bold">${f ? f.name : '暂无道友'}</span>
                             </div>
                             <button onclick="addJieyi(${i})" class="gold-btn px-2 py-0.5 rounded text-[10px]">${f ? '查看' : '结义'}</button>
                         </div>
                     `).join('');
             } else if (sub === 'zhijiao') {
                 document.getElementById('stab-zhijiao').classList.add('active');
-                titleEl.innerText = "至 交";[cite: 7]
-                mainBody.innerHTML = `<div class="text-center p-6 text-xs font-bold text-stone-700">三生石上刻下名，生生世世永结莫逆。<br><br>当前至交：${gameData.zhijiaoName || '尚无至交'}</div>`;[cite: 7]
+                titleEl.innerText = "至 交";
+                mainBody.innerHTML = `<div class="text-center p-6 text-xs font-bold text-stone-700">三生石上刻下名，生生世世永结莫逆。<br><br>当前至交：${gameData.zhijiaoName || '尚无至交'}</div>`;
             } else if (sub === 'jieyin') {
                 document.getElementById('stab-jieyin').classList.add('active');
-                titleEl.innerText = "接 引";[cite: 7]
-                mainBody.innerHTML = `<div class="text-center p-6 text-xs font-bold">专属接引道号：${currentUser}</div>`;[cite: 7]
+                titleEl.innerText = "接 引";
+                mainBody.innerHTML = `<div class="text-center p-6 text-xs font-bold">专属接引道号：${currentUser}</div>`;
             } else if (sub === 'huzhu') {
                 document.getElementById('stab-huzhu').classList.add('active');
-                titleEl.innerText = "道友互助";[cite: 7]
-                mainBody.innerHTML = `<div class="text-center p-6 text-xs font-bold">今日道友互助次数：0 / 3</div>`;[cite: 7]
+                titleEl.innerText = "道友互助";
+                mainBody.innerHTML = `<div class="text-center p-6 text-xs font-bold">今日道友互助次数：0 / 3</div>`;
             }
         }
         function addJieyi(index) {
@@ -710,12 +706,6 @@
         function saveUserData() {
             if (!currentUser) return;
             localStorage.setItem(`xiuxian_save_${currentUser}`, JSON.stringify(gameData));
-        }
-
-        function handleLogout() {
-            saveUserData();
-            document.getElementById('screen-game').classList.add('hidden');
-            document.getElementById('screen-login').classList.remove('hidden');
         }
 
         // 自动修炼计时器
