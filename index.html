@@ -730,18 +730,19 @@
 
     <!-- 全局 JS 交互逻辑 -->
     <script src="./js/save.js"></script>
-    <script src="./js/config-loader.js"></script>
-    <script src="./js/calc.js"></script>
-    <script src="./js/ui.js"></script>
-    <script>
-    (async function bootstrap() {
-      await loadAllConfig();
-      const player = loadSave();
-      renderPlayerUI(player);
-      startGameLoop();
-      alert("游戏启动成功！每5秒自动获取修为，刷新页面存档不会丢失");
-    })();
-    </script>
+<script src="./js/config-loader.js"></script>
+<script src="./js/calc.js"></script>
+<script src="./js/ui.js"></script>
+<script>
+(async function bootstrap() {
+  await loadAllConfig();
+  const player = loadSave();
+  renderPlayerUI(player);
+  startGameLoop();
+  // 删掉旧的alert！不要页面一打开就弹窗！
+})();
+</script>
+
 
 </body>
 </html>
