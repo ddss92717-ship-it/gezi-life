@@ -25,3 +25,15 @@ function startGameLoop() {
     renderPlayerUI(player);
   }, 5000);
 }
+//加到 ui.js
+function onClickBreakThrough(){
+  const player = loadSave();
+  const ok = tryRealmUp(player);
+  if(ok){
+    saveSave(player);
+    renderPlayerUI(player);
+    alert("突破成功！");
+  }else{
+    alert("修为不足，无法突破！");
+  }
+}
