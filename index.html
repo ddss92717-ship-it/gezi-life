@@ -194,13 +194,13 @@
                         🎮 进入仙途 (安全登入)
                     </button>
                     <div class="grid grid-cols-2 gap-1.5">
-    <button onclick="exportSave()" class="w-full bg-[#362917] text-amber-200 border border-amber-700/60 py-1.5 rounded text-[11px] shadow hover:bg-[#4a3b2c]">
-        📦 导出存档码
-    </button>
-    <button onclick="importSave()" class="w-full bg-[#362917] text-amber-200 border border-amber-700/60 py-1.5 rounded text-[11px] shadow hover:bg-[#4a3b2c]">
-        📥 恢复存档码
-    </button>
-</div>
+                        <button onclick="exportSave()" class="w-full bg-[#362917] text-amber-200 border border-amber-700/60 py-1.5 rounded text-[11px] shadow hover:bg-[#4a3b2c]">
+                            📦 导出存档码
+                        </button>
+                        <button onclick="importSave()" class="w-full bg-[#362917] text-amber-200 border border-amber-700/60 py-1.5 rounded text-[11px] shadow hover:bg-[#4a3b2c]">
+                            📥 恢复存档码
+                        </button>
+                    </div>
                 </div>
             </div>
             <div class="text-[8px] text-stone-800 text-center pb-2">著作权人：厦门市行走文化传播有限公司</div>
@@ -1002,7 +1002,8 @@
             if (document.getElementById('attr-fang')) document.getElementById('attr-fang').innerText = gameData.defense;
         }
 
-/* ==================== 存档码：导出 / 恢复 ==================== */
+
+        /* ==================== 存档码：导出 / 恢复 ==================== */
 const SAVE_CODE_PREFIX = 'XXZX1.'; // 版本前缀，将来存档结构改了可识别
 
 function exportSave() {
